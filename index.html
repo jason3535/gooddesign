@@ -1,0 +1,740 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="从 1851 年水晶宫到 2024 年无人出租车：86 件建筑、家具、家电、消费电子和交通工具的经典设计，以及背后 60 多位设计师的故事。"><meta name="theme-color" content="#f2f2ef" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="好设计两百年"><meta property="og:description" content="从 1851 年水晶宫到 2024 年无人出租车：86 件建筑、家具、家电、消费电子和交通工具的经典设计，以及背后 60 多位设计师的故事。"><meta property="og:type" content="website"><meta property="og:url" content="https://gooddesign.jasonlin.tech/"><meta property="og:image" content="https://gooddesign.jasonlin.tech/img/egg.c510d662.webp">
+<link rel="canonical" href="https://gooddesign.jasonlin.tech/">
+<title>好设计两百年</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+/* 版式：像一本博物馆藏品图录。顶部一条 1850–2030 的年代刻度把 86 件作品排成点阵；
+   主体是疏密有致的图片网格（建筑满版出血、产品放在灰色影棚底上）；点作品看大图，点设计师滑出人物卡。
+   配色取自 Braun 产品的面板：暖灰底、黑字，四个类别用 ET66 按键式的点色区分。 */
+:root {
+  --paper: #f2f2ef; --tile: #e6e6e2; --card: #fbfbf9; --ink: #141414; --muted: #6d6d68; --rule: #d3d3cd;
+  --c-arch: #34558b; --c-home: #a8642a; --c-appliance: #e0531c; --c-tech: #2f8a5b; --c-mobility: #6b4fa3;
+  --display: "Archivo", "Helvetica Neue", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+  --text: "Archivo", -apple-system, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --paper: #121211; --tile: #1d1d1b; --card: #181817; --ink: #ecebe7; --muted: #9a9a93; --rule: #33332f;
+  --c-arch: #7c9cd6; --c-home: #d49559; --c-appliance: #ff7a45; --c-tech: #5cc28d; --c-mobility: #b29ae6; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --paper: #121211; --tile: #1d1d1b; --card: #181817; --ink: #ecebe7; --muted: #9a9a93; --rule: #33332f;
+  --c-arch: #7c9cd6; --c-home: #d49559; --c-appliance: #ff7a45; --c-tech: #5cc28d; --c-mobility: #b29ae6; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--paper); color: var(--ink); font: 16px/1.6 var(--text); -webkit-font-smoothing: antialiased }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--paper) }
+.wrap { max-width: 1440px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)) }
+button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer }
+a { color: inherit }
+:focus-visible { outline: 2px solid var(--c-appliance); outline-offset: 3px }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; letter-spacing: 0 }
+.label { font: 500 11px/1.4 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; flex: none }
+.dot.arch { background: var(--c-arch) } .dot.home { background: var(--c-home) } .dot.appliance { background: var(--c-appliance) } .dot.tech { background: var(--c-tech) } .dot.mobility { background: var(--c-mobility) }
+
+/* ---------- 开篇 ---------- */
+header.hero { padding-block: 56px 28px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px 56px; align-items: end }
+.hero h1 { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: clamp(56px, 10.5vw, 168px); line-height: 1.02; letter-spacing: -.02em }
+.hero h1 small { display: block; font-size: .2em; font-weight: 500; font-stretch: 100%; letter-spacing: -.01em; margin-top: 18px; color: var(--muted) }
+.hero .intro { font-size: 17px; line-height: 1.7; max-width: 34em; margin: 0 }
+.hero .intro b { font-weight: 600 }
+.counts { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 18px }
+.counts span { display: inline-flex; align-items: center; gap: 8px; font-size: 14px }
+.counts b { font: 500 14px var(--mono) }
+@media (max-width: 860px) { header.hero { grid-template-columns: 1fr; padding-block: 36px 20px } }
+
+/* ---------- 年代刻度 ---------- */
+.ruler { position: relative; margin-block: 8px 34px; padding-block: 14px 30px; border-top: 2px solid var(--ink) }
+.ruler .track { position: relative; height: 92px }
+.ruler .tick { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--rule) }
+.ruler .tick span { position: absolute; bottom: -24px; left: 0; transform: translateX(-50%); font: 11px var(--mono); color: var(--muted) }
+.ruler .pt { position: absolute; width: 13px; height: 13px; margin: -6.5px 0 0 -6.5px; border-radius: 50%; border: 2px solid var(--paper); transition: transform .15s }
+.ruler .pt:hover, .ruler .pt:focus-visible { transform: scale(1.6); z-index: 2 }
+.ruler .pt.off { opacity: .15 }
+.ruler .tip { position: absolute; top: -34px; transform: translateX(-50%); background: var(--ink); color: var(--paper); font-size: 12px; padding: 3px 9px; white-space: nowrap; pointer-events: none; border-radius: 2px }
+
+/* ---------- 筛选条 ---------- */
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-bottom: 1px solid var(--rule) }
+.bar .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 22px; padding-block: 12px }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px 18px }
+.tab { font-family: var(--display); font-size: 17px; font-weight: 600; color: var(--muted); display: inline-flex; align-items: center; gap: 8px; padding-block: 2px; border-bottom: 2px solid transparent }
+.tab sup { font: 500 11px var(--mono); vertical-align: top }
+.tab[aria-pressed="true"] { color: var(--ink); border-bottom-color: var(--ink) }
+.bar .right { margin-left: auto; display: flex; gap: 14px; align-items: center }
+.seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; padding: 2px }
+.seg button { font-size: 13px; padding: 4px 12px; border-radius: 999px; color: var(--muted) }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper) }
+.theme { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--rule); display: grid; place-items: center }
+.theme svg { width: 16px; height: 16px; stroke: var(--ink); fill: none; stroke-width: 1.8; stroke-linecap: round }
+.theme .sun { display: none } :root[data-mode="dark"] .theme .sun { display: block } :root[data-mode="dark"] .theme .moon { display: none }
+@media (max-width: 640px) { .bar .wrap { flex-wrap: nowrap; gap: 10px } .tabs { flex-wrap: nowrap; overflow-x: auto; min-width: 0; flex: 1; scrollbar-width: none } .tabs::-webkit-scrollbar { display: none } .tab { font-size: 15px; white-space: nowrap } .tab sup { display: none } .bar .right { margin-left: 0; gap: 8px } .seg button { padding: 4px 9px } }
+
+/* ---------- 网格 ---------- */
+main { padding-block: 30px 40px }
+.group-head { display: flex; align-items: baseline; gap: 16px; margin: 46px 0 18px; border-top: 2px solid var(--ink); padding-top: 12px }
+.group-head:first-child { margin-top: 0 }
+.group-head h2 { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 112%; font-size: clamp(30px, 4vw, 52px); letter-spacing: -.035em; line-height: 1 }
+.group-head .mono { color: var(--muted); font-size: 13px }
+.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); grid-auto-flow: dense; gap: 34px 20px }
+.card { grid-column: span 3; display: grid; gap: 12px; align-content: start; text-align: left; min-width: 0 }
+.card[data-span] { grid-column: span var(--span) }
+.ph { position: relative; overflow: hidden; background: var(--tile); aspect-ratio: 4 / 5 }
+/* 各宽度的比例让同一行图片等高：3 栏 4:5，6 栏 5:3，9 栏 5:2，12 栏 10:3 */
+.card[data-span="6"] .ph { aspect-ratio: 5 / 3 } .card[data-span="9"] .ph { aspect-ratio: 5 / 2 } .card[data-span="12"] .ph { aspect-ratio: 10 / 3 }
+.ph img { width: 100%; height: 100%; display: block; transition: transform .6s cubic-bezier(.2, .7, .2, 1) }
+.ph.cover img { object-fit: cover }
+.ph.contain img { object-fit: contain; padding: 9%; mix-blend-mode: multiply }
+:root[data-mode="dark"] .ph.contain { background: #dcdcd7 }
+/* 抠过底的产品：直接立在色块上，加一道贴地的柔影；深色模式也保持深色底 */
+.ph.contain.cut { background: var(--bg, var(--tile)) }
+/* 按画框高宽定位（inset 的百分比上下取高、左右取宽），宽卡里的瘦高物件不会被压小 */
+.ph.contain.cut img { position: absolute; inset: 10% 11% 9%; width: 78%; height: 81%; padding: 0; mix-blend-mode: normal; filter: drop-shadow(0 14px 18px rgba(0, 0, 0, .16)) drop-shadow(0 2px 3px rgba(0, 0, 0, .10)) }
+:root[data-mode="dark"] .ph.contain.cut { background: var(--bgd, var(--tile)) }
+.card:is([data-span="6"], [data-span="9"], [data-span="12"]) .ph.contain.cut img { inset: 14% 11% 12%; height: 74% }
+:root[data-mode="dark"] .ph.contain.cut img { filter: drop-shadow(0 16px 22px rgba(0, 0, 0, .55)) }
+.card:hover .ph img { transform: scale(1.035) }
+.ph .yr { position: absolute; left: 10px; top: 8px; font: 500 12px var(--mono); color: var(--ink); background: color-mix(in srgb, var(--card) 85%, transparent); padding: 1px 6px }
+.ph.cover .yr { color: #141414; background: rgba(251, 251, 249, .86) }
+.cap { display: grid; gap: 3px; min-width: 0 }
+.cap h3 { margin: 0; font-family: var(--display); font-size: 19px; font-weight: 700; letter-spacing: -.02em; line-height: 1.25; display: flex; align-items: baseline; gap: 8px }
+.cap h3 .dot { width: 7px; height: 7px; transform: translateY(-2px) }
+.cap .en { font-size: 13px; color: var(--muted); font-style: italic }
+.cap .by { font-size: 14px; display: flex; flex-wrap: wrap; gap: 0 4px }
+.who { text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 3px; text-decoration-thickness: 1px }
+.who:hover { text-decoration-color: var(--ink) }
+.plain { color: var(--muted) }
+@media (max-width: 720px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 14px } .card[data-span] { grid-column: span 1 } .card[data-span="6"], .card[data-span="9"], .card[data-span="12"] { grid-column: span 2 } .card[data-span="9"] .ph, .card[data-span="12"] .ph { aspect-ratio: 3 / 2 } .cap h3 { font-size: 16px } .cap .by { font-size: 13px } }
+
+/* ---------- 设计师索引 ---------- */
+.people-sec { padding-block: 30px 20px }
+.ppl { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 26px 16px }
+.pp { display: grid; gap: 8px; text-align: left; min-width: 0 }
+.pp .pic { aspect-ratio: 1; background: var(--tile); overflow: hidden; position: relative }
+.pp .pic img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; filter: grayscale(1) contrast(1.05); transition: filter .3s }
+.pp:hover .pic img { filter: none }
+.pp .pic .ini { position: absolute; inset: 0; display: grid; place-items: center; font: 800 34px/1 var(--display); font-stretch: 120%; color: var(--muted); letter-spacing: -.04em }
+.pp b { font-size: 14px; font-weight: 600; line-height: 1.3 }
+.pp span { font: 11.5px var(--mono); color: var(--muted) }
+
+/* ---------- 作品大图 ---------- */
+dialog { border: 0; padding: 0; color: var(--ink); background: var(--card) }
+dialog::backdrop { background: rgba(10, 10, 10, .72) }
+#lb { width: min(1280px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); }
+.lb { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(300px, 1fr); min-height: min(760px, calc(100dvh - 24px)) }
+.lb .big { background: var(--tile); display: grid; place-items: center; min-height: 340px; position: relative }
+.lb .big img { width: 100%; height: 100%; max-height: calc(100dvh - 24px); object-fit: contain; display: block }
+.lb .big.contain img { padding: 6%; mix-blend-mode: multiply }
+:root[data-mode="dark"] .lb .big.contain { background: #dcdcd7 }
+.lb .big.contain.cut { background: var(--bg, var(--tile)) }
+.lb .big.contain.cut img { padding: 9%; mix-blend-mode: normal; filter: drop-shadow(0 20px 26px rgba(0, 0, 0, .18)) }
+:root[data-mode="dark"] .lb .big.contain.cut { background: var(--bgd, var(--tile)) }
+:root[data-mode="dark"] .lb .big.contain.cut img { filter: drop-shadow(0 20px 28px rgba(0, 0, 0, .6)) }
+.lb .info { padding: 40px 36px 30px; display: grid; gap: 18px; align-content: start; overflow: auto; max-height: calc(100dvh - 24px) }
+.lb .info h2 { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 110%; font-size: clamp(30px, 3.2vw, 44px); letter-spacing: -.035em; line-height: 1.05 }
+.lb .info .en { color: var(--muted); font-style: italic; margin-top: 6px }
+.lb .meta { display: grid; grid-template-columns: 64px 1fr; gap: 8px 12px; border-top: 1px solid var(--rule); padding-top: 16px; font-size: 15px }
+.lb .meta dt { margin: 0 } .lb .meta dd { margin: 0; min-width: 0 }
+.lb .note { margin: 0; font-size: 16.5px; line-height: 1.75 }
+.chips { display: flex; flex-wrap: wrap; gap: 8px }
+.pchip { display: inline-flex; align-items: center; gap: 9px; padding: 4px 14px 4px 4px; border: 1px solid var(--rule); border-radius: 999px; font-size: 14px; text-align: left }
+.pchip:hover { border-color: var(--ink) }
+.pchip img, .pchip .ini { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; object-position: 50% 22%; background: var(--tile); display: grid; place-items: center; font: 700 11px var(--display); color: var(--muted) }
+.pchip small { display: block; font: 11px var(--mono); color: var(--muted) }
+.credit { font-size: 12px; color: var(--muted); margin-top: auto }
+.credit a { color: var(--muted) }
+.lbnav { position: absolute; bottom: 14px; left: 14px; display: flex; gap: 8px }
+.lbnav button, .x { width: 40px; height: 40px; border-radius: 50%; background: var(--card); color: var(--ink); font-size: 18px; display: grid; place-items: center; border: 1px solid var(--rule) }
+.x { position: absolute; top: 14px; right: 14px; z-index: 2 }
+@media (max-width: 820px) { .lb { grid-template-columns: 1fr; min-height: 0 } .lb .big { min-height: 0; aspect-ratio: 4 / 3 } .lb .big img { max-height: 60dvh } .lb .info { max-height: none; padding: 26px 20px 24px } }
+
+/* ---------- 人物卡（右侧滑出） ---------- */
+#pc { margin: 0 0 0 auto; height: 100dvh; max-height: 100dvh; width: min(480px, 100vw); padding-top: env(safe-area-inset-top, 0px) }
+.pc { display: grid; gap: 20px; padding: 0 0 40px; position: relative }
+.pc .portrait { aspect-ratio: 4 / 3.4; background: var(--tile); overflow: hidden; position: relative }
+.pc .portrait img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20% }
+.pc .portrait .ini { position: absolute; inset: 0; display: grid; place-items: center; font: 800 96px/1 var(--display); font-stretch: 125%; letter-spacing: -.05em; color: var(--muted) }
+.pc .body { padding: 0 28px; display: grid; gap: 16px }
+.pc h2 { margin: 0; font-family: var(--display); font-weight: 800; font-stretch: 110%; font-size: 36px; letter-spacing: -.035em; line-height: 1.05 }
+.pc .en { color: var(--muted); font-style: italic }
+.pc .facts { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; border-block: 1px solid var(--rule); padding-block: 10px }
+.pc .facts span { display: inline-flex; gap: 6px } .pc .facts .label { align-self: center }
+.pc p { margin: 0; line-height: 1.75 }
+.pc blockquote { margin: 0; font-family: var(--display); font-size: 21px; font-weight: 600; line-height: 1.4; letter-spacing: -.01em; border-left: 3px solid var(--c-appliance); padding-left: 14px }
+.works { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+.works button { display: grid; gap: 6px; text-align: left; min-width: 0 }
+.works .ph { aspect-ratio: 1 }
+.works b { font-size: 13px; font-weight: 600; line-height: 1.3 }
+.works span { font: 11px var(--mono); color: var(--muted) }
+#pc .x { position: fixed; top: calc(14px + env(safe-area-inset-top, 0px)); right: 14px }
+
+footer { border-top: 2px solid var(--ink); margin-top: 40px; padding-block: 22px 60px; font-size: 12.5px; color: var(--muted); display: grid; gap: 12px }
+footer .credits { columns: 3 300px; column-gap: 28px; line-height: 1.6 }
+footer .credits div { break-inside: avoid; margin-bottom: 2px }
+footer a { color: var(--muted) }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important } }
+.hide { display: none !important }
+</style>
+</head><body>
+<header class="hero wrap">
+  <h1>好设计<br>两百年<small>Good Design, 1851–2026</small></h1>
+  <div>
+    <p class="intro">从 1851 年伦敦的水晶宫到 2024 年的无人出租车，<b>86 件</b>建筑、家具、家电、消费电子和交通工具，以及背后的 <b>60 多位设计师</b>和几家把设计当作信仰的公司。点任意作品看大图，点设计师的名字看他的故事。</p>
+    <div class="counts" id="counts"></div>
+  </div>
+</header>
+
+<div class="wrap"><div class="ruler" id="ruler"><div class="track" id="track"></div></div></div>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="tabs" id="tabs"></div>
+    <div class="right">
+      <div class="seg" id="sort"><button data-v="cat" aria-pressed="true">按类别</button><button data-v="year" aria-pressed="false">按年代</button></div>
+      <button class="theme" id="theme" type="button" aria-label="切换深色/浅色">
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<main class="wrap" id="main"></main>
+
+<section class="wrap people-sec" id="people">
+  <div class="group-head"><h2>背后的人</h2><span class="mono" id="pcount"></span></div>
+  <div class="ppl" id="ppl"></div>
+</section>
+
+<footer class="wrap">
+  <div>作品与人物资料据公开资料整理。图片除注明外均来自维基共享资源（Wikimedia Commons）的自由许可或公有领域图片，按许可要求署名如下。</div>
+  <div class="credits" id="credits"></div>
+</footer>
+
+<dialog id="lb" aria-label="作品详情"><div class="lb" id="lbBody"></div></dialog>
+<dialog id="pc" aria-label="设计师介绍"><div class="pc" id="pcBody"></div></dialog>
+
+<script>
+// 作品：cat = arch 建筑 / home 家具家居 / appliance 家电 / tech 消费电子
+// by = 设计者（PEOPLE 的 id，或 {n: 名字} 表示没有介绍卡的合作者）；maker = 制造商/业主（MAKERS 的 id 或纯文字）
+const ITEMS = [
+  // ---------- 建筑 ----------
+  { id: 'crystal-palace', cat: 'arch', zh: '水晶宫', en: 'The Crystal Palace', y: 1851, by: ['paxton'], maker: '伦敦万国博览会',
+    note: '用标准化的铸铁构件和玻璃板在几个月内搭起的展览馆，预制装配建筑的起点。原址 1936 年毁于大火。' },
+  { id: 'eiffel-tower', cat: 'arch', zh: '埃菲尔铁塔', en: 'Eiffel Tower', y: 1889, by: ['eiffel', { n: 'Maurice Koechlin' }, { n: 'Stephen Sauvestre' }], maker: '巴黎世界博览会',
+    note: '为 1889 年世博会建造，落成时被许多艺术家联名抗议，后来成了巴黎的象征。结构完全裸露，形式就是受力。' },
+  { id: 'schroder-house', cat: 'arch', zh: '施罗德住宅', en: 'Rietveld Schröder House', y: 1924, by: ['rietveld', { n: 'Truus Schröder' }], maker: '乌得勒支',
+    note: '风格派唯一一座完整实现的住宅。二层没有固定墙，用推拉隔板随时把一整层变成几个房间。' },
+  { id: 'bauhaus-dessau', cat: 'arch', zh: '包豪斯德绍校舍', en: 'Bauhaus Dessau', y: 1926, by: ['gropius'], maker: '包豪斯学校',
+    note: '教室、工坊和宿舍按功能拆成几个体块，用玻璃幕墙和连廊串起来。它本身就是这所学校教学理念的样板。' },
+  { id: 'barcelona-pavilion', cat: 'arch', zh: '巴塞罗那德国馆', en: 'Barcelona Pavilion', y: 1929, by: ['mies', { n: 'Lilly Reich' }], maker: '巴塞罗那世界博览会',
+    note: '几片独立的大理石墙和细钢柱托起一块平屋顶，空间在墙之间流动。展会后拆除，1986 年按原样重建。' },
+  { id: 'weissenhof', cat: 'arch', zh: '魏森霍夫双宅', en: 'Weissenhof Houses', y: 1927, by: ['corbusier', { n: 'Pierre Jeanneret' }], maker: '斯图加特 · 德意志制造联盟住宅展',
+    note: '1927 年德意志制造联盟在斯图加特办住宅展，柯布西耶在这里建了两栋。他的「新建筑五点」就是为这次展览写成的：底层架空、屋顶花园、自由平面、横向长窗和自由立面。2016 年列入世界遗产。' },
+  { id: 'fallingwater', cat: 'arch', zh: '流水别墅', en: 'Fallingwater', y: 1937, by: ['wright'], maker: '考夫曼家族',
+    note: '直接悬挑在瀑布之上，一层层混凝土平台像从岩石里长出来。赖特「有机建筑」的代表作。' },
+  { id: 'villa-mairea', cat: 'arch', zh: '玛丽亚别墅', en: 'Villa Mairea', y: 1939, by: ['aalto', { n: 'Aino Aalto' }], maker: '古利克森家族',
+    note: '把现代主义的白墙平顶和芬兰的木材、森林融在一起，让冷静的现代建筑有了温度。' },
+  { id: 'glass-house', cat: 'arch', zh: '玻璃屋', en: 'Glass House', y: 1949, by: ['pjohnson'], maker: '新迦南',
+    note: '四面全是玻璃，只有一个砖砌圆筒容纳浴室。约翰逊自己在这里住了半个多世纪。' },
+  { id: 'farnsworth', cat: 'arch', zh: '范斯沃斯住宅', en: 'Farnsworth House', y: 1951, by: ['mies'], maker: 'Edith Farnsworth',
+    note: '八根白色钢柱把一个玻璃盒子托离地面，室内只有一个木质核心筒。「少就是多」最纯粹的版本。' },
+  { id: 'unite', cat: 'arch', zh: '柏林柯布西耶公寓', en: "Unité d'habitation Berlin", y: 1958, by: ['corbusier'], maker: '柏林国际建筑展（Interbau）',
+    note: '1952 年马赛公寓提出了「居住单元」：一栋楼就是一座垂直的小城，有商店、幼儿园和屋顶花园。柏林这栋是 1957 年国际建筑展上的德国版本，至今仍住满居民。' },
+  { id: 'chandigarh', cat: 'arch', zh: '昌迪加尔议会大厦', en: 'Palace of Assembly, Chandigarh', y: 1962, by: ['corbusier'], maker: '印度旁遮普邦',
+    note: '印度独立后新建的旁遮普邦首府由柯布西耶规划。议会大厦有巨大的弧形混凝土雨棚，会议厅是一个从屋顶伸出的双曲面筒体，倒映在门前的水池里。' },
+  { id: 'seagram', cat: 'arch', zh: '西格拉姆大厦', en: 'Seagram Building', y: 1958, by: ['mies', 'pjohnson'], maker: 'Seagram 公司',
+    note: '青铜色的玻璃幕墙塔楼，前面退让出一个广场。此后几十年全世界的办公楼都在模仿它。' },
+  { id: 'guggenheim-ny', cat: 'arch', zh: '古根海姆美术馆（纽约）', en: 'Solomon R. Guggenheim Museum', y: 1959, by: ['wright'], maker: '古根海姆基金会',
+    note: '一条连续的螺旋坡道就是展厅，观众乘电梯到顶，一路往下看。赖特没能看到它开幕。' },
+  { id: 'salk', cat: 'arch', zh: '萨尔克研究所', en: 'Salk Institute', y: 1965, by: ['kahn'], maker: 'Jonas Salk',
+    note: '两排实验楼夹着一条石材广场，中间一道细水渠指向太平洋。康用最少的材料做出了最有仪式感的空间。' },
+  { id: 'sydney-opera', cat: 'arch', zh: '悉尼歌剧院', en: 'Sydney Opera House', y: 1973, by: ['utzon'], maker: '新南威尔士州政府',
+    note: '1957 年赢得竞赛，帆形壳体花了好几年才找到能建造的几何解法。伍重 1966 年愤而离开，再也没回去看过完工的样子。' },
+  { id: 'pompidou', cat: 'arch', zh: '蓬皮杜中心', en: 'Centre Pompidou', y: 1977, by: ['piano', 'rogers'], maker: '法国政府',
+    note: '把管道、电梯和结构全部翻到外面，用颜色区分功能，室内留出完全自由的大空间。高技派的宣言。' },
+  { id: 'church-light', cat: 'arch', zh: '光之教会', en: 'Church of the Light', y: 1989, by: ['ando'], maker: '茨木春日丘教会',
+    note: '一个清水混凝土盒子，正面墙上切出一道十字形的缝，光就是这座教堂唯一的装饰。' },
+  { id: 'louvre-pyramid', cat: 'arch', zh: '卢浮宫玻璃金字塔', en: 'Louvre Pyramid', y: 1989, by: ['pei'], maker: '卢浮宫',
+    note: '刚公布时争议巨大，如今是卢浮宫的主入口。玻璃的通透让它对老宫殿几乎没有遮挡。' },
+  { id: 'bilbao', cat: 'arch', zh: '毕尔巴鄂古根海姆美术馆', en: 'Guggenheim Museum Bilbao', y: 1997, by: ['gehry'], maker: '古根海姆基金会',
+    note: '钛板包裹的扭曲曲面靠航空软件 CATIA 才能设计和建造。一座美术馆带活了一座衰落的工业城市，被称为「毕尔巴鄂效应」。' },
+  { id: 'apple-park', cat: 'arch', zh: 'Apple Park', en: 'Apple Park', y: 2017, by: ['foster', 'ive', 'jobs'], maker: 'apple',
+    note: '直径约 460 米的环形主楼，外墙是整块弯曲的大玻璃。乔布斯生前推动的最后一个项目。' },
+
+  // ---------- 家具家居 ----------
+  { id: 'thonet-14', cat: 'home', zh: '14 号椅', en: 'Chair No. 14', y: 1859, by: ['thonet'], maker: 'Gebrüder Thonet',
+    note: '用蒸汽弯曲的山毛榉木，六个部件、十颗螺丝就能组装，可以拆开装箱运往世界各地。至今已生产数千万把。' },
+  { id: 'red-blue', cat: 'home', zh: '红蓝椅', en: 'Red and Blue Chair', y: 1918, by: ['rietveld'], maker: '风格派',
+    note: '最初是原木色，1923 年前后才刷成红、蓝、黄、黑。与其说是一把椅子，不如说是一张立体的蒙德里安画。' },
+  { id: 'wassily', cat: 'home', zh: '瓦西里椅', en: 'Wassily Chair', y: 1925, by: ['breuer'], maker: '包豪斯 / Knoll',
+    note: '布劳耶从自行车车把得到灵感，用弯曲钢管做椅子骨架。钢管家具从这里开始。' },
+  { id: 'lc4', cat: 'home', zh: 'LC4 躺椅', en: 'LC4 Chaise Longue', y: 1928, by: ['perriand', 'corbusier', { n: 'Pierre Jeanneret' }], maker: 'Cassina',
+    note: '弧形椅身可以在底座上前后滑动，调到任何角度。柯布西耶称它为「休息的机器」。' },
+  { id: 'barcelona-chair', cat: 'home', zh: '巴塞罗那椅', en: 'Barcelona Chair', y: 1929, by: ['mies', { n: 'Lilly Reich' }], maker: 'Knoll',
+    note: '为巴塞罗那德国馆设计，X 形的扁钢椅腿来自古罗马的折叠凳。' },
+  { id: 'anglepoise', cat: 'home', zh: 'Anglepoise 台灯', en: 'Anglepoise Lamp', y: 1932, by: ['carwardine'], maker: 'Anglepoise',
+    note: '汽车工程师用弹簧平衡原理做的台灯，灯头停在哪里就稳在哪里。挪威的 Luxo L-1 由它授权衍生，后来成了皮克斯动画里那盏台灯的原型。' },
+  { id: 'stool-60', cat: 'home', zh: '60 号凳', en: 'Stool 60', y: 1933, by: ['aalto'], maker: 'Artek',
+    note: '阿尔托发明了把实木腿端头弯成 L 形的工艺，三条腿直接拧在凳面下，可以层层叠放。' },
+  { id: 'ph5', cat: 'home', zh: 'PH5 吊灯', en: 'PH5 Pendant', y: 1958, by: ['henningsen'], maker: 'Louis Poulsen',
+    note: '几层灯罩按对数螺线的角度排布，从任何角度都看不到灯泡，光线柔和不刺眼。' },
+  { id: 'wishbone', cat: 'home', zh: '叉骨椅 CH24', en: 'Wishbone Chair', y: 1949, by: ['wegner'], maker: 'Carl Hansen & Søn',
+    note: 'Y 形椅背来自中国明式圈椅的启发，坐面用约 120 米纸绳手工编织。' },
+  { id: 'akari', cat: 'home', zh: 'Akari 灯', en: 'Akari Light Sculptures', y: 1951, by: ['noguchi'], maker: '尾関次七商店（岐阜）',
+    note: '野口勇用岐阜灯笼的传统工艺，竹骨加和纸，做了上百种造型，可以折叠收起。' },
+  { id: 'butterfly-stool', cat: 'home', zh: '蝴蝶凳', en: 'Butterfly Stool', y: 1954, by: ['yanagi'], maker: '天童木工',
+    note: '两片完全相同的弯曲胶合板，用一根黄铜杆和两颗螺丝连起来。日本战后工业设计的代表作。' },
+  { id: 'eames-lounge', cat: 'home', zh: '伊姆斯躺椅', en: 'Eames Lounge Chair', y: 1956, by: ['eames'], maker: 'Herman Miller',
+    note: '伊姆斯夫妇想做一把「像一只用旧了的棒球手套」的椅子。胶合板外壳加皮革软垫，生产至今。' },
+  { id: 'tulip', cat: 'home', zh: '郁金香椅', en: 'Tulip Chair', y: 1957, by: ['saarinen'], maker: 'Knoll',
+    note: '沙里宁想解决「桌椅腿的贫民窟」，于是只留一根铸铝底座。' },
+  { id: 'egg', cat: 'home', zh: '蛋椅', en: 'Egg Chair', y: 1958, by: ['jacobsen'], maker: 'Fritz Hansen',
+    note: '为哥本哈根 SAS 皇家酒店设计，那座酒店从建筑到门把手、餐具都出自雅各布森一人之手。' },
+  { id: 'kikkoman', cat: 'home', zh: '龟甲万酱油瓶', en: 'Kikkoman Soy Sauce Dispenser', y: 1961, by: ['ekuan'], maker: '龟甲万',
+    note: '红色瓶盖、两个出口，倒完不会滴漏。据说造型调整了三年、试了一百多个原型，至今已卖出数亿只。' },
+  { id: 'arco', cat: 'home', zh: 'Arco 落地灯', en: 'Arco Lamp', y: 1962, by: ['castiglioni', { n: 'Pier Giacomo Castiglioni' }], maker: 'Flos',
+    note: '一块卡拉拉大理石做底座，弧形钢臂把灯伸到餐桌上方，不用在天花板上打孔。底座上的圆孔是为了穿一根扫帚柄两人抬。' },
+  { id: 'panton', cat: 'home', zh: '潘顿椅', en: 'Panton Chair', y: 1967, by: ['panton'], maker: 'Vitra',
+    note: '世界上第一把一体注塑成型的悬臂塑料椅，从 1950 年代末的草图到量产花了将近十年。' },
+  { id: 'tizio', cat: 'home', zh: 'Tizio 台灯', en: 'Tizio Lamp', y: 1972, by: ['sapper'], maker: 'Artemide',
+    note: '灯臂本身就是导线，用配重平衡，轻轻一碰就能定位。用的是当时新出的卤素灯泡。' },
+  { id: 'juicy-salif', cat: 'home', zh: '外星人榨汁机', en: 'Juicy Salif', y: 1990, by: ['starck'], maker: 'Alessi',
+    note: '据说是斯塔克在餐馆吃鱿鱼时画在餐巾纸上的。它榨汁并不好用，却成了 1990 年代设计的符号。' },
+
+  // ---------- 家电 ----------
+  { id: 'kitchenaid', cat: 'appliance', zh: 'KitchenAid 厨师机 K 型', en: 'KitchenAid Model K', y: 1937, by: ['arens'], maker: 'KitchenAid',
+    note: '流线型的机头造型八十多年几乎没变，今天的厨师机配件仍能装在 1937 年的机身上。' },
+  { id: 'lettera22', cat: 'appliance', zh: 'Lettera 22 打字机', en: 'Olivetti Lettera 22', y: 1950, by: ['nizzoli'], maker: 'olivetti',
+    note: '轻薄到可以放进公文包的便携打字机，1959 年被评为一百年来最好的工业设计产品之一。' },
+  { id: 'sk4', cat: 'appliance', zh: 'SK 4 收音唱机', en: 'Braun SK 4', y: 1956, by: ['rams', 'gugelot'], maker: 'braun',
+    note: '白色钢板外壳加透明有机玻璃盖，当时的家具式音响全是木头，它被戏称为「白雪公主的棺材」。' },
+  { id: 't4', cat: 'appliance', zh: 'T4 袖珍收音机', en: 'Braun T4', y: 1959, by: ['rams'], maker: 'braun',
+    note: 'T3 的后续型号：一个圆形旋钮、一片圆孔网格。几十年后第一代 iPod 常被拿来和这个系列对比，相似之处一目了然。' },
+  { id: 'ts502', cat: 'appliance', zh: 'TS 502 收音机', en: 'Brionvega TS 502', y: 1964, by: ['zanuso', 'sapper'], maker: 'Brionvega',
+    note: '合起来是一个方块，打开后一半是喇叭、一半是旋钮和刻度盘，像一个会说话的盒子。' },
+  { id: 'valentine', cat: 'appliance', zh: 'Valentine 打字机', en: 'Olivetti Valentine', y: 1969, by: ['sottsass', { n: 'Perry King' }], maker: 'olivetti',
+    note: '在情人节发布的红色塑料打字机，带一个能提着走的外壳。索特萨斯想让打字机变成「反机器」的日常玩物。' },
+  { id: 'beogram4000', cat: 'appliance', zh: 'Beogram 4000 唱机', en: 'Bang & Olufsen Beogram 4000', y: 1972, by: ['jjensen'], maker: 'bo',
+    note: 'B&O 的切线循迹唱机，唱臂沿直线移动，与唱片纹路始终相切。一整块拉丝铝面板上只有几个按键。' },
+  { id: 'et66', cat: 'appliance', zh: 'ET66 计算器', en: 'Braun ET66', y: 1987, by: ['lubs', 'rams'], maker: 'braun',
+    note: '凸起的圆形按键、颜色区分功能。iPhone 早期自带的计算器 App 几乎就是照着它画的。' },
+  { id: 'dc01', cat: 'appliance', zh: 'DC01 吸尘器', en: 'Dyson DC01', y: 1993, by: ['dyson'], maker: 'Dyson',
+    note: '戴森做了 5127 个原型才搞定无尘袋的气旋分离。透明集尘桶让你看得见吸进去的灰。' },
+  { id: 'muji-cd', cat: 'appliance', zh: '壁挂式 CD 机', en: 'MUJI Wall Mounted CD Player', y: 1999, by: ['fukasawa'], maker: '无印良品',
+    note: '拉一下垂下的电源线就开始播放，样子像浴室的排气扇。深泽直人把它叫做「不用思考的设计」。' },
+
+  // ---------- 消费电子 ----------
+  { id: 'leica-m3', cat: 'tech', zh: 'Leica M3', en: 'Leica M3', y: 1954, by: [{ n: 'Leitz 工程团队' }], maker: 'Leitz',
+    note: '把测距、取景和视差校正合进一个明亮的取景窗，换镜头只要轻轻一扭。半个多世纪后，数码时代的 M 系列仍是它的样子。' },
+  { id: 'tr610', cat: 'tech', zh: 'TR-610 晶体管收音机', en: 'Sony TR-610', y: 1958, by: ['morita'], maker: 'sony',
+    note: '一手可握的口袋收音机，卖出 50 万台，让 Sony 这个名字走出日本。' },
+  { id: 'sx70', cat: 'tech', zh: 'SX-70 一次成像相机', en: 'Polaroid SX-70', y: 1972, by: ['land', 'dreyfuss'], maker: 'Polaroid',
+    note: '可以折叠成扁盒子的单反，拍完照片自己从机器里吐出来，在手里慢慢显影。' },
+  { id: 'apple2', cat: 'tech', zh: 'Apple II', en: 'Apple II', y: 1977, by: ['manock', { n: '史蒂夫·沃兹尼亚克' }, 'jobs'], maker: 'apple',
+    note: '最早一批装在塑料外壳里、拿出来就能用的个人电脑。乔布斯坚持要像厨房电器一样的米色外壳，不要金属机箱，也不要风扇。' },
+  { id: 'walkman', cat: 'tech', zh: 'Walkman TPS-L2', en: 'Sony Walkman TPS-L2', y: 1979, by: ['morita', { n: '大曾根幸三' }], maker: 'sony',
+    note: '去掉录音功能、加上轻量耳机，让音乐第一次可以随身听。机身上有两个耳机孔和一个「热线」通话按钮。' },
+  { id: 'famicom', cat: 'tech', zh: '红白机', en: 'Nintendo Family Computer', y: 1983, by: [{ n: '上村雅之' }], maker: 'Nintendo',
+    note: '红白配色，两只手柄挂在机身两侧的槽里。它让游戏机走进了日本的客厅，也让美国一度崩盘的游戏业重新站了起来。' },
+  { id: 'mac128k', cat: 'tech', zh: 'Macintosh 128K', en: 'Macintosh 128K', y: 1984, by: ['manock', { n: 'Terry Oyama' }, 'jobs'], maker: 'apple',
+    note: '一体机身、竖向布局、正面像一张脸。机壳内侧刻着整个 Mac 团队的签名。' },
+  { id: 'discman', cat: 'tech', zh: 'Discman D-50', en: 'Sony Discman D-50', y: 1984, by: [{ n: 'Sony 设计中心' }], maker: 'sony',
+    note: '大约只有四个 CD 盒摞起来那么大，比当时的台式 CD 机小了一大圈，价格也低了很多。随身 CD 从这一台开始。' },
+  { id: 'gameboy', cat: 'tech', zh: 'Game Boy', en: 'Nintendo Game Boy', y: 1989, by: ['yokoi'], maker: 'Nintendo',
+    note: '横井军平的「用枯萎的技术做水平思考」：黑白屏、低功耗、四节五号电池能玩三十小时，卖出一亿多台。' },
+  { id: 'playstation', cat: 'tech', zh: 'PlayStation', en: 'Sony PlayStation', y: 1994, by: [{ n: '后藤祯祐' }], maker: 'sony',
+    note: '浅灰色机身配圆形光盘盖。手柄上的 ○ × △ □ 四个符号也出自后藤祯祐之手，三十年后的手柄上还是它们。' },
+  { id: 'thinkpad701c', cat: 'tech', zh: 'ThinkPad 701C', en: 'IBM ThinkPad 701C', y: 1995, by: ['sapper', { n: 'John Karidis' }], maker: 'IBM',
+    note: '「蝴蝶」键盘：合盖时键盘分成两半收进小小的机身，开盖时自动向两侧滑开，拼成一副全尺寸键盘。萨帕定下的黑盒子加小红点，三十年来几乎没变。' },
+  { id: 'palmpilot', cat: 'tech', zh: 'PalmPilot', en: 'PalmPilot', y: 1996, by: [{ n: '杰夫·霍金斯' }], maker: 'Palm',
+    note: '霍金斯先在衬衫口袋里揣了一块木头模型，假装用了几个月，确定尺寸刚好才开始做。Graffiti 手写法让掌上电脑第一次真正好用。' },
+  { id: 'imac-g3', cat: 'tech', zh: 'iMac G3', en: 'iMac G3', y: 1998, by: ['ive', 'jobs'], maker: 'apple',
+    note: '半透明的邦迪蓝外壳和顶部的提手，让电脑第一次像一件家居用品。它把 Apple 从破产边缘拉了回来。' },
+  { id: 'ipod', cat: 'tech', zh: 'iPod（第一代）', en: 'iPod', y: 2001, by: ['fadell', 'ive', 'jobs'], maker: 'apple',
+    note: '「把一千首歌装进口袋」。机械转盘加白色耳机，白色从此成了 Apple 的颜色。' },
+  { id: 'imac-g4', cat: 'tech', zh: 'iMac G4', en: 'iMac G4', y: 2002, by: ['ive', 'jobs'], maker: 'apple',
+    note: '半球形底座加一根不锈钢悬臂，一根手指就能把屏幕推到任何角度，像飘在空中。乔布斯说它的灵感来自院子里的向日葵。' },
+  { id: 'iphone', cat: 'tech', zh: 'iPhone（第一代）', en: 'iPhone', y: 2007, by: ['ive', 'jobs'], maker: 'apple',
+    note: '去掉键盘，整面玻璃就是界面。它重新定义了此后所有的手机。' },
+  { id: 'op1', cat: 'tech', zh: 'OP-1 合成器', en: 'Teenage Engineering OP-1', y: 2011, by: [{ n: 'Jesper Kouthoofd' }], maker: 'Teenage Engineering',
+    note: '一块铝板大小的便携合成器，四个彩色旋钮对应屏幕上四种颜色的参数，像一件玩具也像一件乐器。' },
+  { id: 'nest', cat: 'tech', zh: 'Nest 恒温器', en: 'Nest Learning Thermostat', y: 2011, by: ['fadell', { n: 'Fred Bould' }], maker: 'Nest',
+    note: '把墙上最不起眼的那个盒子做成一个可以转动的不锈钢圆环。它会记住家里人的作息，自己调温度。' },
+  { id: 'applewatch', cat: 'tech', zh: 'Apple Watch（第一代）', en: 'Apple Watch', y: 2015, by: ['ive', { n: 'Marc Newson' }], maker: 'apple',
+    note: '圆角矩形的表身、可以转动的数码表冠、一按就换的表带。它让手表重新变成一块戴在手腕上的屏幕。发布十年后，它已是世界上卖得最多的手表。' },
+  { id: 'airpods', cat: 'tech', zh: 'AirPods', en: 'Apple AirPods', y: 2016, by: ['ive'], maker: 'apple',
+    note: '去掉耳机线，打开盒盖就自动连上。刚发布时被嘲笑像电动牙刷头，几年后成了全世界卖得最多的耳机。' },
+  { id: 'modelt', cat: 'mobility', zh: '福特 T 型车', en: 'Ford Model T', y: 1908, by: ['hford', { n: 'Childe Harold Wills' }], maker: 'Ford',
+    note: '第一辆为流水线而生的汽车。十九年生产了一千五百万辆，价格从 850 美元一路降到 260 美元。它的设计目标只有一个：便宜、结实、谁都能修。' },
+  { id: 'beetle', cat: 'mobility', zh: '大众甲壳虫', en: 'Volkswagen Beetle', y: 1938, by: ['fporsche'], maker: 'Volkswagen',
+    note: '风冷后置发动机、圆滚滚的车身，六十五年只改细节不改样子，卖出两千一百万辆，是单一车型卖得最多的汽车。' },
+  { id: 'vespa', cat: 'mobility', zh: 'Vespa 踏板车', en: 'Vespa', y: 1946, by: ['dascanio'], maker: 'Piaggio',
+    note: '战后的比亚乔不能再造飞机，就造了这辆踏板车。钢制车身把发动机包起来，裤脚不沾油，意大利人从此骑着它上街。' },
+  { id: 'ds', cat: 'mobility', zh: '雪铁龙 DS', en: 'Citroën DS', y: 1955, by: ['bertoni', { n: 'André Lefèbvre' }], maker: 'Citroën',
+    note: '巴黎车展首日订单一万两千辆。液压悬挂让车身随路面起伏，收窄的车尾二十年后看仍然像未来。罗兰·巴特说它像是从天上掉下来的。' },
+  { id: 'fiat500', cat: 'mobility', zh: '菲亚特 500', en: 'Fiat Nuova 500', y: 1957, by: ['giacosa'], maker: 'Fiat',
+    note: '不到三米长、两缸风冷发动机、布篷顶，却能坐下一家四口。战后的意大利靠它开上了车，五十年后的新 500 还是这个样子。' },
+  { id: 'mini', cat: 'mobility', zh: 'Mini', en: 'Morris Mini-Minor', y: 1959, by: ['issigonis'], maker: 'BMC',
+    note: '发动机横置、前轮驱动、车轮推到四角，80% 的车长留给乘客。这个布局后来成了几乎所有小型车的标准。' },
+  { id: 'etype', cat: 'mobility', zh: '捷豹 E-Type', en: 'Jaguar E-Type', y: 1961, by: ['sayer', { n: 'William Lyons' }], maker: 'Jaguar',
+    note: '日内瓦车展上一夜成名。长长的车头是空气动力学算出来的，极速 240 公里，价格只有法拉利的一半。恩佐·法拉利说它是「世界上最美的车」。' },
+  { id: 'p911', cat: 'mobility', zh: '保时捷 911', en: 'Porsche 911', y: 1964, by: ['fabporsche'], maker: 'Porsche',
+    note: '风冷水平对置六缸后置，溜背的车顶线一笔画到车尾。六十年八代，车灯和轮廓几乎没动过，是汽车史上延续最久的造型。' },
+  { id: 'shinkansen', cat: 'mobility', zh: '0 系新干线', en: 'Shinkansen 0 Series', y: 1964, by: ['miki'], maker: '日本国有铁道',
+    note: '东京奥运开幕前九天通车，时速 210 公里，世界上第一条高速铁路。圆鼻子的车头像飞机，也像一颗子弹，「子弹头列车」的名字由此而来。' },
+  { id: 'concorde', cat: 'mobility', zh: '协和式飞机', en: 'Concorde', y: 1969, by: [{ n: '英法联合设计团队' }], maker: 'Aérospatiale / BAC',
+    note: '两倍音速，伦敦到纽约三个半小时。三角翼和起降时下垂的机鼻让它停在地面上也像在飞。2003 年退役后，民航从此没有超音速。' },
+  { id: 'countach', cat: 'mobility', zh: '兰博基尼 Countach', en: 'Lamborghini Countach', y: 1974, by: ['gandini'], maker: 'Lamborghini',
+    note: '楔形车身、剪刀门、几乎平躺的挡风玻璃。它定义了此后半个世纪「超级跑车」这个词的样子，贴在无数少年的卧室墙上。' },
+  { id: 'roadster', cat: 'mobility', zh: '特斯拉 Roadster', en: 'Tesla Roadster', y: 2008, by: [{ n: 'Lotus 团队' }, 'musk'], maker: 'tesla',
+    note: '基于莲花 Elise 底盘改造，用六千多节笔记本电池做电池组，一次充电跑 390 公里。它证明电动车可以是一辆让人想要的跑车，而不是一种妥协。' },
+  { id: 'falcon9', cat: 'mobility', zh: '猎鹰 9 号', en: 'Falcon 9', y: 2015, by: ['musk', { n: 'SpaceX 团队' }], maker: 'spacex', fit: 'cover',
+    note: '2015 年 12 月，第一级火箭在发射后竖着落回地面。此前所有火箭都是一次性的。可回收把发射成本降到原来的几分之一，改变了整个航天业的算法。' },
+  { id: 'model3', cat: 'mobility', zh: '特斯拉 Model 3', en: 'Tesla Model 3', y: 2017, by: ['holzhausen', 'musk'], maker: 'tesla',
+    note: '没有仪表盘，没有多余按钮，一块横屏就是全部界面。它是第一辆卖到百万辆级别的电动车，也让极简内饰成了整个行业的新方向。' },
+  { id: 'cybertruck', cat: 'mobility', zh: '特斯拉 Cybertruck', en: 'Tesla Cybertruck', y: 2019, by: ['holzhausen', 'musk'], maker: 'tesla',
+    note: '不锈钢外板不能冲压成曲面，所以整辆车只有直线和折面，像一张折出来的纸。喜欢的人说它是一百年来最大胆的量产车，讨厌的人说它根本不该上路。' },
+  { id: 'cybercab', cat: 'mobility', zh: '特斯拉 Cybercab', en: 'Tesla Cybercab', y: 2024, by: ['holzhausen', 'musk'], maker: 'tesla',
+    note: '两座，蝴蝶门，没有方向盘，也没有踏板。它从一开始就不为驾驶员设计，车厢像一间小客厅，车身像一枚被磨圆的 Cybertruck。' },
+];
+
+// 设计师介绍卡
+const PEOPLE = {
+  paxton: { zh: '约瑟夫·帕克斯顿', en: 'Joseph Paxton', life: '1803–1865', from: '英国', role: '园艺师、建筑师',
+    bio: '原本是园艺师，为公爵的庄园建造巨型温室，从睡莲叶脉得到结构灵感。水晶宫让他从园丁变成维多利亚时代的建筑英雄。' },
+  eiffel: { zh: '古斯塔夫·埃菲尔', en: 'Gustave Eiffel', life: '1832–1923', from: '法国', role: '结构工程师',
+    bio: '以铁结构桥梁闻名，还设计了自由女神像的内部钢架。铁塔的方案最初由他公司的工程师提出，他买下专利并主导建成。' },
+  rietveld: { zh: '赫里特·里特费尔德', en: 'Gerrit Rietveld', life: '1888–1964', from: '荷兰', role: '家具设计师、建筑师',
+    bio: '木匠出身，风格派运动的核心成员。他把蒙德里安的平面构成变成了可以坐、可以住的三维物体。' },
+  gropius: { zh: '瓦尔特·格罗皮乌斯', en: 'Walter Gropius', life: '1883–1969', from: '德国 → 美国', role: '建筑师、教育家',
+    bio: '1919 年创办包豪斯，主张艺术与手工艺、工业结合。后来执教哈佛，把现代主义带到美国。' },
+  mies: { zh: '密斯·凡·德·罗', en: 'Ludwig Mies van der Rohe', life: '1886–1969', from: '德国 → 美国', role: '建筑师',
+    bio: '包豪斯最后一任校长，二战前移居芝加哥。钢、玻璃和精确的比例是他的全部语言。', quote: 'Less is more.（少就是多）' },
+  corbusier: { zh: '勒·柯布西耶', en: 'Le Corbusier', life: '1887–1965', from: '瑞士 → 法国', role: '建筑师、城市规划师',
+    bio: '现代建筑最有影响力的人物，提出「新建筑五点」和模度（Modulor）比例系统。从萨伏伊别墅的白色盒子到朗香教堂的雕塑形体，几乎每个阶段都在改写建筑。',
+    quote: '住宅是居住的机器。' },
+  wright: { zh: '弗兰克·劳埃德·赖特', en: 'Frank Lloyd Wright', life: '1867–1959', from: '美国', role: '建筑师',
+    bio: '提出「有机建筑」，主张建筑应与场地和自然融为一体。职业生涯长达七十年，设计了一千多件作品。' },
+  aalto: { zh: '阿尔瓦·阿尔托', en: 'Alvar Aalto', life: '1898–1976', from: '芬兰', role: '建筑师、设计师',
+    bio: '把现代主义的理性和北欧的木材、自然光结合，被称为「人情化的现代主义」。和妻子 Aino 一起创办了家具品牌 Artek。' },
+  pjohnson: { zh: '菲利普·约翰逊', en: 'Philip Johnson', life: '1906–2005', from: '美国', role: '建筑师、策展人',
+    bio: '1932 年在纽约现代艺术博物馆策划「国际风格」展，把欧洲现代主义介绍给美国。1979 年获得第一届普利兹克奖，后期转向后现代主义。' },
+  kahn: { zh: '路易斯·康', en: 'Louis Kahn', life: '1901–1974', from: '美国', role: '建筑师',
+    bio: '大器晚成，五十多岁才迎来代表作。他追问「砖想成为什么」，用混凝土、砖和光营造出近乎神圣的空间。' },
+  utzon: { zh: '约恩·伍重', en: 'Jørn Utzon', life: '1918–2008', from: '丹麦', role: '建筑师',
+    bio: '38 岁凭一套草图赢得悉尼歌剧院竞赛，却因预算和政治纠纷中途离开。2003 年获普利兹克奖。' },
+  piano: { zh: '伦佐·皮亚诺', en: 'Renzo Piano', life: '1937–', from: '意大利', role: '建筑师',
+    bio: '和罗杰斯合作蓬皮杜中心时才三十多岁。此后以轻盈、精密的构造见长，1998 年获普利兹克奖。' },
+  rogers: { zh: '理查德·罗杰斯', en: 'Richard Rogers', life: '1933–2021', from: '英国', role: '建筑师',
+    bio: '高技派代表人物，代表作还有伦敦劳埃德大厦和千禧穹顶。2007 年获普利兹克奖。' },
+  ando: { zh: '安藤忠雄', en: 'Tadao Ando', life: '1941–', from: '日本', role: '建筑师',
+    bio: '职业拳击手出身，没有受过正规建筑教育，靠自学和旅行成为建筑师。清水混凝土和光是他的签名，1995 年获普利兹克奖。' },
+  pei: { zh: '贝聿铭', en: 'I. M. Pei', life: '1917–2019', from: '中国 → 美国', role: '建筑师',
+    bio: '生于广州，在哈佛师从格罗皮乌斯。代表作包括卢浮宫金字塔、香港中银大厦和苏州博物馆，1983 年获普利兹克奖。' },
+  gehry: { zh: '弗兰克·盖里', en: 'Frank Gehry', life: '1929–2025', from: '加拿大 → 美国', role: '建筑师',
+    bio: '从改造自家住宅开始，用铁丝网和波纹板挑战建筑的规矩。他是最早用航空软件设计复杂曲面建筑的建筑师之一，1989 年获普利兹克奖，2025 年在洛杉矶家中去世。' },
+  foster: { zh: '诺曼·福斯特', en: 'Norman Foster', life: '1935–', from: '英国', role: '建筑师',
+    bio: '高技派的另一位代表，作品包括香港汇丰总行、北京首都机场 T3 和伦敦「小黄瓜」。1999 年获普利兹克奖。' },
+  thonet: { zh: '米夏埃尔·托内特', en: 'Michael Thonet', life: '1796–1871', from: '德国 → 奥地利', role: '家具制造商',
+    bio: '发明了大规模蒸汽弯木工艺，在维也纳创办 Gebrüder Thonet，是工业化量产家具的先驱。' },
+  breuer: { zh: '马塞尔·布劳耶', en: 'Marcel Breuer', life: '1902–1981', from: '匈牙利 → 美国', role: '家具设计师、建筑师',
+    bio: '包豪斯的学生，后来执掌学校家具工坊。移居美国后转向建筑，设计了纽约惠特尼美术馆旧馆。' },
+  perriand: { zh: '夏洛特·贝里安', en: 'Charlotte Perriand', life: '1903–1999', from: '法国', role: '家具设计师、建筑师',
+    bio: '24 岁加入柯布西耶事务所，主导了一系列钢管家具。1940 年代在日本工作，把东方手工艺融入现代设计。' },
+  carwardine: { zh: '乔治·卡沃丁', en: 'George Carwardine', life: '1887–1947', from: '英国', role: '汽车工程师',
+    bio: '专门研究汽车悬挂弹簧，用同样的原理设计出能自由定位的台灯，把专利授权给 Herbert Terry & Sons 生产。' },
+  henningsen: { zh: '保罗·汉宁森', en: 'Poul Henningsen', life: '1894–1967', from: '丹麦', role: '设计师、作家',
+    bio: '一辈子都在研究如何让电灯的光不刺眼。他与 Louis Poulsen 的合作从 1920 年代延续至今。' },
+  wegner: { zh: '汉斯·瓦格纳', en: 'Hans Wegner', life: '1914–2007', from: '丹麦', role: '家具设计师',
+    bio: '木匠出身，一生设计了五百多把椅子，被称为「椅子大师」。1960 年肯尼迪和尼克松电视辩论时坐的就是他设计的 The Chair。' },
+  noguchi: { zh: '野口勇', en: 'Isamu Noguchi', life: '1904–1988', from: '美国 / 日本', role: '雕塑家、设计师',
+    bio: '日裔美籍雕塑家，作品横跨雕塑、庭园、舞台和家具。Akari 系列他做了三十多年。' },
+  yanagi: { zh: '柳宗理', en: 'Sori Yanagi', life: '1915–2011', from: '日本', role: '工业设计师',
+    bio: '民艺运动创始人柳宗悦之子，曾在日本协助贝里安工作。他的不锈钢厨具、餐具至今是日本家庭的常用品。' },
+  eames: { zh: '查尔斯与蕾·伊姆斯', en: 'Charles & Ray Eames', life: '1907–1978 / 1912–1988', from: '美国', role: '设计师夫妇',
+    bio: '从胶合板夹板、玻璃钢椅到短片《十的力量》，伊姆斯夫妇几乎重新定义了战后美国人的家。', quote: '细节不是细节，细节成就设计。' },
+  saarinen: { zh: '埃罗·沙里宁', en: 'Eero Saarinen', life: '1910–1961', from: '芬兰 → 美国', role: '建筑师、设计师',
+    bio: '芬兰建筑师 Eliel Saarinen 之子。建筑代表作有圣路易斯拱门和纽约肯尼迪机场 TWA 航站楼，51 岁早逝。' },
+  jacobsen: { zh: '阿尔内·雅各布森', en: 'Arne Jacobsen', life: '1902–1971', from: '丹麦', role: '建筑师、设计师',
+    bio: '主张「全面设计」，从建筑到灯具、餐具、门把手都亲手设计。蚂蚁椅、7 号椅、蛋椅、天鹅椅都是他的作品。' },
+  ekuan: { zh: '荣久庵宪司', en: 'Kenji Ekuan', life: '1929–2015', from: '日本', role: '工业设计师',
+    bio: 'GK 设计集团创始人，作品从酱油瓶、摩托车到新干线列车。他的设计观念深受佛教影响。' },
+  castiglioni: { zh: '阿切勒·卡斯蒂格利奥尼', en: 'Achille Castiglioni', life: '1918–2002', from: '意大利', role: '设计师',
+    bio: '和兄弟 Pier Giacomo 合作了大量灯具与家具，擅长把现成物件转用到新的用途，例如拖拉机座椅做的凳子。' },
+  panton: { zh: '维纳尔·潘顿', en: 'Verner Panton', life: '1926–1998', from: '丹麦', role: '设计师',
+    bio: '曾在雅各布森事务所工作，后来用塑料、强烈的色彩和整片空间的装置挑战北欧设计的克制传统。' },
+  sapper: { zh: '理查德·萨帕', en: 'Richard Sapper', life: '1932–2015', from: '德国 → 意大利', role: '工业设计师',
+    bio: '在米兰工作了大半辈子，曾长期担任 IBM 的首席设计顾问，主导了 ThinkPad 的形象。' },
+  starck: { zh: '菲利普·斯塔克', en: 'Philippe Starck', life: '1949–', from: '法国', role: '设计师',
+    bio: '从牙刷、椅子到酒店和游艇都设计过，是 1990 年代最出名的「明星设计师」。' },
+  arens: { zh: '埃格蒙特·阿伦斯', en: 'Egmont Arens', life: '1889–1966', from: '美国', role: '工业设计师',
+    bio: '美国流线型设计时代的设计师，也是早期的消费心理研究者，提出过「消费工程」的说法。' },
+  nizzoli: { zh: '马尔切洛·尼佐利', en: 'Marcello Nizzoli', life: '1887–1969', from: '意大利', role: '工业设计师',
+    bio: '从海报设计转入工业设计，长期为 Olivetti 设计打字机和计算机，奠定了意大利工业设计的优雅风格。' },
+  rams: { zh: '迪特·拉姆斯', en: 'Dieter Rams', life: '1932–', from: '德国', role: '工业设计师',
+    bio: '1955 年加入 Braun，1961 年起任设计总监直到 1995 年。他提出的「好设计十原则」影响了包括 Apple 在内的几代设计师。',
+    quote: 'Weniger, aber besser.（更少，但更好）' },
+  gugelot: { zh: '汉斯·古格洛特', en: 'Hans Gugelot', life: '1920–1965', from: '荷兰 → 德国', role: '工业设计师',
+    bio: '乌尔姆设计学院的核心教师，和学生们一起为 Braun 建立了系统化、模块化的设计方法。' },
+  zanuso: { zh: '马可·扎努索', en: 'Marco Zanuso', life: '1916–2001', from: '意大利', role: '建筑师、设计师',
+    bio: '战后意大利设计的奠基人之一，和萨帕合作了一系列 Brionvega 电器，最早尝试用泡沫橡胶和新材料做家具。' },
+  sottsass: { zh: '埃托·索特萨斯', en: 'Ettore Sottsass', life: '1917–2007', from: '意大利', role: '设计师、建筑师',
+    bio: '长期为 Olivetti 设计打字机和计算机，1981 年创立孟菲斯设计小组，用鲜艳的色彩和反功能主义的造型冲击了整个设计界。' },
+  jjensen: { zh: '雅各布·延森', en: 'Jacob Jensen', life: '1926–2015', from: '丹麦', role: '工业设计师',
+    bio: '1964 年起为 Bang & Olufsen 担任首席设计师近三十年，奠定了 B&O 薄而精密的铝面板风格。' },
+  lubs: { zh: '迪特里希·卢布斯', en: 'Dietrich Lubs', life: '1938–', from: '德国', role: '工业设计师',
+    bio: '拉姆斯在 Braun 的长期搭档，主导了 Braun 的计算器和时钟系列。' },
+  dyson: { zh: '詹姆斯·戴森', en: 'James Dyson', life: '1947–', from: '英国', role: '发明家、企业家',
+    bio: '因为普通吸尘器的集尘袋越用越没吸力，花了五年做出无尘袋气旋吸尘器。之后把公司做成了覆盖电机、吹风机和电池的科技公司。' },
+  fukasawa: { zh: '深泽直人', en: 'Naoto Fukasawa', life: '1956–', from: '日本', role: '工业设计师',
+    bio: '提出「无意识设计」，从人们不经意的动作里找设计的答案。长期为无印良品工作，也是 ±0 品牌的创始人。' },
+  land: { zh: '埃德温·兰德', en: 'Edwin H. Land', life: '1909–1991', from: '美国', role: '发明家、企业家',
+    bio: '宝丽来创始人，发明了偏光片和一次成像。乔布斯视他为偶像，说他是「国宝」。' },
+  dreyfuss: { zh: '亨利·德雷夫斯', en: 'Henry Dreyfuss', life: '1904–1972', from: '美国', role: '工业设计师',
+    bio: '美国工业设计的奠基人之一，以人体工学研究著称。贝尔电话机、约翰迪尔拖拉机和宝丽来相机都出自他的事务所。' },
+  manock: { zh: '杰瑞·马诺克', en: 'Jerry Manock', life: '1944–', from: '美国', role: '工业设计师',
+    bio: 'Apple 早期的工业设计师，设计了 Apple II 和 Apple III 的外壳，并和 Terry Oyama 一起完成了第一台 Macintosh。' },
+  yokoi: { zh: '横井军平', en: 'Gunpei Yokoi', life: '1941–1997', from: '日本', role: '游戏设备设计师',
+    bio: '任天堂的传奇工程师，发明了 Game & Watch、十字键和 Game Boy。他的「枯萎技术的水平思考」主张用成熟便宜的技术做出新玩法。' },
+  ive: { zh: '乔纳森·艾维', en: 'Jony Ive', life: '1967–', from: '英国', role: '工业设计师',
+    bio: '1992 年加入 Apple，从 iMac 到 iPhone、Apple Watch 和 Apple Park 都由他主导设计。2019 年离开，创办 LoveFrom。' },
+  fadell: { zh: '托尼·法德尔', en: 'Tony Fadell', life: '1969–', from: '美国', role: '工程师、企业家',
+    bio: '带队做出 iPod，被称为「iPod 之父」。离开 Apple 后创办 Nest，2014 年以 32 亿美元卖给 Google。' },
+  jobs: { zh: '史蒂夫·乔布斯', en: 'Steve Jobs', life: '1955–2011', from: '美国', role: 'Apple 联合创始人',
+    bio: '不画图纸，却对每一件产品的设计拍板到细节。他把 Braun、Sony 和包豪斯的设计观带进了个人电脑行业。' },
+  morita: { zh: '盛田昭夫', en: 'Akio Morita', life: '1921–1999', from: '日本', role: 'Sony 联合创始人',
+    bio: '和井深大一起创办 Sony，亲自推动了口袋收音机和 Walkman 的诞生，把「Made in Japan」从廉价的代名词变成品质的标志。' },
+  hford: { zh: '亨利·福特', en: 'Henry Ford', life: '1863–1947', from: '美国', role: '企业家、工程师',
+    bio: '1908 年推出 T 型车，1913 年引入移动装配线，把一辆车的装配时间从十二小时压到九十多分钟，让汽车从奢侈品变成普通人买得起的东西。', quote: 'Any customer can have a car painted any colour that he wants so long as it is black.（顾客可以要任何颜色，只要它是黑色）' },
+  fporsche: { zh: '费迪南德·保时捷', en: 'Ferdinand Porsche', life: '1875–1951', from: '奥地利 → 德国', role: '汽车工程师',
+    bio: '1931 年成立自己的设计事务所，受命为德国设计一辆「国民汽车」，就是后来的甲壳虫。儿子费利创立了保时捷品牌，孙子设计了 911。' },
+  dascanio: { zh: '科拉迪诺·达斯卡尼奥', en: 'Corradino D\'Ascanio', life: '1891–1981', from: '意大利', role: '航空工程师',
+    bio: '直升机先驱，据说并不喜欢摩托车。他用飞机的思路设计 Vespa：单臂悬挂方便换轮胎，钢制车身和踏板让人穿裙子也能骑。' },
+  bertoni: { zh: '弗拉米尼奥·贝尔托尼', en: 'Flaminio Bertoni', life: '1903–1964', from: '意大利 → 法国', role: '雕塑家、汽车设计师',
+    bio: '以雕塑家的身份进入雪铁龙，Traction Avant、2CV 和 DS 都出自他手。DS 的车身是他用黏土一点点塑出来的，不是画出来的。' },
+  giacosa: { zh: '但丁·贾科萨', en: 'Dante Giacosa', life: '1905–1996', from: '意大利', role: '汽车工程师',
+    bio: '主持菲亚特设计近四十年，Topolino、500、600、128 都是他的作品。他相信小车要先把空间和成本算清楚，再谈造型。' },
+  issigonis: { zh: '亚历克·伊西戈尼斯', en: 'Alec Issigonis', life: '1906–1988', from: '希腊 → 英国', role: '汽车工程师',
+    bio: '苏伊士危机后的油荒里受命设计一辆省油的小车。他把发动机横过来、把变速箱塞进油底壳、把车轮推到四角，让一辆三米长的车坐下四个大人。', quote: 'A camel is a horse designed by committee.（骆驼就是委员会设计出来的马）' },
+  sayer: { zh: '马尔科姆·塞耶', en: 'Malcolm Sayer', life: '1916–1970', from: '英国', role: '空气动力学家',
+    bio: '二战时在布里斯托飞机公司做飞机，战后进入捷豹，用数学和风洞而不是草图来画车身。D-Type、E-Type 和 XJ13 都是他算出来的曲线。' },
+  fabporsche: { zh: '费迪南德·亚历山大·保时捷', en: 'Ferdinand Alexander Porsche', life: '1935–2012', from: '德国', role: '工业设计师',
+    bio: '费迪南德·保时捷的孙子，人称 Butzi。1963 年设计了 911 的车身，1972 年离开公司创办 Porsche Design，做手表、眼镜和烟斗。' },
+  miki: { zh: '三木忠直', en: 'Tadanao Miki', life: '1909–2005', from: '日本', role: '航空工程师',
+    bio: '战时在海军设计轰炸机，战后转入铁道技术研究所。他把飞机的流线型和轻量化带进列车，0 系新干线的圆鼻子车头出自他手。' },
+  gandini: { zh: '马尔切洛·甘迪尼', en: 'Marcello Gandini', life: '1938–2024', from: '意大利', role: '汽车设计师',
+    bio: '在博通工作室十四年，Miura、Countach、Stratos 都是他的作品，Countach 的剪刀门也是他的发明。楔形车身从他开始成为超跑的标准语言。' },
+  musk: { zh: '埃隆·马斯克', en: 'Elon Musk', life: '1971–', from: '南非 → 美国', role: '企业家',
+    bio: '2002 年创办 SpaceX，2004 年投资特斯拉并出任董事长。两家公司都在做别人认为不可能的事：让电动车比燃油车更让人想要，让火箭像飞机一样重复使用。' },
+  holzhausen: { zh: '弗朗茨·冯·霍尔茨豪森', en: 'Franz von Holzhausen', life: '1968–', from: '美国', role: '汽车设计师',
+    bio: '经手过大众新甲壳虫和马自达的概念车，2008 年加入特斯拉任首席设计师。Model S、3、X、Y 和 Cybertruck 都出自他的团队。' },
+};
+
+// 制造商卡
+const MAKERS = {
+  braun: { zh: '博朗', en: 'Braun', from: '德国 · 1921', bio: '1950 年代在 Erwin Braun 兄弟主持下与乌尔姆设计学院合作，迪特·拉姆斯任设计总监的三十多年里，Braun 成了理性主义设计的代名词。' },
+  sony: { zh: '索尼', en: 'Sony', from: '日本 · 1946', bio: '井深大和盛田昭夫在战后东京一家百货公司里创办。从晶体管收音机、特丽珑电视到 Walkman，Sony 定义了「便携」与「小型化」。' },
+  apple: { zh: '苹果', en: 'Apple', from: '美国 · 1976', bio: '乔布斯曾说 Apple 要站在科技与人文的十字路口。从 Macintosh 到 iPhone，设计在这家公司里和工程同等重要。' },
+  olivetti: { zh: '奥利维蒂', en: 'Olivetti', from: '意大利 · 1908', bio: '在 Adriano Olivetti 的带领下，把设计、建筑和企业文化视为一体，请来尼佐利、索特萨斯等设计师，是 20 世纪最重视设计的企业之一。' },
+  bo: { zh: '铂傲', en: 'Bang & Olufsen', from: '丹麦 · 1925', bio: '以铝材、极简的面板和工程上的独特方案闻名，与 Jacob Jensen、David Lewis 等设计师长期合作。' },
+  tesla: { zh: '特斯拉', en: 'Tesla', from: '美国 · 2003', bio: '从一辆跑车开始，证明电动车可以比燃油车更好；再用 Model 3 把它做成普通人买得起的车。它的内饰、软件更新和直营店的做法，被整个汽车业跟着学。' },
+  spacex: { zh: 'SpaceX', en: 'SpaceX', from: '美国 · 2002', bio: '目标是降低航天的成本。猎鹰 9 号的第一级可以回收再飞，一枚助推器最多已经飞了二十多次，把每公斤入轨的价格压到了此前的几分之一。' },
+};
+
+const IMG = {"crystal-palace": {"src": "img/crystal-palace.b6f695b5.webp", "s": "img/s/crystal-palace.c9cc4271.webp", "w": 928, "cut": false, "artist": "Philip Henry Delamotte (1821–1889)", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Crystal_Palace_General_view_from_Water_Temple.jpg"}, "eiffel-tower": {"src": "img/eiffel-tower.90af22bb.webp", "s": "img/s/eiffel-tower.a1374dae.webp", "w": 841, "cut": false, "artist": "Benh LIEU SONG", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_Wikimedia_Commons_(cropped).jpg"}, "schroder-house": {"src": "img/schroder-house.04941813.webp", "s": "img/s/schroder-house.6e54ef78.webp", "w": 1280, "cut": false, "artist": "User:Husky", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Rietveld_Schr%C3%B6derhuis_HayKranen-20.JPG"}, "bauhaus-dessau": {"src": "img/bauhaus-dessau.0bd94a25.webp", "s": "img/s/bauhaus-dessau.72f1b241.webp", "w": 1280, "cut": false, "artist": "A.Savin", "license": "FAL", "page": "https://commons.wikimedia.org/wiki/File:Dessau_Bauhaus-Geb%C3%A4ude_asv2024-06_img1.jpg"}, "barcelona-pavilion": {"src": "img/barcelona-pavilion.00fa7dc1.webp", "s": "img/s/barcelona-pavilion.918c3fc9.webp", "w": 1280, "cut": false, "artist": "Ashley Pomeroy at English Wikipedia", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:The_Barcelona_Pavilion,_Barcelona,_2010.jpg"}, "weissenhof": {"src": "img/weissenhof.568b0244.webp", "s": "img/s/weissenhof.b4cd9392.webp", "w": 1280, "cut": false, "artist": "Photo: Andreas Praefcke", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Weissenhof_Corbusier_03.jpg"}, "fallingwater": {"src": "img/fallingwater.b7a080ff.webp", "s": "img/s/fallingwater.2ca9f85d.webp", "w": 1280, "cut": false, "artist": "lachrimae72", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Fallingwater3.jpg"}, "villa-mairea": {"src": "img/villa-mairea.b42e20b9.webp", "s": "img/s/villa-mairea.04bf7f3e.webp", "w": 1280, "cut": false, "artist": "Ninara from Helsinki, Finland", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:4Y1A7841_Alvar_Aalto,_Finland_(26710745140).jpg"}, "glass-house": {"src": "img/glass-house.274eec61.webp", "s": "img/s/glass-house.28dc1634.webp", "w": 1280, "cut": false, "artist": "Carol M. Highsmith", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Glass_House_2006.jpg"}, "farnsworth": {"src": "img/farnsworth.29b5cc30.webp", "s": "img/s/farnsworth.5609ff3d.webp", "w": 1280, "cut": false, "artist": "Victor Grigas", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Farnsworth_House_by_Mies_Van_Der_Rohe_-_exterior-8.jpg"}, "unite": {"src": "img/unite.f960a19a.webp", "s": "img/s/unite.5ce5c055.webp", "w": 1280, "cut": false, "artist": "A.Savin", "license": "FAL", "page": "https://commons.wikimedia.org/wiki/File:Corbusierhaus_B-Westend_06-2017.jpg"}, "chandigarh": {"src": "img/chandigarh.4d479670.webp", "s": "img/s/chandigarh.c796e164.webp", "w": 1280, "cut": false, "artist": "UnpetitproleX", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Palace_of_Assembly_Chandigarh.jpg"}, "seagram": {"src": "img/seagram.b4de0fe4.webp", "s": "img/s/seagram.fae47b1a.webp", "w": 1280, "cut": false, "artist": "Ken OHYAMA from FUNABASHI, Japan", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Seagram_Building_(35098307116).jpg"}, "guggenheim-ny": {"src": "img/guggenheim-ny.5922cb1c.webp", "s": "img/s/guggenheim-ny.3583a2cb.webp", "w": 1280, "cut": false, "artist": "Ajay Suresh from New York, NY, USA", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Solomon_R._Guggenheim_Museum_(48059131351).jpg"}, "salk": {"src": "img/salk.e00eda52.webp", "s": "img/s/salk.cb600875.webp", "w": 1280, "cut": false, "artist": "Codera23", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Salk_Institute_2.jpg"}, "sydney-opera": {"src": "img/sydney-opera.da6e4c30.webp", "s": "img/s/sydney-opera.d742365c.webp", "w": 1280, "cut": false, "artist": "BAVhah", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Sydney_Opera_House_2026.jpg"}, "pompidou": {"src": "img/pompidou.aa14a264.webp", "s": "img/s/pompidou.352f1418.webp", "w": 1280, "cut": false, "artist": "JeremyJeanguenin", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Le_Centre_Georges-Pompidou_en_travaux_(2026).jpg"}, "church-light": {"src": "img/church-light.e44cf2fa.webp", "s": "img/s/church-light.0d6f9cb8.webp", "w": 1070, "cut": false, "artist": "taken by Bergmann", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Ibaraki_Kasugaoka_Church_light_cross.jpg"}, "louvre-pyramid": {"src": "img/louvre-pyramid.d41b1c71.webp", "s": "img/s/louvre-pyramid.37078743.webp", "w": 1280, "cut": false, "artist": "Benh LIEU SONG (Flickr)", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Louvre_Museum_Wikimedia_Commons.jpg"}, "bilbao": {"src": "img/bilbao.27112693.webp", "s": "img/s/bilbao.fe950244.webp", "w": 1280, "cut": false, "artist": "Naotake Murayama", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Museo_Guggenheim,_Bilbao_(31273245344).jpg"}, "apple-park": {"src": "img/apple-park.2d708bb5.webp", "s": "img/s/apple-park.33e5097a.webp", "w": 1280, "cut": false, "artist": "Daniel L. Lu (user:dllu)", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Apple_Park_dllu.jpg"}, "thonet-14": {"src": "img/thonet-14.9ee2d106.webp", "s": "img/s/thonet-14.24d5895a.webp", "w": 575, "cut": true, "bg": "#e6dbd3", "bgd": "#332a24", "artist": "Henry Townsend", "license": "FAL", "page": "https://commons.wikimedia.org/wiki/File:Thonet_Chair_No._14.JPG"}, "red-blue": {"src": "img/red-blue.cc71f5fa.webp", "s": "img/s/red-blue.71eefe18.webp", "w": 925, "cut": true, "bg": "#ebcfce", "bgd": "#372120", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Gerrit_thomas_rietveld,_red-blue_chair,_1946-56_ca.jpg"}, "wassily": {"src": "img/wassily.c9512f59.webp", "s": "img/s/wassily.8a1b072b.webp", "w": 819, "cut": true, "bg": "#ebdace", "bgd": "#362a21", "artist": "Tim Evanson from Cleveland Heights, Ohio, USA", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:B3_chair_-_Marcel_Breuer_(27986822589).jpg"}, "lc4": {"src": "img/lc4.fbd1ab5b.webp", "s": "img/s/lc4.b88f737d.webp", "w": 1168, "cut": true, "bg": "#eae0cf", "bgd": "#362e21", "artist": "Tim Evanson from Cleveland Heights, Ohio, USA", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:LC4_lounge_-_Le_Corbusier_Charlotte_Perriand_(27986818339).jpg"}, "barcelona-chair": {"src": "img/barcelona-chair.9937f927.webp", "s": "img/s/barcelona-chair.2486b262.webp", "w": 1110, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "sailko", "license": "CC BY 2.5", "page": "https://commons.wikimedia.org/wiki/File:Ngv_design,_ludwig_mies_van_der_rohe_%26_co,_barcelona_chair.JPG"}, "anglepoise": {"src": "img/anglepoise.34006c6b.webp", "s": "img/s/anglepoise.707dbb0e.webp", "w": 606, "cut": true, "bg": "#e3dcd6", "bgd": "#302b26", "artist": "Upphovsperson okänd", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Anglepoise_lamp,_model_1208.jpg"}, "stool-60": {"src": "img/stool-60.77913996.webp", "s": "img/s/stool-60.9dff1ce2.webp", "w": 532, "cut": true, "bg": "#e6ddd3", "bgd": "#322c24", "artist": "Gershowitz", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Aalto_Model_60.png"}, "ph5": {"src": "img/ph5.bd1bed6f.webp", "s": "img/s/ph5.dcb800f5.webp", "w": 1076, "cut": true, "bg": "#e7dbd2", "bgd": "#332a24", "artist": "Holger Ellgaard", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:PH-Lampan_1.jpg"}, "wishbone": {"src": "img/wishbone.f7c3d368.webp", "s": "img/s/wishbone.b04f933f.webp", "w": 659, "cut": true, "bg": "#e9dcd0", "bgd": "#352b22", "artist": "Ew3234", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Leather_Wishbone_Chair.jpg"}, "akari": {"src": "img/akari.6ae3fe7e.webp", "s": "img/s/akari.f7758c4b.webp", "w": 761, "cut": true, "bg": "#e7e0d2", "bgd": "#342e23", "artist": "THOR", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Isamu_Noguchi_Luminaire_Lanterne_Akari_10_A_Mus%C3%A9e_des_Arts_D%C3%A9coratifs_Paris.jpg"}, "butterfly-stool": {"src": "img/butterfly-stool.8cb31faf.webp", "s": "img/s/butterfly-stool.938d2fb1.webp", "w": 882, "cut": true, "bg": "#ebdbce", "bgd": "#362a21", "artist": "tomislav medak", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Tabouret_Butterfly_(4958243953).jpg"}, "eames-lounge": {"src": "img/eames-lounge.93b49f1b.webp", "s": "img/s/eames-lounge.9549e02a.webp", "w": 1200, "cut": true, "bg": "#e4ded6", "bgd": "#312d26", "artist": "sailko", "license": "CC BY 2.5", "page": "https://commons.wikimedia.org/wiki/File:Ngv_design,_charles_eames_and_herman_miller,_lounge_chair_670,_1956.JPG"}, "tulip": {"src": "img/tulip.4d2fb9a1.webp", "s": "img/s/tulip.11007045.webp", "w": 818, "cut": true, "bg": "#e4d9d5", "bgd": "#312925", "artist": "Eero Saarinen", "license": "No restrictions", "page": "https://commons.wikimedia.org/wiki/File:Eero_Saarinen,_%22Pedestal%22_Armchair_and_Seat_Cushion,_Designed_1956.jpg"}, "egg": {"src": "img/egg.c510d662.webp", "s": "img/s/egg.3f5d51c1.webp", "w": 861, "cut": true, "bg": "#e2ded7", "bgd": "#302d27", "artist": "Nasjonalmuseet", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Egg_chair_-_Arne_Jacobsen_(1958)_2.jpg"}, "kikkoman": {"src": "img/kikkoman.c28f025e.webp", "s": "img/s/kikkoman.e2afe003.webp", "w": 327, "cut": true, "bg": "#e4dad5", "bgd": "#312925", "artist": "Creative Tools", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Kikkoman_soysauce.jpg"}, "arco": {"src": "img/arco.0bcce993.webp", "s": "img/s/arco.13594e13.webp", "w": 1280, "cut": false, "artist": "Andrea Pavanello", "license": "CC BY-SA 3.0 it", "page": "https://commons.wikimedia.org/wiki/File:-_ITALY_-_Lampada_Arco_di_Achille_Castiglioni_per_Flos_(_1962_).svg"}, "panton": {"src": "img/panton.bbb9a1ff.webp", "s": "img/s/panton.6a383509.webp", "w": 817, "cut": true, "bg": "#eccfcd", "bgd": "#372120", "artist": "sailko", "license": "CC BY 2.5", "page": "https://commons.wikimedia.org/wiki/File:Ngv_design,_verner_panton,_panton_chair,_1960_02.JPG"}, "tizio": {"src": "img/tizio.973c6f3b.webp", "s": "img/s/tizio.5005a1b0.webp", "w": 1169, "cut": true, "bg": "#e3dbd6", "bgd": "#302a26", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Richard_sapper_per_artemide_spa.,_lampada_da_tavolo_tizio,_1971-72.jpg"}, "juicy-salif": {"src": "img/juicy-salif.661d8fee.webp", "s": "img/s/juicy-salif.3cebcb6a.webp", "w": 507, "cut": true, "bg": "#e4ddd5", "bgd": "#312c26", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Philippe_starck_per_alessi_spa.,_spremiagrumi_juicy_salif,_1990.jpg"}, "kitchenaid": {"src": "img/kitchenaid.05a238b8.webp", "s": "img/s/kitchenaid.c0016443.webp", "w": 819, "cut": true, "bg": "#e3dcd6", "bgd": "#302b26", "artist": "Your Best Digs", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:White_KitchenAid_mixer_(KSM150PSWH).jpg"}, "lettera22": {"src": "img/lettera22.a81c54f8.webp", "s": "img/s/lettera22.c0187233.webp", "w": 1168, "cut": true, "bg": "#e5d7d5", "bgd": "#312725", "artist": "", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Olivetti_Lettera_22_by_LjL.jpeg"}, "sk4": {"src": "img/sk4.19b83d7c.webp", "s": "img/s/sk4.4f12c8a8.webp", "w": 1073, "cut": true, "bg": "#e4e1d5", "bgd": "#312f25", "artist": "Hilarmont", "license": "CC BY-SA 3.0 de", "page": "https://commons.wikimedia.org/wiki/File:Braun_Radio_mit_Plattenspieler_Pinakothek_der_Moderne_(Foto_Hilarmont).jpg"}, "t4": {"src": "img/t4.b5720714.webp", "s": "img/s/t4.39c57f35.webp", "w": 764, "cut": true, "bg": "#e4e0d5", "bgd": "#312e26", "artist": "Filip Triner", "license": "CC BY 4.0", "page": "https://commons.wikimedia.org/wiki/File:Braun-t4-transistor-radio-design-dieter-rams-only-once-shop-4.jpg"}, "ts502": {"src": "img/ts502.a4289a2b.webp", "s": "img/s/ts502.452f0da6.webp", "w": 962, "cut": true, "bg": "#e7d7d3", "bgd": "#332724", "artist": "Brionvega S.a.S. (costruttore/ produttore), Sapper Richard (designer), Zanuso Marco (designer)", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Radioricevitore_a_transistor,_portatile_-_Museo_scienza_tecnologia_Milano_10074.jpg"}, "valentine": {"src": "img/valentine.b22d42b3.webp", "s": "img/s/valentine.4584bc47.webp", "w": 1163, "cut": true, "bg": "#ebd2ce", "bgd": "#372320", "artist": "Folletto at Italian Wikipedia", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Olivetti-Valentine.jpg"}, "beogram4000": {"src": "img/beogram4000.52b2994f.webp", "s": "img/s/beogram4000.37409b37.webp", "w": 888, "cut": true, "bg": "#e3e0d6", "bgd": "#302e26", "artist": "Heidi De Vries from Berkeley, CA", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Perfect_record_player_(6495511939).jpg"}, "et66": {"src": "img/et66.c9169e33.webp", "s": "img/s/et66.c1bbef92.webp", "w": 667, "cut": true, "bg": "#d5dfe4", "bgd": "#252d31", "artist": "Pinot Dita from Kuwait", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:1987_Braun_calculator_ET66_by_Dieter_Rams_(13964223413).jpg"}, "dc01": {"src": "img/dc01.0e272b6d.webp", "s": "img/s/dc01.74bb91b6.webp", "w": 370, "cut": true, "bg": "#e5dfd4", "bgd": "#322d25", "artist": "Lankyrider", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Dyson_DC01._01.jpg"}, "muji-cd": {"src": "img/muji-cd.c2704841.webp", "s": "img/s/muji-cd.63f0736b.webp", "w": 399, "cut": true, "bg": "#d5dee4", "bgd": "#252c31", "artist": "Myself", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Muji_NYC_inside_CD_players.jpg"}, "leica-m3": {"src": "img/leica-m3.5b37e2f6.webp", "s": "img/s/leica-m3.a44818be.webp", "w": 1132, "cut": true, "bg": "#e3dfd7", "bgd": "#302d27", "artist": "CharlieTPhotographic", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Leica_M3_20090309.jpg"}, "tr610": {"src": "img/tr610.acaec62e.webp", "s": "img/s/tr610.99881c36.webp", "w": 559, "cut": true, "bg": "#e8d8d1", "bgd": "#342823", "artist": "Sony DL Corporation (costruttore/ produttore/ progettista/ designer)", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Radioricevitore_a_transistor,_tascabile_-_Museo_scienza_tecnologia_Milano_09751_04.jpg"}, "sx70": {"src": "img/sx70.14a152d7.webp", "s": "img/s/sx70.80b86d77.webp", "w": 882, "cut": true, "bg": "#e4d7d5", "bgd": "#312725", "artist": "Thomas Backa from Turku, Finland", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Polaroid_SX-70_(4462345243).jpg"}, "apple2": {"src": "img/apple2.3d6b4df4.webp", "s": "img/s/apple2.700e7bf8.webp", "w": 869, "cut": true, "bg": "#e5ded4", "bgd": "#322d25", "artist": "Rama &amp; Musée Bolo", "license": "CC BY-SA 2.0 fr", "page": "https://commons.wikimedia.org/wiki/File:Apple_II_at_Mus%C3%A9e_Bolo.jpg"}, "walkman": {"src": "img/walkman.9e998506.webp", "s": "img/s/walkman.e27baf1a.webp", "w": 769, "cut": true, "bg": "#d5dbe5", "bgd": "#252a31", "artist": "Anna Gerdén", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Walkman_TPS-L2.jpg"}, "famicom": {"src": "img/famicom.64d064c9.webp", "s": "img/s/famicom.6d9ff6c9.webp", "w": 1200, "cut": true, "bg": "#e4dad5", "bgd": "#312a26", "artist": "Evan-Amos", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Nintendo-Famicom-Console-FL.jpg"}, "mac128k": {"src": "img/mac128k.e970e8fe.webp", "s": "img/s/mac128k.5e8603ce.webp", "w": 1200, "cut": true, "bg": "#e4d9d5", "bgd": "#312926", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Computer_macintosh_128k,_1984_(all_about_Apple_onlus).jpg"}, "discman": {"src": "img/discman.878bdeb7.webp", "s": "img/s/discman.9dd8b500.webp", "w": 1120, "cut": true, "bg": "#e0e3d6", "bgd": "#2e3026", "artist": "Binarysequence", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Sony_D50_Discman_Front.JPG"}, "gameboy": {"src": "img/gameboy.c7c635c5.webp", "s": "img/s/gameboy.748ce7ac.webp", "w": 987, "cut": true, "bg": "#e4e2d6", "bgd": "#312f26", "artist": "Transfrom JPEG version and remove white background. Original by Evan-Amos.", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Game-Boy-FL.png"}, "playstation": {"src": "img/playstation.fa2a9a25.webp", "s": "img/s/playstation.94d6239f.webp", "w": 1200, "cut": true, "bg": "#e2ded7", "bgd": "#302d27", "artist": "Evan-Amos", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:PlayStation-SCPH-1000-with-Controller.jpg"}, "thinkpad701c": {"src": "img/thinkpad701c.39c65246.webp", "s": "img/s/thinkpad701c.ce97e78f.webp", "w": 893, "cut": true, "bg": "#e3dbd6", "bgd": "#312a26", "artist": "nakashi", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Thinkpad_701.jpg"}, "palmpilot": {"src": "img/palmpilot.3072eeab.webp", "s": "img/s/palmpilot.870eb5c7.webp", "w": 781, "cut": true, "bg": "#d6e3e3", "bgd": "#263030", "artist": "Rama & Musée Bolo", "license": "CC BY-SA 2.0 fr", "page": "https://commons.wikimedia.org/wiki/File:Palm-IMG_7025.jpg"}, "imac-g3": {"src": "img/imac-g3.ce45d953.webp", "s": "img/s/imac-g3.dc33d053.webp", "w": 1200, "cut": true, "bg": "#d5dce4", "bgd": "#262b31", "artist": "Alterations by David Fuchs; original by Rama, licensed CC-by-SA", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:IMac_G3_Bondi_Blue,_three-quarters_view.png"}, "ipod": {"src": "img/ipod.a673ff5d.webp", "s": "img/s/ipod.eab538f6.webp", "w": 556, "cut": true, "bg": "#dce4d6", "bgd": "#2b3126", "artist": "Steve Hodgson from Edinburgh, Scotland", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:IPod_(54750592069).jpg"}, "imac-g4": {"src": "img/imac-g4.486aa30b.webp", "s": "img/s/imac-g4.22498430.webp", "w": 1200, "cut": true, "bg": "#d4dee5", "bgd": "#252c32", "artist": "Felix Winkelnkemper", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Apple_iMac_4G_(33937792088).jpg"}, "iphone": {"src": "img/iphone.852d2a29.webp", "s": "img/s/iphone.125c7300.webp", "w": 536, "cut": true, "bg": "#d7d6e3", "bgd": "#282630", "artist": "Carl Berkeley from Riverside California", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:IPhone_First_Generation_8GB_(3680455198).jpg"}, "op1": {"src": "img/op1.46424b74.webp", "s": "img/s/op1.91652126.webp", "w": 1148, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "Isaac Henry", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:OP-1_Sequencer_Concept.png"}, "nest": {"src": "img/nest.f0981573.webp", "s": "img/s/nest.7bdc4868.webp", "w": 601, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "David Berkowitz from New York, NY, USA", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Nest_thermostat_-_Consumer_Electronics_Show_-_CES_2013_-_Las_Vegas_(8381791238).jpg"}, "applewatch": {"src": "img/applewatch.99704b42.webp", "s": "img/s/applewatch.b531ad55.webp", "w": 796, "cut": true, "bg": "#d6dfe3", "bgd": "#272d30", "artist": "Gregory Varnum", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Apple_Watch_Sport_-_38mm_Space_Gray_(3773).jpg"}, "airpods": {"src": "img/airpods.b3c5615a.webp", "s": "img/s/airpods.2667fb26.webp", "w": 1200, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "Maurizio Pesce from Milan, Italia", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:AirPods.jpg"}, "modelt": {"src": "img/modelt.c5c65a6e.webp", "s": "img/s/modelt.6bfdf732.webp", "w": 779, "cut": true, "bg": "#e6ded4", "bgd": "#322c25", "artist": "Mark Harkin", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Model_T_Ford_(8424090806).jpg"}, "beetle": {"src": "img/beetle.37159dd6.webp", "s": "img/s/beetle.c2609c68.webp", "w": 1073, "cut": true, "bg": "#d3e6e6", "bgd": "#243332", "artist": "Theresia Freistetter", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Volkswagen1960.jpg"}, "vespa": {"src": "img/vespa.1d8670b2.webp", "s": "img/s/vespa.47c3dde2.webp", "w": 1128, "cut": true, "bg": "#dce3d6", "bgd": "#2b3026", "artist": "Daderot", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Vespa_125_Scooter,_1948_-_Science_Museum,_London_-_DSC05675.jpg"}, "ds": {"src": "img/ds.00b89904.webp", "s": "img/s/ds.25e7ed9c.webp", "w": 1113, "cut": true, "bg": "#d6dde4", "bgd": "#262c31", "artist": "Slaunger", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Citro%C3%ABn_DS_21_27_Quai_Anatole_France_license_plate_blanked_2012-06-02_cropped.jpg"}, "fiat500": {"src": "img/fiat500.8cba86dc.webp", "s": "img/s/fiat500.a83ed621.webp", "w": 935, "cut": true, "bg": "#ece2cd", "bgd": "#372f1f", "artist": "DILIN", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Fiat_500_yellow.jpg"}, "mini": {"src": "img/mini.17e0a4ab.webp", "s": "img/s/mini.60329e5e.webp", "w": 1188, "cut": true, "bg": "#e4ded5", "bgd": "#312c25", "artist": "Calreyn88", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:1959_Morris_Mini_Minor.jpg"}, "etype": {"src": "img/etype.ce1cbacd.webp", "s": "img/s/etype.d6340770.webp", "w": 1112, "cut": true, "bg": "#d6e3e1", "bgd": "#27302f", "artist": "DeFacto", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Jaguar_E-Type_Series_1_3.8_Litre_1961.jpg"}, "p911": {"src": "img/p911.c8a7f24d.webp", "s": "img/s/p911.6496a072.webp", "w": 1200, "cut": true, "bg": "#e3dad6", "bgd": "#312a26", "artist": "AlfvanBeem", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_dutch_licence_registration_27-99-AX.jpg"}, "shinkansen": {"src": "img/shinkansen.96b369d2.webp", "s": "img/s/shinkansen.f6cd0ea1.webp", "w": 637, "cut": true, "bg": "#d5dae4", "bgd": "#262a31", "artist": "FairlieGood", "license": "CC BY 4.0", "page": "https://commons.wikimedia.org/wiki/File:0_Series_Shinkansen_NRM.jpg"}, "concorde": {"src": "img/concorde.cc24a4a0.webp", "s": "img/s/concorde.3632b923.webp", "w": 1188, "cut": true, "bg": "#e3dad6", "bgd": "#302926", "artist": "Ken Fielding", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:G-BOAC_2_BAC-SNIAS_Concorde_102_British_Airways_MAN_22MAY04_(11432526884).jpg"}, "countach": {"src": "img/countach.049fabae.webp", "s": "img/s/countach.ebcec8ce.webp", "w": 1123, "cut": true, "bg": "#e9e6d0", "bgd": "#353222", "artist": "Calreyn88", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:1975_Lamborghini_Countach_LP400_Periscopo.jpg"}, "roadster": {"src": "img/roadster.933072f7.webp", "s": "img/s/roadster.2482f5d8.webp", "w": 1200, "cut": true, "bg": "#e6d3d3", "bgd": "#332424", "artist": "TaurusEmerald", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:2008_Tesla_Roadster_Petersen_Automotive_Museum.jpg"}, "falcon9": {"src": "img/falcon9.fc929da7.webp", "s": "img/s/falcon9.14633832.webp", "w": 1280, "cut": false, "artist": "SpaceX", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:SES-10_Mission_-_Falcon_9_First_Stage_Landing_(32996435084).jpg"}, "model3": {"src": "img/model3.273d007e.webp", "s": "img/s/model3.5cee1787.webp", "w": 1019, "cut": true, "bg": "#e6d3d5", "bgd": "#332426", "artist": "Matti Blume", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Tesla,_Paris_Motor_Show_2018,_Paris_(1Y7A1919).jpg"}, "cybertruck": {"src": "img/cybertruck.30fdcbb2.webp", "s": "img/s/cybertruck.3ce0de91.webp", "w": 1193, "cut": true, "bg": "#e3e2d6", "bgd": "#302f26", "artist": "Alexander-93", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:2024_Tesla_Cybertruck_Foundation_Series_IMG_0634_(cropped).jpg"}, "cybercab": {"src": "img/cybercab.7d5e083b.webp", "s": "img/s/cybercab.3be78b02.webp", "w": 1000, "cut": true, "bg": "#e7ded2", "bgd": "#332d23", "artist": "Ulkl", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:CybercabSTHLM2402.jpg"}};
+const PIMG = {"paxton": {"src": "img/p/paxton.dc5729c9.webp", "s": "img/p/s/paxton.af44cb76.webp", "artist": "Maull &amp; Co., London", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Joseph_Paxton_by_Maull_%26_Co,_c1860s.jpg"}, "eiffel": {"src": "img/p/eiffel.82dd2f02.webp", "s": "img/p/s/eiffel.2585f410.webp", "artist": "Nadar", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Gustave_Eiffel_1888_Nadar2.jpg"}, "rietveld": {"src": "img/p/rietveld.1f0d77ef.webp", "s": "img/p/s/rietveld.2ee7e516.webp", "artist": "Oscar at Dutch Wikipedia", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Gerrit_Thomas_Rietveld.jpg"}, "gropius": {"src": "img/p/gropius.cb2fd66a.webp", "s": "img/p/s/gropius.ce8a06e0.webp", "artist": "", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:WalterGropius-1919.jpg"}, "mies": {"src": "img/p/mies.30405ac2.webp", "s": "img/p/s/mies.60bdb8b3.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Ludwig_Mies_van_der_Rohe_in_Arts_%26_Architecture,_June_1960_issue.jpg"}, "corbusier": {"src": "img/p/corbusier.8ae17663.webp", "s": "img/p/s/corbusier.7057f734.webp", "artist": "Joop van Bilsen for Anefo", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Le_Corbusier_(1964).jpg"}, "wright": {"src": "img/p/wright.b2e53668.webp", "s": "img/p/s/wright.4e8e5bb4.webp", "artist": "New York World-Telegram and the Sun staff photographer: Al Ravenna", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Frank_Lloyd_Wright_portrait.jpg"}, "aalto": {"src": "img/p/aalto.71a9fa7d.webp", "s": "img/p/s/aalto.2db072ae.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Alvar_Aalto1.jpg"}, "pjohnson": {"src": "img/p/pjohnson.36fbc2d8.webp", "s": "img/p/s/pjohnson.20c9c8cb.webp", "artist": "B. Pietro Filardo,", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Philip_Johnson.2002.FILARDO.jpg"}, "kahn": {"src": "img/p/kahn.be2b2892.webp", "s": "img/p/s/kahn.887b83d8.webp", "artist": "Francalb89", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:LouisKahn.jpg"}, "piano": {"src": "img/p/piano.108f822e.webp", "s": "img/p/s/piano.04cf3c7e.webp", "artist": "Cirone-Musi (Festival della Scienza, Genova)Color and edits by the uploader.", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Renzo_Piano,_portrait.jpg"}, "rogers": {"src": "img/p/rogers.faba8ec1.webp", "s": "img/p/s/rogers.c52209a3.webp", "artist": "Andrew Zuckerman", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Richard_Rogers_-_Portrait_2008_(3x4_cropped).jpg"}, "ando": {"src": "img/p/ando.3248dec7.webp", "s": "img/p/s/ando.c7b77103.webp", "artist": "Christopher Schriner from Köln, Deutschland", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Tadao_Ando_2004_(4x5_cropped).jpg"}, "pei": {"src": "img/p/pei.1d028719.webp", "s": "img/p/s/pei.6fc1ee1b.webp", "artist": "Bernard Gotfryd", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Itzhak_Perlman_with_I.M._Pei,_architect,_looking_at_model_of_NYC_Convention_Center_(03124v)_(cropped).jpg"}, "gehry": {"src": "img/p/gehry.8d3cfa74.webp", "s": "img/p/s/gehry.cab54e33.webp", "artist": "City of Toronto / Jose San Juan", "license": "Attribution", "page": "https://commons.wikimedia.org/wiki/File:Frank_Gehry,_Viljo_Revell_Centenary_reception,_2010_(S2311_fl2969_it0089)_(cropped).jpg"}, "foster": {"src": "img/p/foster.b4bebcef.webp", "s": "img/p/s/foster.56e4dcca.webp", "artist": "bigbug21", "license": "CC BY-SA 2.5", "page": "https://commons.wikimedia.org/wiki/File:Norman_Foster_dresden_061110.jpg"}, "thonet": {"src": "img/p/thonet.65132b67.webp", "s": "img/p/s/thonet.06e3a2f9.webp", "artist": "unbekannt, okänt, unknown", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Michael_Thonet.jpg"}, "breuer": {"src": "img/p/breuer.71749e8a.webp", "s": "img/p/s/breuer.71c7ec95.webp", "artist": "Arz", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Marcel_Breuer_sitting_in_a_Wassily_chair.jpg"}, "perriand": {"src": "img/p/perriand.2f3410f6.webp", "s": "img/p/s/perriand.f94bf529.webp", "artist": "Robert Doisneau", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Charlotte_Perriand_Janvier_1991.jpg"}, "henningsen": {"src": "img/p/henningsen.ac84c202.webp", "s": "img/p/s/henningsen.87eca520.webp", "artist": "A.E. Andersen", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Poul_Henningsen_1950-tal.jpg"}, "noguchi": {"src": "img/p/noguchi.2cc71fb0.webp", "s": "img/p/s/noguchi.bd2e5614.webp", "artist": "Los Angeles Times", "license": "CC BY 4.0", "page": "https://commons.wikimedia.org/wiki/File:Isamu_Noguchi,_1983_(cropped).jpg"}, "yanagi": {"src": "img/p/yanagi.d6f544d7.webp", "s": "img/p/s/yanagi.257227ed.webp", "artist": "朝日新聞社", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Yanagi_Sori.jpg"}, "eames": {"src": "img/p/eames.02c1f747.webp", "s": "img/p/s/eames.0583c842.webp", "artist": "\"Charles &amp; Ray Eames. The Power of Design\" by HeinzDS is licensed under CC BY-SA 2.0.", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Charles_%26_Ray_Eames._The_Power_of_Design.jpg"}, "saarinen": {"src": "img/p/saarinen.fcd26acc.webp", "s": "img/p/s/saarinen.deed1c6b.webp", "artist": "Balthazar Korab", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Eero-Saarinen_(cropped).jpg"}, "jacobsen": {"src": "img/p/jacobsen.da217e57.webp", "s": "img/p/s/jacobsen.83e5a20f.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Arne_Jacobsen_photo.jpg"}, "castiglioni": {"src": "img/p/castiglioni.365c503c.webp", "s": "img/p/s/castiglioni.4dace86c.webp", "artist": "Flos", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Achille_Castiglioni.jpg"}, "panton": {"src": "img/p/panton.92fc26ef.webp", "s": "img/p/s/panton.85e24d75.webp", "artist": "Erling Mandelmann", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Verner_Panton_(1996)_by_Erling_Mandelmann.jpg"}, "starck": {"src": "img/p/starck.78c35517.webp", "s": "img/p/s/starck.ff470c74.webp", "artist": "jikatu", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Phillippe_Starck_2011_(3x4_cropped).jpg"}, "rams": {"src": "img/p/rams.8f193bfb.webp", "s": "img/p/s/rams.4e2de495.webp", "artist": "Vitsœ at English Wikipedia", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Designer-Dieter_Rams.jpg"}, "sottsass": {"src": "img/p/sottsass.fdaf78e4.webp", "s": "img/p/s/sottsass.eb49598f.webp", "artist": "Giuseppe Pino (Mondadori Publishers)", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Ettore_Sottsass_1969.jpg"}, "jjensen": {"src": "img/p/jjensen.1cd07310.webp", "s": "img/p/s/jjensen.9a0b4c2b.webp", "artist": "http://jacobjensendesign.com/", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Jacob_Jensen_(artist).tif"}, "dyson": {"src": "img/p/dyson.34918467.webp", "s": "img/p/s/dyson.5afa366d.webp", "artist": "Royal Society uploader", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Sir_James_Dyson_CBE_FREng_FRS.jpg"}, "fukasawa": {"src": "img/p/fukasawa.650b47a9.webp", "s": "img/p/s/fukasawa.956fdd75.webp", "artist": "WJournalist", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Naoto_Fukasawa.jpg"}, "land": {"src": "img/p/land.f26884b2.webp", "s": "img/p/s/land.b0ba4707.webp", "artist": "Gotfryd, Bernard, photographer", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Edwin_H._Land,_founder,_Polaroid_(cropped).jpg"}, "dreyfuss": {"src": "img/p/dreyfuss.607c2ca6.webp", "s": "img/p/s/dreyfuss.4ec6f687.webp", "artist": "Internet Archive Book Images", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Henry_Dreyfuss.jpg"}, "ive": {"src": "img/p/ive.71eb0d7e.webp", "s": "img/p/s/ive.ff63128e.webp", "artist": "Marcus Dawes https://www.marcusdawes.com marcus@marcusdawes.com", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Jonathan_Ive_(OTRS).jpg"}, "fadell": {"src": "img/p/fadell.b0b42516.webp", "s": "img/p/s/fadell.d7fe2ac2.webp", "artist": "Web Summit", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Tony_Fadell_at_Web_Summit_2022_(cropped).jpg"}, "jobs": {"src": "img/p/jobs.e25b828b.webp", "s": "img/p/s/jobs.e3447f87.webp", "artist": "Matthew Yohe", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Steve_Jobs_Headshot_2010_(cropped_4).jpg"}, "morita": {"src": "img/p/morita.02054afd.webp", "s": "img/p/s/morita.b1e7617a.webp", "artist": "プレジデント社 撮影者不明", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Morita_Akio.jpg"}, "hford": {"src": "img/p/hford.314f37d8.webp", "s": "img/p/s/hford.7bc843be.webp", "artist": "Ford Motor Company. Photographic Department", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Henry_Ford_portrait_1915_original_(3x4_cropped).png"}, "fporsche": {"src": "img/p/fporsche.a8155167.webp", "s": "img/p/s/fporsche.839e76fa.webp", "artist": "Unknown authorUnknown author", "license": "CC BY-SA 3.0 de", "page": "https://commons.wikimedia.org/wiki/File:Bundesarchiv_Bild_183-2005-1017-525,_Dr._Ferdinand_Porsche.jpg"}, "dascanio": {"src": "img/p/dascanio.47ff2fcd.webp", "s": "img/p/s/dascanio.92cbc1b0.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Corradino_D%27Ascanio.jpg"}, "bertoni": {"src": "img/p/bertoni.5823cd65.webp", "s": "img/p/s/bertoni.17e51bc4.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Flaminio_Bertoni_(cropped).jpg"}, "giacosa": {"src": "img/p/giacosa.74bfdf18.webp", "s": "img/p/s/giacosa.ae04211f.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Dante_Giacosa_-_1966.jpg"}, "issigonis": {"src": "img/p/issigonis.b76e1fce.webp", "s": "img/p/s/issigonis.e3e84bac.webp", "artist": "Birmingham Museums Trust", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Thinktank_Birmingham_-_Issigonis_A.jpg"}, "sayer": {"src": "img/p/sayer.5a883cff.webp", "s": "img/p/s/sayer.3542c037.webp", "artist": "Pat Sayer (deceased), wife of Malcolm Sayer.", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Malcolm_Sayer.jpg"}, "gandini": {"src": "img/p/gandini.79ae7b3f.webp", "s": "img/p/s/gandini.977a2992.webp", "artist": "Unknown photographer", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Marcello_Gandini_in_1976.jpg"}, "musk": {"src": "img/p/musk.61d1e433.webp", "s": "img/p/s/musk.7c80eed8.webp", "artist": "Gage Skidmore", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Elon_Musk_-_54820081119_(3x4_cropped,_Rule_of_thirds).jpg"}, "holzhausen": {"src": "img/p/holzhausen.2db4e9b1.webp", "s": "img/p/s/holzhausen.937b4e4d.webp", "artist": "Steve Jurvetson / Steve Jurvetson", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Franz_von_Holzhausen_(cropped).jpg"}};
+const BUILD = '619fe885';
+const CATS = [
+  { k: 'arch', zh: '建筑', en: 'Architecture' }, { k: 'home', zh: '家具家居', en: 'Furniture & Home' },
+  { k: 'appliance', zh: '家电', en: 'Appliances' }, { k: 'tech', zh: '消费电子', en: 'Electronics' },
+  { k: 'mobility', zh: '交通工具', en: 'Mobility' },
+];
+// 网格里的大图位：每类挑几件做主角
+const FEATURE = { weissenhof: 'w6', fallingwater: 'w6', 'sydney-opera': 'w6', 'barcelona-pavilion': 'w6', 'church-light': 'w4', farnsworth: 'w6', bilbao: 'w6',
+  'eames-lounge': 'w6', panton: 'w6', 'red-blue': 'w4', sk4: 'w6', 'beogram4000': 'w6', 'imac-g3': 'w6', walkman: 'w6', 'mac128k': 'w4', iphone: 'w4', ds: 'w6', etype: 'w6', concorde: 'w6', falcon9: 'w6', cybertruck: 'w6' };
+
+// ---------- 深浅色 ----------
+const root = document.documentElement, mq = matchMedia('(prefers-color-scheme: dark)');
+const mode = () => root.dataset.theme || (mq.matches ? 'dark' : 'light');
+const paintMode = () => { root.dataset.mode = mode(); };
+try { const t = localStorage.getItem('gd-theme'); if (t === 'dark' || t === 'light') root.dataset.theme = t; } catch {}
+document.getElementById('theme').onclick = () => { const n = mode() === 'dark' ? 'light' : 'dark'; root.dataset.theme = n; try { localStorage.setItem('gd-theme', n); } catch {} paintMode(); };
+mq.addEventListener?.('change', paintMode);
+new MutationObserver(paintMode).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+paintMode();
+
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const byId = Object.fromEntries(ITEMS.map(i => [i.id, i]));
+const ini = en => en.replace(/&/g, ' ').split(/\s+/).filter(w => /^[A-Z]/.test(w)).map(w => w[0]).slice(0, 2).join('');
+const state = { cat: null, sort: 'cat' };
+const worksOf = pid => ITEMS.filter(i => i.by.includes(pid)).sort((a, b) => a.y - b.y);
+
+function byLine(it, plainCls = 'plain') {
+  return it.by.map(b => typeof b === 'string' && PEOPLE[b]
+    ? `<button class="who" data-person="${b}">${esc(PEOPLE[b].zh)}</button>`
+    : `<span class="${plainCls}">${esc(typeof b === 'string' ? b : b.n)}</span>`).join('<span class="plain">、</span>');
+}
+function makerLine(it) {
+  const m = MAKERS[it.maker];
+  return m ? `<button class="who" data-maker="${it.maker}">${esc(m.en)}</button>` : `<span class="plain">${esc(it.maker)}</span>`;
+}
+// 网格用 720px 的小图，浏览器按卡片实际宽度在小图/大图里选；大图只在灯箱里用
+function sizesFor(span) { return `(max-width: 720px) ${span >= 6 ? '100vw' : '50vw'}, min(${Math.round(span / 12 * 1440)}px, ${Math.round(span / 12 * 100)}vw)`; }
+function photo(it, extra = '', span = 3) {
+  const im = IMG[it.id]; const fit = (it.cat === 'arch' || it.fit === 'cover') ? 'cover' : im && im.cut ? 'contain cut' : 'contain';
+  const tint = im && im.bg ? ` style="--bg:${im.bg};--bgd:${im.bgd}"` : '';
+  const img = im ? `<img src="${im.s}" srcset="${im.s} 720w, ${im.src} ${im.w}w" sizes="${sizesFor(span)}" alt="${esc(it.zh)}" loading="lazy" decoding="async">` : '';
+  return `<div class="ph ${fit}${extra}"${tint}>${img}<span class="yr">${it.y}</span></div>`;
+}
+// 每组按 12 栏装行：重点作品占 6 栏、其余 3 栏，最后一行不满时把末尾几件拉宽补齐
+function spans(list) {
+  const out = [], row = [];
+  let used = 0;
+  const flush = () => { let left = 12 - used; for (let i = row.length - 1; left > 0 && i >= 0; i--, left -= 3) out[row[i]] += 3; if (left > 0 && row.length) out[row.at(-1)] += left; row.length = 0; used = 0; };
+  list.forEach((it, i) => {
+    let s = FEATURE[it.id] ? 6 : 3;
+    if (used + s > 12) { if (s === 6 && used === 9) s = 3; else flush(); }
+    out[i] = s; row.push(i); used += s; if (used === 12) { row.length = 0; used = 0; }
+  });
+  // 最后一行只剩一件时会被拉成整行宽、主体显得很小：把上一行的 6 栏大图降成 3 栏，让它并进上一行
+  if (row.length === 1 && used === 3) {
+    const prev = [];
+    for (let i = row[0] - 1, sum = 0; i >= 0 && sum < 12; i--) { sum += out[i]; prev.unshift(i); }
+    const big = prev.find(i => out[i] === 6);
+    if (big !== undefined && prev.reduce((a, i) => a + out[i], 0) === 12) { out[big] = 3; row.length = 0; used = 0; }
+  }
+  if (used) flush();
+  return out;
+}
+function cards(list) { const s = spans(list); return list.map((it, i) => card(it, s[i])).join(''); }
+function card(it, span = 3) {
+  return `<article class="card" data-span="${span}" style="--span:${span}" data-id="${it.id}">
+    <button class="open" data-open="${it.id}" aria-label="查看 ${esc(it.zh)}">${photo(it, '', span)}</button>
+    <div class="cap"><h3><i class="dot ${it.cat}"></i>${esc(it.zh)}</h3><div class="en">${esc(it.en)}</div><div class="by">${byLine(it)}</div></div></article>`;
+}
+
+function renderCounts() {
+  document.getElementById('counts').innerHTML = CATS.map(c => `<span><i class="dot ${c.k}"></i>${c.zh}<b>${ITEMS.filter(i => i.cat === c.k).length}</b></span>`).join('');
+}
+function renderTabs() {
+  const box = document.getElementById('tabs');
+  box.innerHTML = `<button class="tab" data-v="" aria-pressed="true">全部<sup>${ITEMS.length}</sup></button>` +
+    CATS.map(c => `<button class="tab" data-v="${c.k}" aria-pressed="false"><i class="dot ${c.k}"></i>${c.zh}<sup>${ITEMS.filter(i => i.cat === c.k).length}</sup></button>`).join('');
+  box.onclick = e => { const b = e.target.closest('.tab'); if (!b) return; state.cat = b.dataset.v || null; render(); };
+  document.getElementById('sort').onclick = e => { const b = e.target.closest('button'); if (!b) return; state.sort = b.dataset.v; render(); };
+}
+function renderRuler() {
+  const X0 = 1845, X1 = 2030, pct = y => ((y - X0) / (X1 - X0) * 100) + '%';
+  const tr = document.getElementById('track'); let h = '';
+  for (let y = 1850; y <= 2025; y += 25) h += `<i class="tick" style="left:${pct(y)}"><span>${y}</span></i>`;
+  // 同一年代的点往上堆，避免重叠
+  const lanes = {};
+  [...ITEMS].sort((a, b) => a.y - b.y).forEach(it => {
+    const slot = Math.round(it.y / 3); lanes[slot] = (lanes[slot] || 0) + 1;
+    const top = 80 - (lanes[slot] - 1) * 15;
+    h += `<button class="pt" data-open="${it.id}" data-cat="${it.cat}" style="left:${pct(it.y)};top:${top}px;background:var(--c-${it.cat})" aria-label="${it.y} ${esc(it.zh)}"></button>`;
+  });
+  tr.innerHTML = h + '<span class="tip" id="tip" hidden></span>';
+  const tip = document.getElementById('tip');
+  tr.addEventListener('pointerover', e => { const p = e.target.closest('.pt'); if (!p) return; const it = byId[p.dataset.open];
+    tip.textContent = `${it.y} · ${it.zh}`; tip.style.left = p.style.left; tip.style.top = (parseFloat(p.style.top) - 34) + 'px'; tip.hidden = false; });
+  tr.addEventListener('pointerout', () => tip.hidden = true);
+}
+function render() {
+  document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.v || null) === state.cat)));
+  document.querySelectorAll('#sort button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === state.sort)));
+  document.querySelectorAll('.ruler .pt').forEach(p => p.classList.toggle('off', !!state.cat && p.dataset.cat !== state.cat));
+  const list = ITEMS.filter(i => !state.cat || i.cat === state.cat);
+  let h = '';
+  if (state.sort === 'cat') {
+    for (const c of CATS) {
+      const g = list.filter(i => i.cat === c.k).sort((a, b) => a.y - b.y); if (!g.length) continue;
+      h += `<div class="group-head"><h2>${c.zh}</h2><span class="mono">${c.en} · ${g[0].y}–${g.at(-1).y} · ${g.length}</span></div><div class="grid">${cards(g)}</div>`;
+    }
+  } else {
+    const decades = {};
+    [...list].sort((a, b) => a.y - b.y).forEach(i => { const d = i.y < 1900 ? '19 世纪' : `${Math.floor(i.y / 10) * 10}s`; (decades[d] ||= []).push(i); });
+    for (const [d, g] of Object.entries(decades)) h += `<div class="group-head"><h2>${d}</h2><span class="mono">${g.length} 件</span></div><div class="grid">${cards(g)}</div>`;
+  }
+  document.getElementById('main').innerHTML = h;
+}
+function renderPeople() {
+  const ids = Object.keys(PEOPLE).filter(id => worksOf(id).length).sort((a, b) => worksOf(a)[0].y - worksOf(b)[0].y);
+  document.getElementById('pcount').textContent = `${ids.length} 位设计师 · 按第一件收录作品的年份排列`;
+  document.getElementById('ppl').innerHTML = ids.map(id => { const p = PEOPLE[id], pi = PIMG[id];
+    return `<button class="pp" data-person="${id}"><div class="pic">${pi ? `<img src="${pi.s}" alt="" loading="lazy">` : `<span class="ini">${ini(p.en)}</span>`}</div><b>${esc(p.zh)}</b><span>${esc(p.life)}</span></button>`; }).join('');
+}
+function renderCredits() {
+  const rows = [];
+  ITEMS.forEach(it => { const c = IMG[it.id]; if (c) rows.push([it.zh, c]); });
+  Object.entries(PEOPLE).forEach(([id, p]) => { const c = PIMG[id]; if (c) rows.push([p.zh, c]); });
+  document.getElementById('credits').innerHTML = rows.map(([n, c]) => `<div>${esc(n)}：${esc(c.artist || '佚名')}，<a href="${esc(c.page)}" target="_blank" rel="noopener">${esc(c.license)}</a></div>`).join('');
+}
+
+// ---------- 作品大图 ----------
+let cur = null;
+const warmed = new Set();
+function warm(id) { const im = IMG[id]; if (!im || warmed.has(id)) return; warmed.add(id); const i = new Image(); i.src = im.src; }
+document.addEventListener('pointerover', e => { const b = e.target.closest('[data-open]'); if (b) warm(b.dataset.open); });
+document.addEventListener('focusin', e => { const b = e.target.closest('[data-open]'); if (b) warm(b.dataset.open); });
+function openItem(id) {
+  const it = byId[id]; if (!it) return; cur = id; { const l = [...document.querySelectorAll('#main .card')].map(c => c.dataset.id), k = l.indexOf(id); if (k >= 0) { warm(l[(k + 1) % l.length]); warm(l[(k - 1 + l.length) % l.length]); } } const im = IMG[id], c = CATS.find(c => c.k === it.cat);
+  const people = it.by.filter(b => typeof b === 'string' && PEOPLE[b]);
+  document.getElementById('lbBody').innerHTML = `
+    <div class="big ${(it.cat === 'arch' || it.fit === 'cover') ? 'cover' : im && im.cut ? 'contain cut' : 'contain'}"${im && im.bg ? ` style="--bg:${im.bg};--bgd:${im.bgd}"` : ''}>${im ? `<img src="${im.src}" alt="${esc(it.zh)}">` : ''}
+      <div class="lbnav"><button data-step="-1" aria-label="上一件">←</button><button data-step="1" aria-label="下一件">→</button></div></div>
+    <div class="info"><button class="x" data-close aria-label="关闭">×</button>
+      <div class="label"><i class="dot ${it.cat}"></i> ${c.zh} · ${c.en}</div>
+      <div><h2>${esc(it.zh)}</h2><div class="en">${esc(it.en)}</div></div>
+      <dl class="meta"><dt class="label">年份</dt><dd class="mono">${it.y}</dd><dt class="label">设计</dt><dd>${byLine(it)}</dd><dt class="label">${it.cat === 'arch' ? '业主' : '出品'}</dt><dd>${makerLine(it)}</dd></dl>
+      <p class="note">${esc(it.note)}</p>
+      ${people.length ? `<div class="chips">${people.map(pid => { const p = PEOPLE[pid], pi = PIMG[pid];
+        return `<button class="pchip" data-person="${pid}">${pi ? `<img src="${pi.s}" alt="">` : `<span class="ini">${ini(p.en)}</span>`}<span>${esc(p.zh)}<small>${esc(p.life)}</small></span></button>`; }).join('')}</div>` : ''}
+      ${im ? `<div class="credit">图片：${esc(im.artist || '佚名')}，<a href="${esc(im.page)}" target="_blank" rel="noopener">${esc(im.license)}</a></div>` : ''}
+    </div>`;
+  const d = document.getElementById('lb'); if (!d.open) d.showModal();
+}
+function step(n) {
+  const list = [...document.querySelectorAll('#main .card')].map(c => c.dataset.id);
+  const i = list.indexOf(cur); if (i < 0) return; openItem(list[(i + n + list.length) % list.length]);
+}
+
+// ---------- 人物卡 ----------
+function openPerson(pid, isMaker) {
+  const p = isMaker ? MAKERS[pid] : PEOPLE[pid]; if (!p) return;
+  const pi = isMaker ? null : PIMG[pid];
+  const works = isMaker ? ITEMS.filter(i => i.maker === pid).sort((a, b) => a.y - b.y) : worksOf(pid);
+  document.getElementById('pcBody').innerHTML = `<button class="x" data-close aria-label="关闭">×</button>
+    <div class="portrait">${pi ? `<img src="${pi.src}" alt="${esc(p.zh)}">` : `<span class="ini">${ini(p.en)}</span>`}</div>
+    <div class="body">
+      <div><h2>${esc(p.zh)}</h2><div class="en">${esc(p.en)}</div></div>
+      <div class="facts">${isMaker ? `<span><span class="label">创立</span>${esc(p.from)}</span>` :
+        `<span><span class="label">生卒</span><span class="mono">${esc(p.life)}</span></span><span><span class="label">国籍</span>${esc(p.from)}</span><span><span class="label">身份</span>${esc(p.role)}</span>`}</div>
+      <p>${esc(p.bio)}</p>
+      ${p.quote ? `<blockquote>${esc(p.quote)}</blockquote>` : ''}
+      <div class="label">收录作品 · ${works.length}</div>
+      <div class="works">${works.map(w => `<button data-open="${w.id}">${photo(w)}<b>${esc(w.zh)}</b><span>${w.y}</span></button>`).join('')}</div>
+      ${pi ? `<div class="credit">照片：${esc(pi.artist || '佚名')}，<a href="${esc(pi.page)}" target="_blank" rel="noopener">${esc(pi.license)}</a></div>` : ''}
+    </div>`;
+  const d = document.getElementById('pc'); if (!d.open) d.showModal(); d.scrollTop = 0;
+}
+
+// ---------- 事件 ----------
+document.addEventListener('click', e => {
+  const t = e.target;
+  const per = t.closest('[data-person]'), mk = t.closest('[data-maker]'), op = t.closest('[data-open]'), st = t.closest('[data-step]');
+  if (t.closest('[data-close]')) { t.closest('dialog').close(); return; }
+  if (t.tagName === 'DIALOG') { t.close(); return; }
+  if (per) { openPerson(per.dataset.person); return; }
+  if (mk) { openPerson(mk.dataset.maker, true); return; }
+  if (st) { step(+st.dataset.step); return; }
+  if (op) { const pc = document.getElementById('pc'); if (pc.open) pc.close(); openItem(op.dataset.open); }
+});
+document.getElementById('lb').addEventListener('keydown', e => { if (e.key === 'ArrowRight') step(1); if (e.key === 'ArrowLeft') step(-1); });
+
+renderCounts(); renderTabs(); renderRuler(); render(); renderPeople(); renderCredits();
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body></html>

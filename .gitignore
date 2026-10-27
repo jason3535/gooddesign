@@ -1,0 +1,5 @@
+_preview.html
+.DS_Store
+# 只部署带内容哈希的图片，未哈希的是构建中间产物
+img/**/*.webp
+!img/**/*.????????.webp
