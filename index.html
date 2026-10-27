@@ -1,8 +1,8 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="从 1851 年水晶宫到 2024 年无人出租车：87 件建筑、家具、家电、消费电子和交通工具的经典设计，以及背后 60 多位设计师的故事。"><meta name="theme-color" content="#f2f2ef" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)">
-<meta property="og:title" content="好设计两百年"><meta property="og:description" content="从 1851 年水晶宫到 2024 年无人出租车：87 件建筑、家具、家电、消费电子和交通工具的经典设计，以及背后 60 多位设计师的故事。"><meta property="og:type" content="website"><meta property="og:url" content="https://gooddesign.jasonlin.tech/"><meta property="og:image" content="https://gooddesign.jasonlin.tech/img/egg.c510d662.webp">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="From the Crystal Palace of 1851 to the driverless taxi of 2024: 87 classics of architecture, furniture, appliances, electronics and mobility, and the stories of the 60-plus designers behind them. 好设计两百年。"><meta name="theme-color" content="#f2f2ef" media="(prefers-color-scheme: light)"><meta name="theme-color" content="#121211" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Good Design, 1851–2026 · 好设计两百年"><meta property="og:description" content="From the Crystal Palace of 1851 to the driverless taxi of 2024: 87 classics of architecture, furniture, appliances, electronics and mobility, and the stories of the 60-plus designers behind them. 好设计两百年。"><meta property="og:type" content="website"><meta property="og:url" content="https://gooddesign.jasonlin.tech/"><meta property="og:image" content="https://gooddesign.jasonlin.tech/img/egg.c510d662.webp">
 <link rel="canonical" href="https://gooddesign.jasonlin.tech/">
-<title>好设计两百年</title>
+<title>Good Design, 1851–2026</title>
 <link rel="stylesheet" href="fonts.css">
 <style>
 /* 版式：像一本博物馆藏品图录。顶部一条 1850–2030 的年代刻度把 87 件作品排成点阵；
@@ -208,9 +208,9 @@ footer a { color: var(--muted) }
   </button>
 </div>
 <header class="hero wrap">
-  <h1 id="h1">好设计<br>两百年<small>Good Design, 1851–2026</small></h1>
+  <h1 id="h1">Two Centuries<br>of Good Design<small>好设计两百年 · 1851–2026</small></h1>
   <div>
-    <p class="intro" id="intro">从 1851 年伦敦的水晶宫到 2024 年的无人出租车，<b>87 件</b>建筑、家具、家电、消费电子和交通工具，以及背后的 <b>60 多位设计师</b>和几家把设计当作信仰的公司。点任意作品看大图，点设计师的名字看他的故事。</p>
+    <p class="intro" id="intro">From the Crystal Palace in London in 1851 to the driverless taxi of 2024: <b>87 pieces</b> of architecture, furniture, appliances, electronics and mobility, the <b>60-plus designers</b> behind them, and a few companies that treated design as a creed. Tap any piece for the full image, and any designer’s name for their story.</p>
     <div class="counts" id="counts"></div>
   </div>
 </header>
@@ -1318,7 +1318,7 @@ const UI = {
     view: 'View', back: '← Back', backP: '← Back', prev: 'Previous', next: 'Next', close: 'Close', lb: 'Piece details', pc: 'Designer profile', theme: 'Toggle dark/light mode', group: 'Display settings', sep: ', ', colon: ': ', comma: ', ',
     langBtn: '<span>中 /</span><b>EN</b>', langLabel: '切换到中文' },
 };
-let lang = (() => { try { const l = localStorage.getItem('gd-lang'); if (l === 'zh' || l === 'en') return l; } catch {} return /^zh/i.test(navigator.language || '') ? 'zh' : 'en'; })();
+let lang = (() => { try { const l = localStorage.getItem('gd-lang'); if (l === 'zh' || l === 'en') return l; } catch {} return 'en'; })();   // 默认英文，用户切换过才记住
 const L = () => UI[lang], isEn = () => lang === 'en';
 const nm = it => isEn() ? it.en : it.zh;                                  // 作品/人物/制造商的主名
 const tx = (o, k, kind, id) => (isEn() && EN[kind][id]?.[k] !== undefined) ? EN[kind][id][k] : o[k];   // 英文文案，缺失时退回中文
