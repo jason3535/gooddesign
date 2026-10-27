@@ -1508,8 +1508,39 @@ function push(v) {
   if (v.t === 'i') { const it = byId[v.id]; track('open_item', { id: v.id, cat: it.cat, year: it.y, depth: stack.length }); }
   else track(v.mk ? 'open_maker' : 'open_person', { id: v.id, depth: stack.length });
 }
-// 埋点：Umami 自定义事件（脚本没加载到就静默跳过），不含任何个人信息
-function track(name, props) { try { window.umami?.track(name, { lang, ...props }); } catch {} }
+// ---------- 埋点 ----------
+// 与 aipodcast/四图谱同一套自建统计（Cloudflare Worker + D1，stats.jasonlin.tech），path 前缀 gooddesign:
+// 无 Cookie、不存 IP、无个人信息；aid 是 localStorage 里的随机匿名 ID（与站群共用）。
+// view = 打开即发；read = 可见满 4 秒或发生一次真实交互（800ms 起步保护期内不算）；其余是自定义事件。
+// 可在 Claude Code 里直接 curl 查：见工程目录 stats.py。Umami 同时保留（umami.track）。
+const STATS = (() => {
+  const UA = navigator.userAgent || '';
+  if (/bot|crawl|spider|slurp|headless|lighthouse|bingpreview|facebookexternalhit/i.test(UA)) return { post() {} };
+  const U = 'https://stats.jasonlin.tech', P = 'gooddesign:', DWELL = 4000, GRACE = 800, T0 = Date.now();
+  let LS = null; try { LS = localStorage; } catch {}
+  let aid = ''; try { aid = (LS && LS.aid) || ''; if (!aid) { const u = new Uint8Array(10); crypto.getRandomValues(u); aid = [...u].map(n => n.toString(16).padStart(2, '0')).join(''); if (LS) LS.aid = aid; } } catch { aid = ''; }
+  const ref = (document.referrer || '').replace(/^[a-z]+:\/\//i, '').split('/')[0];
+  const dev = /Mobi|Android|iPhone|iPad|iPod/i.test(UA) ? 'mobile' : 'desktop';
+  const post = (type, path, r) => { try { const body = JSON.stringify({ type, path: P + path, ua: dev, ref: r, sid: '', aid });
+    if (navigator.sendBeacon) navigator.sendBeacon(U, new Blob([body], { type: 'text/plain' })); else fetch(U, { method: 'POST', body, keepalive: true }); } catch {} };
+  post('view', location.pathname, ref);
+  let sent = false, acc = 0, since = null, timer = null;
+  const read = () => { if (sent) return; sent = true; clearTimeout(timer); post('read', location.pathname, ref); };
+  const pause = () => { if (since !== null) { acc += Date.now() - since; since = null; } clearTimeout(timer); timer = null; };
+  const resume = () => { if (sent || since !== null) return; since = Date.now(); timer = setTimeout(read, Math.max(0, DWELL - acc)); };
+  const vis = () => document.visibilityState === 'visible' ? resume() : pause();
+  document.addEventListener('visibilitychange', vis);
+  const interact = () => { if (Date.now() - T0 >= GRACE) read(); };
+  for (const ev of ['scroll', 'pointerdown', 'keydown', 'touchstart']) addEventListener(ev, interact, true);
+  vis();
+  return { post };
+})();
+// 自定义事件：type=事件名，path=gooddesign:/事件名/主体（外链再加来源作品），ref 列放语言
+function track(name, props) {
+  try { window.umami?.track(name, { lang, ...props }); } catch {}
+  const main = [props.id, props.cat, props.by, props.to, props.host, props.pct].find(v => v !== undefined) ?? '';
+  STATS.post(name, `/${name}/${main}${name === 'outbound' ? '/' + props.from : ''}`, lang);
+}
 function pop() { if (stack.length > 1) { stack.pop(); show(-1, stack.at(-1).sc || 0); } else closeLb(true); }
 function closeLb(fromHistory) {
   const n = stack.length; stack.length = 0; if (LBD.open) LBD.close();
