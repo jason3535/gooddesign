@@ -4,3 +4,4 @@ _preview.html
 img/**/*.webp
 !img/**/*.????????.webp
 img/**/*.jpg
+*.md
