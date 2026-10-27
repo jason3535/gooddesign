@@ -44,6 +44,8 @@ header.hero { padding-block: 56px 28px; display: grid; grid-template-columns: mi
 .counts span { display: inline-flex; align-items: center; gap: 8px; font-size: 14px }
 .counts b { font: 500 14px var(--mono) }
 @media (max-width: 860px) { header.hero { grid-template-columns: 1fr; padding-block: 36px 20px } }
+header.hero { position: relative } :root[lang="en"] .hero h1 { font-size: clamp(48px, 8.4vw, 136px) }
+@media (max-width: 640px) { header.hero { padding-top: 64px } }
 
 /* ---------- 年代刻度 ---------- */
 .ruler { position: relative; margin-block: 8px 34px; padding-block: 14px 30px; border-top: 2px solid var(--ink) }
@@ -66,7 +68,13 @@ header.hero { padding-block: 56px 28px; display: grid; grid-template-columns: mi
 .seg { display: inline-flex; border: 1px solid var(--rule); border-radius: 999px; padding: 2px }
 .seg button { font-size: 13px; padding: 4px 12px; border-radius: 999px; color: var(--muted) }
 .seg button[aria-pressed="true"] { background: var(--ink); color: var(--paper) }
-.theme { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--rule); display: grid; place-items: center }
+.corner { position: absolute; top: calc(14px + env(safe-area-inset-top, 0px)); right: max(20px, env(safe-area-inset-right, 0px)); z-index: 25; display: inline-flex; align-items: center; border: 1px solid var(--rule); border-radius: 999px; padding: 2px; background: color-mix(in srgb, var(--paper) 88%, transparent); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px) }
+.corner > button { height: 30px; min-width: 30px; border-radius: 999px; display: grid; place-items: center; color: var(--ink) }
+.corner > button:hover { background: var(--tile) }
+.corner .lang { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; font: 600 12px/1 var(--mono); letter-spacing: .06em; padding: 0 10px }
+.corner .lang span { color: var(--muted); font-weight: 500 } .corner .lang b { font-weight: 600 }
+.corner i { width: 1px; height: 16px; background: var(--rule); margin: 0 2px }
+.theme { width: 30px }
 .theme svg { width: 16px; height: 16px; stroke: var(--ink); fill: none; stroke-width: 1.8; stroke-linecap: round }
 .theme .sun { display: none } :root[data-mode="dark"] .theme .sun { display: block } :root[data-mode="dark"] .theme .moon { display: none }
 @media (max-width: 640px) { .bar .wrap { flex-wrap: nowrap; gap: 10px } .tabs { flex-wrap: nowrap; overflow-x: auto; min-width: 0; flex: 1; scrollbar-width: none } .tabs::-webkit-scrollbar { display: none } .tab { font-size: 15px; white-space: nowrap } .tab sup { display: none } .bar .right { margin-left: 0; gap: 8px } .seg button { padding: 4px 9px } }
@@ -177,10 +185,17 @@ footer a { color: var(--muted) }
 .hide { display: none !important }
 </style>
 </head><body>
+<div class="corner" role="group" aria-label="显示设置">
+  <button class="lang" id="lang" type="button"></button><i aria-hidden="true"></i>
+  <button class="theme" id="theme" type="button" aria-label="切换深色/浅色">
+    <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+    <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+  </button>
+</div>
 <header class="hero wrap">
-  <h1>好设计<br>两百年<small>Good Design, 1851–2026</small></h1>
+  <h1 id="h1">好设计<br>两百年<small>Good Design, 1851–2026</small></h1>
   <div>
-    <p class="intro">从 1851 年伦敦的水晶宫到 2024 年的无人出租车，<b>86 件</b>建筑、家具、家电、消费电子和交通工具，以及背后的 <b>60 多位设计师</b>和几家把设计当作信仰的公司。点任意作品看大图，点设计师的名字看他的故事。</p>
+    <p class="intro" id="intro">从 1851 年伦敦的水晶宫到 2024 年的无人出租车，<b>86 件</b>建筑、家具、家电、消费电子和交通工具，以及背后的 <b>60 多位设计师</b>和几家把设计当作信仰的公司。点任意作品看大图，点设计师的名字看他的故事。</p>
     <div class="counts" id="counts"></div>
   </div>
 </header>
@@ -192,10 +207,6 @@ footer a { color: var(--muted) }
     <div class="tabs" id="tabs"></div>
     <div class="right">
       <div class="seg" id="sort"><button data-v="cat" aria-pressed="true">按类别</button><button data-v="year" aria-pressed="false">按年代</button></div>
-      <button class="theme" id="theme" type="button" aria-label="切换深色/浅色">
-        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
-        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
-      </button>
     </div>
   </div>
 </div>
@@ -203,12 +214,12 @@ footer a { color: var(--muted) }
 <main class="wrap" id="main"></main>
 
 <section class="wrap people-sec" id="people">
-  <div class="group-head"><h2>背后的人</h2><span class="mono" id="pcount"></span></div>
+  <div class="group-head"><h2 id="pplh">背后的人</h2><span class="mono" id="pcount"></span></div>
   <div class="ppl" id="ppl"></div>
 </section>
 
 <footer class="wrap">
-  <div>作品与人物资料据公开资料整理。图片除注明外均来自维基共享资源（Wikimedia Commons）的自由许可或公有领域图片，按许可要求署名如下。</div>
+  <div id="fnote">作品与人物资料据公开资料整理。图片除注明外均来自维基共享资源（Wikimedia Commons）的自由许可或公有领域图片，按许可要求署名如下。</div>
   <div class="credits" id="credits"></div>
 </footer>
 
@@ -543,9 +554,702 @@ const MAKERS = {
   spacex: { zh: 'SpaceX', en: 'SpaceX', from: '美国 · 2002', bio: '目标是降低航天的成本。猎鹰 9 号的第一级可以回收再飞，一枚助推器最多已经飞了二十多次，把每公斤入轨的价格压到了此前的几分之一。' },
 };
 
-const IMG = {"crystal-palace": {"src": "img/crystal-palace.b6f695b5.webp", "s": "img/s/crystal-palace.c9cc4271.webp", "w": 928, "cut": false, "artist": "Philip Henry Delamotte (1821–1889)", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Crystal_Palace_General_view_from_Water_Temple.jpg"}, "eiffel-tower": {"src": "img/eiffel-tower.90af22bb.webp", "s": "img/s/eiffel-tower.a1374dae.webp", "w": 841, "cut": false, "artist": "Benh LIEU SONG", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_Wikimedia_Commons_(cropped).jpg"}, "schroder-house": {"src": "img/schroder-house.04941813.webp", "s": "img/s/schroder-house.6e54ef78.webp", "w": 1280, "cut": false, "artist": "User:Husky", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Rietveld_Schr%C3%B6derhuis_HayKranen-20.JPG"}, "bauhaus-dessau": {"src": "img/bauhaus-dessau.0bd94a25.webp", "s": "img/s/bauhaus-dessau.72f1b241.webp", "w": 1280, "cut": false, "artist": "A.Savin", "license": "FAL", "page": "https://commons.wikimedia.org/wiki/File:Dessau_Bauhaus-Geb%C3%A4ude_asv2024-06_img1.jpg"}, "barcelona-pavilion": {"src": "img/barcelona-pavilion.00fa7dc1.webp", "s": "img/s/barcelona-pavilion.918c3fc9.webp", "w": 1280, "cut": false, "artist": "Ashley Pomeroy at English Wikipedia", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:The_Barcelona_Pavilion,_Barcelona,_2010.jpg"}, "weissenhof": {"src": "img/weissenhof.568b0244.webp", "s": "img/s/weissenhof.b4cd9392.webp", "w": 1280, "cut": false, "artist": "Photo: Andreas Praefcke", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Weissenhof_Corbusier_03.jpg"}, "fallingwater": {"src": "img/fallingwater.b7a080ff.webp", "s": "img/s/fallingwater.2ca9f85d.webp", "w": 1280, "cut": false, "artist": "lachrimae72", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Fallingwater3.jpg"}, "villa-mairea": {"src": "img/villa-mairea.b42e20b9.webp", "s": "img/s/villa-mairea.04bf7f3e.webp", "w": 1280, "cut": false, "artist": "Ninara from Helsinki, Finland", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:4Y1A7841_Alvar_Aalto,_Finland_(26710745140).jpg"}, "glass-house": {"src": "img/glass-house.274eec61.webp", "s": "img/s/glass-house.28dc1634.webp", "w": 1280, "cut": false, "artist": "Carol M. Highsmith", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Glass_House_2006.jpg"}, "farnsworth": {"src": "img/farnsworth.29b5cc30.webp", "s": "img/s/farnsworth.5609ff3d.webp", "w": 1280, "cut": false, "artist": "Victor Grigas", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Farnsworth_House_by_Mies_Van_Der_Rohe_-_exterior-8.jpg"}, "unite": {"src": "img/unite.f960a19a.webp", "s": "img/s/unite.5ce5c055.webp", "w": 1280, "cut": false, "artist": "A.Savin", "license": "FAL", "page": "https://commons.wikimedia.org/wiki/File:Corbusierhaus_B-Westend_06-2017.jpg"}, "chandigarh": {"src": "img/chandigarh.4d479670.webp", "s": "img/s/chandigarh.c796e164.webp", "w": 1280, "cut": false, "artist": "UnpetitproleX", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Palace_of_Assembly_Chandigarh.jpg"}, "seagram": {"src": "img/seagram.b4de0fe4.webp", "s": "img/s/seagram.fae47b1a.webp", "w": 1280, "cut": false, "artist": "Ken OHYAMA from FUNABASHI, Japan", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Seagram_Building_(35098307116).jpg"}, "guggenheim-ny": {"src": "img/guggenheim-ny.5922cb1c.webp", "s": "img/s/guggenheim-ny.3583a2cb.webp", "w": 1280, "cut": false, "artist": "Ajay Suresh from New York, NY, USA", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Solomon_R._Guggenheim_Museum_(48059131351).jpg"}, "salk": {"src": "img/salk.e00eda52.webp", "s": "img/s/salk.cb600875.webp", "w": 1280, "cut": false, "artist": "Codera23", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Salk_Institute_2.jpg"}, "sydney-opera": {"src": "img/sydney-opera.da6e4c30.webp", "s": "img/s/sydney-opera.d742365c.webp", "w": 1280, "cut": false, "artist": "BAVhah", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Sydney_Opera_House_2026.jpg"}, "pompidou": {"src": "img/pompidou.aa14a264.webp", "s": "img/s/pompidou.352f1418.webp", "w": 1280, "cut": false, "artist": "JeremyJeanguenin", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Le_Centre_Georges-Pompidou_en_travaux_(2026).jpg"}, "church-light": {"src": "img/church-light.e44cf2fa.webp", "s": "img/s/church-light.0d6f9cb8.webp", "w": 1070, "cut": false, "artist": "taken by Bergmann", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Ibaraki_Kasugaoka_Church_light_cross.jpg"}, "louvre-pyramid": {"src": "img/louvre-pyramid.d41b1c71.webp", "s": "img/s/louvre-pyramid.37078743.webp", "w": 1280, "cut": false, "artist": "Benh LIEU SONG (Flickr)", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Louvre_Museum_Wikimedia_Commons.jpg"}, "bilbao": {"src": "img/bilbao.27112693.webp", "s": "img/s/bilbao.fe950244.webp", "w": 1280, "cut": false, "artist": "Naotake Murayama", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Museo_Guggenheim,_Bilbao_(31273245344).jpg"}, "apple-park": {"src": "img/apple-park.2d708bb5.webp", "s": "img/s/apple-park.33e5097a.webp", "w": 1280, "cut": false, "artist": "Daniel L. Lu (user:dllu)", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Apple_Park_dllu.jpg"}, "thonet-14": {"src": "img/thonet-14.9ee2d106.webp", "s": "img/s/thonet-14.24d5895a.webp", "w": 575, "cut": true, "bg": "#e6dbd3", "bgd": "#332a24", "artist": "Henry Townsend", "license": "FAL", "page": "https://commons.wikimedia.org/wiki/File:Thonet_Chair_No._14.JPG"}, "red-blue": {"src": "img/red-blue.cc71f5fa.webp", "s": "img/s/red-blue.71eefe18.webp", "w": 925, "cut": true, "bg": "#ebcfce", "bgd": "#372120", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Gerrit_thomas_rietveld,_red-blue_chair,_1946-56_ca.jpg"}, "wassily": {"src": "img/wassily.c9512f59.webp", "s": "img/s/wassily.8a1b072b.webp", "w": 819, "cut": true, "bg": "#ebdace", "bgd": "#362a21", "artist": "Tim Evanson from Cleveland Heights, Ohio, USA", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:B3_chair_-_Marcel_Breuer_(27986822589).jpg"}, "lc4": {"src": "img/lc4.fbd1ab5b.webp", "s": "img/s/lc4.b88f737d.webp", "w": 1168, "cut": true, "bg": "#eae0cf", "bgd": "#362e21", "artist": "Tim Evanson from Cleveland Heights, Ohio, USA", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:LC4_lounge_-_Le_Corbusier_Charlotte_Perriand_(27986818339).jpg"}, "barcelona-chair": {"src": "img/barcelona-chair.9937f927.webp", "s": "img/s/barcelona-chair.2486b262.webp", "w": 1110, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "sailko", "license": "CC BY 2.5", "page": "https://commons.wikimedia.org/wiki/File:Ngv_design,_ludwig_mies_van_der_rohe_%26_co,_barcelona_chair.JPG"}, "anglepoise": {"src": "img/anglepoise.34006c6b.webp", "s": "img/s/anglepoise.707dbb0e.webp", "w": 606, "cut": true, "bg": "#e3dcd6", "bgd": "#302b26", "artist": "Upphovsperson okänd", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Anglepoise_lamp,_model_1208.jpg"}, "stool-60": {"src": "img/stool-60.77913996.webp", "s": "img/s/stool-60.9dff1ce2.webp", "w": 532, "cut": true, "bg": "#e6ddd3", "bgd": "#322c24", "artist": "Gershowitz", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Aalto_Model_60.png"}, "ph5": {"src": "img/ph5.bd1bed6f.webp", "s": "img/s/ph5.dcb800f5.webp", "w": 1076, "cut": true, "bg": "#e7dbd2", "bgd": "#332a24", "artist": "Holger Ellgaard", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:PH-Lampan_1.jpg"}, "wishbone": {"src": "img/wishbone.f7c3d368.webp", "s": "img/s/wishbone.b04f933f.webp", "w": 659, "cut": true, "bg": "#e9dcd0", "bgd": "#352b22", "artist": "Ew3234", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Leather_Wishbone_Chair.jpg"}, "akari": {"src": "img/akari.6ae3fe7e.webp", "s": "img/s/akari.f7758c4b.webp", "w": 761, "cut": true, "bg": "#e7e0d2", "bgd": "#342e23", "artist": "THOR", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Isamu_Noguchi_Luminaire_Lanterne_Akari_10_A_Mus%C3%A9e_des_Arts_D%C3%A9coratifs_Paris.jpg"}, "butterfly-stool": {"src": "img/butterfly-stool.8cb31faf.webp", "s": "img/s/butterfly-stool.938d2fb1.webp", "w": 882, "cut": true, "bg": "#ebdbce", "bgd": "#362a21", "artist": "tomislav medak", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Tabouret_Butterfly_(4958243953).jpg"}, "eames-lounge": {"src": "img/eames-lounge.93b49f1b.webp", "s": "img/s/eames-lounge.9549e02a.webp", "w": 1200, "cut": true, "bg": "#e4ded6", "bgd": "#312d26", "artist": "sailko", "license": "CC BY 2.5", "page": "https://commons.wikimedia.org/wiki/File:Ngv_design,_charles_eames_and_herman_miller,_lounge_chair_670,_1956.JPG"}, "tulip": {"src": "img/tulip.4d2fb9a1.webp", "s": "img/s/tulip.11007045.webp", "w": 818, "cut": true, "bg": "#e4d9d5", "bgd": "#312925", "artist": "Eero Saarinen", "license": "No restrictions", "page": "https://commons.wikimedia.org/wiki/File:Eero_Saarinen,_%22Pedestal%22_Armchair_and_Seat_Cushion,_Designed_1956.jpg"}, "egg": {"src": "img/egg.c510d662.webp", "s": "img/s/egg.3f5d51c1.webp", "w": 861, "cut": true, "bg": "#e2ded7", "bgd": "#302d27", "artist": "Nasjonalmuseet", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Egg_chair_-_Arne_Jacobsen_(1958)_2.jpg"}, "kikkoman": {"src": "img/kikkoman.c28f025e.webp", "s": "img/s/kikkoman.e2afe003.webp", "w": 327, "cut": true, "bg": "#e4dad5", "bgd": "#312925", "artist": "Creative Tools", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Kikkoman_soysauce.jpg"}, "arco": {"src": "img/arco.0bcce993.webp", "s": "img/s/arco.13594e13.webp", "w": 1280, "cut": false, "artist": "Andrea Pavanello", "license": "CC BY-SA 3.0 it", "page": "https://commons.wikimedia.org/wiki/File:-_ITALY_-_Lampada_Arco_di_Achille_Castiglioni_per_Flos_(_1962_).svg"}, "panton": {"src": "img/panton.bbb9a1ff.webp", "s": "img/s/panton.6a383509.webp", "w": 817, "cut": true, "bg": "#eccfcd", "bgd": "#372120", "artist": "sailko", "license": "CC BY 2.5", "page": "https://commons.wikimedia.org/wiki/File:Ngv_design,_verner_panton,_panton_chair,_1960_02.JPG"}, "tizio": {"src": "img/tizio.973c6f3b.webp", "s": "img/s/tizio.5005a1b0.webp", "w": 1169, "cut": true, "bg": "#e3dbd6", "bgd": "#302a26", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Richard_sapper_per_artemide_spa.,_lampada_da_tavolo_tizio,_1971-72.jpg"}, "juicy-salif": {"src": "img/juicy-salif.661d8fee.webp", "s": "img/s/juicy-salif.3cebcb6a.webp", "w": 507, "cut": true, "bg": "#e4ddd5", "bgd": "#312c26", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Philippe_starck_per_alessi_spa.,_spremiagrumi_juicy_salif,_1990.jpg"}, "kitchenaid": {"src": "img/kitchenaid.05a238b8.webp", "s": "img/s/kitchenaid.c0016443.webp", "w": 819, "cut": true, "bg": "#e3dcd6", "bgd": "#302b26", "artist": "Your Best Digs", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:White_KitchenAid_mixer_(KSM150PSWH).jpg"}, "lettera22": {"src": "img/lettera22.a81c54f8.webp", "s": "img/s/lettera22.c0187233.webp", "w": 1168, "cut": true, "bg": "#e5d7d5", "bgd": "#312725", "artist": "", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Olivetti_Lettera_22_by_LjL.jpeg"}, "sk4": {"src": "img/sk4.19b83d7c.webp", "s": "img/s/sk4.4f12c8a8.webp", "w": 1073, "cut": true, "bg": "#e4e1d5", "bgd": "#312f25", "artist": "Hilarmont", "license": "CC BY-SA 3.0 de", "page": "https://commons.wikimedia.org/wiki/File:Braun_Radio_mit_Plattenspieler_Pinakothek_der_Moderne_(Foto_Hilarmont).jpg"}, "t4": {"src": "img/t4.b5720714.webp", "s": "img/s/t4.39c57f35.webp", "w": 764, "cut": true, "bg": "#e4e0d5", "bgd": "#312e26", "artist": "Filip Triner", "license": "CC BY 4.0", "page": "https://commons.wikimedia.org/wiki/File:Braun-t4-transistor-radio-design-dieter-rams-only-once-shop-4.jpg"}, "ts502": {"src": "img/ts502.a4289a2b.webp", "s": "img/s/ts502.452f0da6.webp", "w": 962, "cut": true, "bg": "#e7d7d3", "bgd": "#332724", "artist": "Brionvega S.a.S. (costruttore/ produttore), Sapper Richard (designer), Zanuso Marco (designer)", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Radioricevitore_a_transistor,_portatile_-_Museo_scienza_tecnologia_Milano_10074.jpg"}, "valentine": {"src": "img/valentine.b22d42b3.webp", "s": "img/s/valentine.4584bc47.webp", "w": 1163, "cut": true, "bg": "#ebd2ce", "bgd": "#372320", "artist": "Folletto at Italian Wikipedia", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Olivetti-Valentine.jpg"}, "beogram4000": {"src": "img/beogram4000.52b2994f.webp", "s": "img/s/beogram4000.37409b37.webp", "w": 888, "cut": true, "bg": "#e3e0d6", "bgd": "#302e26", "artist": "Heidi De Vries from Berkeley, CA", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Perfect_record_player_(6495511939).jpg"}, "et66": {"src": "img/et66.c9169e33.webp", "s": "img/s/et66.c1bbef92.webp", "w": 667, "cut": true, "bg": "#d5dfe4", "bgd": "#252d31", "artist": "Pinot Dita from Kuwait", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:1987_Braun_calculator_ET66_by_Dieter_Rams_(13964223413).jpg"}, "dc01": {"src": "img/dc01.0e272b6d.webp", "s": "img/s/dc01.74bb91b6.webp", "w": 370, "cut": true, "bg": "#e5dfd4", "bgd": "#322d25", "artist": "Lankyrider", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Dyson_DC01._01.jpg"}, "muji-cd": {"src": "img/muji-cd.c2704841.webp", "s": "img/s/muji-cd.63f0736b.webp", "w": 399, "cut": true, "bg": "#d5dee4", "bgd": "#252c31", "artist": "Myself", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Muji_NYC_inside_CD_players.jpg"}, "leica-m3": {"src": "img/leica-m3.5b37e2f6.webp", "s": "img/s/leica-m3.a44818be.webp", "w": 1132, "cut": true, "bg": "#e3dfd7", "bgd": "#302d27", "artist": "CharlieTPhotographic", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Leica_M3_20090309.jpg"}, "tr610": {"src": "img/tr610.acaec62e.webp", "s": "img/s/tr610.99881c36.webp", "w": 559, "cut": true, "bg": "#e8d8d1", "bgd": "#342823", "artist": "Sony DL Corporation (costruttore/ produttore/ progettista/ designer)", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Radioricevitore_a_transistor,_tascabile_-_Museo_scienza_tecnologia_Milano_09751_04.jpg"}, "sx70": {"src": "img/sx70.14a152d7.webp", "s": "img/s/sx70.80b86d77.webp", "w": 882, "cut": true, "bg": "#e4d7d5", "bgd": "#312725", "artist": "Thomas Backa from Turku, Finland", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Polaroid_SX-70_(4462345243).jpg"}, "apple2": {"src": "img/apple2.3d6b4df4.webp", "s": "img/s/apple2.700e7bf8.webp", "w": 869, "cut": true, "bg": "#e5ded4", "bgd": "#322d25", "artist": "Rama &amp; Musée Bolo", "license": "CC BY-SA 2.0 fr", "page": "https://commons.wikimedia.org/wiki/File:Apple_II_at_Mus%C3%A9e_Bolo.jpg"}, "walkman": {"src": "img/walkman.9e998506.webp", "s": "img/s/walkman.e27baf1a.webp", "w": 769, "cut": true, "bg": "#d5dbe5", "bgd": "#252a31", "artist": "Anna Gerdén", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Walkman_TPS-L2.jpg"}, "famicom": {"src": "img/famicom.64d064c9.webp", "s": "img/s/famicom.6d9ff6c9.webp", "w": 1200, "cut": true, "bg": "#e4dad5", "bgd": "#312a26", "artist": "Evan-Amos", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Nintendo-Famicom-Console-FL.jpg"}, "mac128k": {"src": "img/mac128k.e970e8fe.webp", "s": "img/s/mac128k.5e8603ce.webp", "w": 1200, "cut": true, "bg": "#e4d9d5", "bgd": "#312926", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Computer_macintosh_128k,_1984_(all_about_Apple_onlus).jpg"}, "discman": {"src": "img/discman.878bdeb7.webp", "s": "img/s/discman.9dd8b500.webp", "w": 1120, "cut": true, "bg": "#e0e3d6", "bgd": "#2e3026", "artist": "Binarysequence", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Sony_D50_Discman_Front.JPG"}, "gameboy": {"src": "img/gameboy.c7c635c5.webp", "s": "img/s/gameboy.748ce7ac.webp", "w": 987, "cut": true, "bg": "#e4e2d6", "bgd": "#312f26", "artist": "Transfrom JPEG version and remove white background. Original by Evan-Amos.", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Game-Boy-FL.png"}, "playstation": {"src": "img/playstation.fa2a9a25.webp", "s": "img/s/playstation.94d6239f.webp", "w": 1200, "cut": true, "bg": "#e2ded7", "bgd": "#302d27", "artist": "Evan-Amos", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:PlayStation-SCPH-1000-with-Controller.jpg"}, "thinkpad701c": {"src": "img/thinkpad701c.39c65246.webp", "s": "img/s/thinkpad701c.ce97e78f.webp", "w": 893, "cut": true, "bg": "#e3dbd6", "bgd": "#312a26", "artist": "nakashi", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Thinkpad_701.jpg"}, "palmpilot": {"src": "img/palmpilot.3072eeab.webp", "s": "img/s/palmpilot.870eb5c7.webp", "w": 781, "cut": true, "bg": "#d6e3e3", "bgd": "#263030", "artist": "Rama & Musée Bolo", "license": "CC BY-SA 2.0 fr", "page": "https://commons.wikimedia.org/wiki/File:Palm-IMG_7025.jpg"}, "imac-g3": {"src": "img/imac-g3.ce45d953.webp", "s": "img/s/imac-g3.dc33d053.webp", "w": 1200, "cut": true, "bg": "#d5dce4", "bgd": "#262b31", "artist": "Alterations by David Fuchs; original by Rama, licensed CC-by-SA", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:IMac_G3_Bondi_Blue,_three-quarters_view.png"}, "ipod": {"src": "img/ipod.a673ff5d.webp", "s": "img/s/ipod.eab538f6.webp", "w": 556, "cut": true, "bg": "#dce4d6", "bgd": "#2b3126", "artist": "Steve Hodgson from Edinburgh, Scotland", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:IPod_(54750592069).jpg"}, "imac-g4": {"src": "img/imac-g4.486aa30b.webp", "s": "img/s/imac-g4.22498430.webp", "w": 1200, "cut": true, "bg": "#d4dee5", "bgd": "#252c32", "artist": "Felix Winkelnkemper", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Apple_iMac_4G_(33937792088).jpg"}, "iphone": {"src": "img/iphone.852d2a29.webp", "s": "img/s/iphone.125c7300.webp", "w": 536, "cut": true, "bg": "#d7d6e3", "bgd": "#282630", "artist": "Carl Berkeley from Riverside California", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:IPhone_First_Generation_8GB_(3680455198).jpg"}, "op1": {"src": "img/op1.46424b74.webp", "s": "img/s/op1.91652126.webp", "w": 1148, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "Isaac Henry", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:OP-1_Sequencer_Concept.png"}, "nest": {"src": "img/nest.f0981573.webp", "s": "img/s/nest.7bdc4868.webp", "w": 601, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "David Berkowitz from New York, NY, USA", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Nest_thermostat_-_Consumer_Electronics_Show_-_CES_2013_-_Las_Vegas_(8381791238).jpg"}, "applewatch": {"src": "img/applewatch.99704b42.webp", "s": "img/s/applewatch.b531ad55.webp", "w": 796, "cut": true, "bg": "#d6dfe3", "bgd": "#272d30", "artist": "Gregory Varnum", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Apple_Watch_Sport_-_38mm_Space_Gray_(3773).jpg"}, "airpods": {"src": "img/airpods.b3c5615a.webp", "s": "img/s/airpods.2667fb26.webp", "w": 1200, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "Maurizio Pesce from Milan, Italia", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:AirPods.jpg"}, "modelt": {"src": "img/modelt.c5c65a6e.webp", "s": "img/s/modelt.6bfdf732.webp", "w": 779, "cut": true, "bg": "#e6ded4", "bgd": "#322c25", "artist": "Mark Harkin", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Model_T_Ford_(8424090806).jpg"}, "beetle": {"src": "img/beetle.37159dd6.webp", "s": "img/s/beetle.c2609c68.webp", "w": 1073, "cut": true, "bg": "#d3e6e6", "bgd": "#243332", "artist": "Theresia Freistetter", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Volkswagen1960.jpg"}, "vespa": {"src": "img/vespa.1d8670b2.webp", "s": "img/s/vespa.47c3dde2.webp", "w": 1128, "cut": true, "bg": "#dce3d6", "bgd": "#2b3026", "artist": "Daderot", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Vespa_125_Scooter,_1948_-_Science_Museum,_London_-_DSC05675.jpg"}, "ds": {"src": "img/ds.00b89904.webp", "s": "img/s/ds.25e7ed9c.webp", "w": 1113, "cut": true, "bg": "#d6dde4", "bgd": "#262c31", "artist": "Slaunger", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Citro%C3%ABn_DS_21_27_Quai_Anatole_France_license_plate_blanked_2012-06-02_cropped.jpg"}, "fiat500": {"src": "img/fiat500.8cba86dc.webp", "s": "img/s/fiat500.a83ed621.webp", "w": 935, "cut": true, "bg": "#ece2cd", "bgd": "#372f1f", "artist": "DILIN", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Fiat_500_yellow.jpg"}, "mini": {"src": "img/mini.17e0a4ab.webp", "s": "img/s/mini.60329e5e.webp", "w": 1188, "cut": true, "bg": "#e4ded5", "bgd": "#312c25", "artist": "Calreyn88", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:1959_Morris_Mini_Minor.jpg"}, "etype": {"src": "img/etype.ce1cbacd.webp", "s": "img/s/etype.d6340770.webp", "w": 1112, "cut": true, "bg": "#d6e3e1", "bgd": "#27302f", "artist": "DeFacto", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Jaguar_E-Type_Series_1_3.8_Litre_1961.jpg"}, "p911": {"src": "img/p911.c8a7f24d.webp", "s": "img/s/p911.6496a072.webp", "w": 1200, "cut": true, "bg": "#e3dad6", "bgd": "#312a26", "artist": "AlfvanBeem", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_dutch_licence_registration_27-99-AX.jpg"}, "shinkansen": {"src": "img/shinkansen.96b369d2.webp", "s": "img/s/shinkansen.f6cd0ea1.webp", "w": 637, "cut": true, "bg": "#d5dae4", "bgd": "#262a31", "artist": "FairlieGood", "license": "CC BY 4.0", "page": "https://commons.wikimedia.org/wiki/File:0_Series_Shinkansen_NRM.jpg"}, "concorde": {"src": "img/concorde.cc24a4a0.webp", "s": "img/s/concorde.3632b923.webp", "w": 1188, "cut": true, "bg": "#e3dad6", "bgd": "#302926", "artist": "Ken Fielding", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:G-BOAC_2_BAC-SNIAS_Concorde_102_British_Airways_MAN_22MAY04_(11432526884).jpg"}, "countach": {"src": "img/countach.049fabae.webp", "s": "img/s/countach.ebcec8ce.webp", "w": 1123, "cut": true, "bg": "#e9e6d0", "bgd": "#353222", "artist": "Calreyn88", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:1975_Lamborghini_Countach_LP400_Periscopo.jpg"}, "roadster": {"src": "img/roadster.933072f7.webp", "s": "img/s/roadster.2482f5d8.webp", "w": 1200, "cut": true, "bg": "#e6d3d3", "bgd": "#332424", "artist": "TaurusEmerald", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:2008_Tesla_Roadster_Petersen_Automotive_Museum.jpg"}, "falcon9": {"src": "img/falcon9.fc929da7.webp", "s": "img/s/falcon9.14633832.webp", "w": 1280, "cut": false, "artist": "SpaceX", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:SES-10_Mission_-_Falcon_9_First_Stage_Landing_(32996435084).jpg"}, "model3": {"src": "img/model3.273d007e.webp", "s": "img/s/model3.5cee1787.webp", "w": 1019, "cut": true, "bg": "#e6d3d5", "bgd": "#332426", "artist": "Matti Blume", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Tesla,_Paris_Motor_Show_2018,_Paris_(1Y7A1919).jpg"}, "cybertruck": {"src": "img/cybertruck.30fdcbb2.webp", "s": "img/s/cybertruck.3ce0de91.webp", "w": 1193, "cut": true, "bg": "#e3e2d6", "bgd": "#302f26", "artist": "Alexander-93", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:2024_Tesla_Cybertruck_Foundation_Series_IMG_0634_(cropped).jpg"}, "cybercab": {"src": "img/cybercab.7d5e083b.webp", "s": "img/s/cybercab.3be78b02.webp", "w": 1000, "cut": true, "bg": "#e7ded2", "bgd": "#332d23", "artist": "Ulkl", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:CybercabSTHLM2402.jpg"}};
+
+// ---------- English ----------
+// 英文版文案（人工翻译，不在运行时机翻）：作品 note/maker、人物 from/role/bio/quote、制造商 from/bio，以及合作者英文名
+const EN = {
+ "items": {
+  "crystal-palace": {
+   "note": "An exhibition hall assembled in a few months from standardised cast-iron parts and panes of glass, the starting point of prefabricated building. It burned down in 1936.",
+   "maker": "Great Exhibition, London"
+  },
+  "eiffel-tower": {
+   "note": "Built for the 1889 World's Fair and protested by a petition of artists when it opened, it went on to become the symbol of Paris. The structure is entirely exposed: its form is simply the flow of forces.",
+   "maker": "Exposition Universelle, Paris"
+  },
+  "schroder-house": {
+   "note": "The only house fully realised in the De Stijl idiom. The upper floor has no fixed walls; sliding partitions turn one open level into several rooms at will.",
+   "maker": "Utrecht"
+  },
+  "bauhaus-dessau": {
+   "note": "Classrooms, workshops and dormitories are split into separate blocks by function and tied together with glass curtain walls and bridges. The building is itself a manifesto of the school's teaching.",
+   "maker": "Bauhaus school"
+  },
+  "barcelona-pavilion": {
+   "note": "A few free-standing marble walls and slender steel columns carry a flat roof, and space flows between the walls. Dismantled after the fair, it was rebuilt to the original design in 1986.",
+   "maker": "Barcelona International Exposition"
+  },
+  "weissenhof": {
+   "note": "In 1927 the Deutscher Werkbund staged a housing exhibition in Stuttgart, and Le Corbusier built two houses there. His \"Five Points of a New Architecture\" were written for it: pilotis, roof garden, free plan, ribbon windows and free façade. A World Heritage Site since 2016.",
+   "maker": "Stuttgart · Deutscher Werkbund housing exhibition"
+  },
+  "fallingwater": {
+   "note": "Cantilevered right over a waterfall, its concrete terraces seem to grow out of the rock. The defining work of Wright's \"organic architecture\".",
+   "maker": "The Kaufmann family"
+  },
+  "villa-mairea": {
+   "note": "It fuses modernism's white walls and flat roofs with Finnish timber and forest, giving cool modern architecture some warmth.",
+   "maker": "The Gullichsen family"
+  },
+  "glass-house": {
+   "note": "Glass on all four sides, with a single brick cylinder holding the bathroom. Johnson lived here himself for more than half a century.",
+   "maker": "New Canaan"
+  },
+  "farnsworth": {
+   "note": "Eight white steel columns lift a glass box off the ground; inside there is only a timber core. The purest version of \"less is more\".",
+   "maker": "Edith Farnsworth"
+  },
+  "unite": {
+   "note": "The 1952 Marseille block introduced the Unité d'habitation: one building as a vertical town, with shops, a kindergarten and a roof garden. This is the German version, built for the 1957 Interbau exhibition, and it is still fully occupied.",
+   "maker": "Interbau, Berlin International Building Exhibition"
+  },
+  "chandigarh": {
+   "note": "After independence Le Corbusier planned Chandigarh, the new capital of Punjab. The Assembly has a huge curved concrete portico, and its chamber is a hyperboloid drum rising through the roof, reflected in the pool in front.",
+   "maker": "State of Punjab, India"
+  },
+  "seagram": {
+   "note": "A bronze-toned glass tower set back behind an open plaza. Office towers around the world imitated it for decades.",
+   "maker": "Seagram Company"
+  },
+  "guggenheim-ny": {
+   "note": "One continuous spiral ramp is the gallery: visitors ride the lift to the top and look their way down. Wright did not live to see it open.",
+   "maker": "Guggenheim Foundation"
+  },
+  "salk": {
+   "note": "Two rows of laboratories frame a travertine plaza, split by a thin channel of water pointing to the Pacific. Kahn made the most ceremonial of spaces from the fewest materials.",
+   "maker": "Jonas Salk"
+  },
+  "sydney-opera": {
+   "note": "Utzon won the competition in 1957, and it took years to find a buildable geometry for the sail-like shells. He left in anger in 1966 and never returned to see it finished.",
+   "maker": "New South Wales Government"
+  },
+  "pompidou": {
+   "note": "Ducts, lifts and structure are all turned inside out and colour-coded by function, leaving vast open floors inside. The manifesto of High-Tech architecture.",
+   "maker": "French Government"
+  },
+  "church-light": {
+   "note": "A box of fair-faced concrete with a cross cut into the front wall. Light is the church's only ornament.",
+   "maker": "Ibaraki Kasugaoka Church"
+  },
+  "louvre-pyramid": {
+   "note": "Hugely controversial when unveiled, it is now the Louvre's main entrance. Its transparency means it hardly screens the old palace at all.",
+   "maker": "The Louvre"
+  },
+  "bilbao": {
+   "note": "Its twisting titanium-clad curves could only be designed and built with the aerospace software CATIA. A single museum revived a declining industrial city, the so-called \"Bilbao effect\".",
+   "maker": "Guggenheim Foundation"
+  },
+  "apple-park": {
+   "note": "A ring-shaped main building about 460 metres across, wrapped in huge single panes of curved glass. The last project Steve Jobs pushed forward."
+  },
+  "thonet-14": {
+   "note": "Steam-bent beech: six parts and ten screws, so it could be shipped flat-packed around the world. Tens of millions have been made.",
+   "maker": "Gebrüder Thonet"
+  },
+  "red-blue": {
+   "note": "It started out in natural wood and was painted red, blue, yellow and black only around 1923. Less a chair than a Mondrian painting in three dimensions.",
+   "maker": "De Stijl"
+  },
+  "wassily": {
+   "note": "Inspired by bicycle handlebars, Breuer built a chair frame from bent steel tube. Tubular steel furniture starts here.",
+   "maker": "Bauhaus / Knoll"
+  },
+  "lc4": {
+   "note": "The curved body slides back and forth on its base and stays at any angle. Le Corbusier called it a \"machine for resting\".",
+   "maker": "Cassina"
+  },
+  "barcelona-chair": {
+   "note": "Designed for the Barcelona Pavilion; the X-shaped flat steel legs come from ancient Roman folding stools.",
+   "maker": "Knoll"
+  },
+  "anglepoise": {
+   "note": "A car engineer used spring balancing to make a lamp that stays wherever you put it. Norway's Luxo L-1 was licensed from it, and later became the model for Pixar's lamp.",
+   "maker": "Anglepoise"
+  },
+  "stool-60": {
+   "note": "Aalto invented a way to bend the end of a solid-wood leg into an L, so three legs screw straight under the seat and the stools stack.",
+   "maker": "Artek"
+  },
+  "ph5": {
+   "note": "Layers of shades are set on a logarithmic spiral so the bulb is hidden from every angle and the light stays soft and glare-free.",
+   "maker": "Louis Poulsen"
+  },
+  "wishbone": {
+   "note": "The Y-shaped back was inspired by Chinese Ming-dynasty horseshoe chairs; the seat is hand-woven from about 120 metres of paper cord.",
+   "maker": "Carl Hansen & Søn"
+  },
+  "akari": {
+   "note": "Noguchi used the Gifu lantern tradition of bamboo ribs and washi paper to make more than a hundred shapes, all of which fold flat.",
+   "maker": "Ozeki & Co. (Gifu)"
+  },
+  "butterfly-stool": {
+   "note": "Two identical pieces of bent plywood joined by one brass rod and two screws. An icon of Japanese post-war industrial design.",
+   "maker": "Tendo Mokko"
+  },
+  "eames-lounge": {
+   "note": "The Eameses wanted a chair with \"the warm, receptive look of a well-used first baseman's mitt\". Plywood shells with leather cushions, in production ever since.",
+   "maker": "Herman Miller"
+  },
+  "tulip": {
+   "note": "Saarinen wanted to clear up \"the slum of legs\" under tables and chairs, so he left a single cast-aluminium pedestal.",
+   "maker": "Knoll"
+  },
+  "egg": {
+   "note": "Designed for the SAS Royal Hotel in Copenhagen, where everything from the building to the door handles and cutlery was by Jacobsen.",
+   "maker": "Fritz Hansen"
+  },
+  "kikkoman": {
+   "note": "Red cap, two spouts, no drips. The shape reportedly took three years and more than a hundred prototypes; hundreds of millions have been sold.",
+   "maker": "Kikkoman"
+  },
+  "arco": {
+   "note": "A block of Carrara marble anchors a steel arc that reaches over the dining table, no hole in the ceiling needed. The hole in the base lets two people carry it on a broomstick.",
+   "maker": "Flos"
+  },
+  "panton": {
+   "note": "The first cantilevered plastic chair moulded in a single piece. It took almost ten years from late-1950s sketches to production.",
+   "maker": "Vitra"
+  },
+  "tizio": {
+   "note": "The arms themselves carry the current and are balanced by counterweights, so a touch positions it. It used the then-new halogen bulb.",
+   "maker": "Artemide"
+  },
+  "juicy-salif": {
+   "note": "Reportedly sketched by Starck on a napkin while eating squid. It is not much good at juicing, but it became a symbol of 1990s design.",
+   "maker": "Alessi"
+  },
+  "kitchenaid": {
+   "note": "The streamlined head has barely changed in over eighty years; today's attachments still fit a 1937 body.",
+   "maker": "KitchenAid"
+  },
+  "lettera22": {
+   "note": "A portable typewriter slim enough to slip into a briefcase, named in 1959 one of the best industrial designs of the previous hundred years."
+  },
+  "sk4": {
+   "note": "A white steel case with a clear acrylic lid, at a time when hi-fi was all wooden furniture. It was nicknamed \"Snow White's Coffin\"."
+  },
+  "t4": {
+   "note": "The successor to the T3: one round dial and a grid of round holes. Decades later the first iPod was often compared to this series, and the resemblance is obvious."
+  },
+  "ts502": {
+   "note": "Closed, it is a cube; open, one half is the speaker and the other the knobs and dial, like a box that talks.",
+   "maker": "Brionvega"
+  },
+  "valentine": {
+   "note": "A red plastic typewriter launched on Valentine's Day, with a case you can carry. Sottsass wanted the typewriter to be an \"anti-machine\", an everyday toy."
+  },
+  "beogram4000": {
+   "note": "B&O's tangential turntable: the arm travels in a straight line, always tangent to the groove. One slab of brushed aluminium with just a few keys."
+  },
+  "et66": {
+   "note": "Domed round keys colour-coded by function. The early iPhone calculator app was all but traced from it."
+  },
+  "dc01": {
+   "note": "Dyson built 5,127 prototypes to get bagless cyclonic separation right. The clear bin lets you see the dust it picks up.",
+   "maker": "Dyson"
+  },
+  "muji-cd": {
+   "note": "Pull the hanging cord and it starts playing; it looks like a bathroom extractor fan. Naoto Fukasawa calls it \"design without thought\".",
+   "maker": "MUJI"
+  },
+  "leica-m3": {
+   "note": "It merged rangefinder, viewfinder and parallax correction into one bright window, and lenses change with a twist. Half a century on, the digital M cameras still look like it.",
+   "maker": "Leitz"
+  },
+  "tr610": {
+   "note": "A pocket radio that fits in one hand. It sold half a million units and carried the Sony name beyond Japan."
+  },
+  "sx70": {
+   "note": "An SLR that folds flat into a slim box; the picture slides out by itself and develops in your hand.",
+   "maker": "Polaroid"
+  },
+  "apple2": {
+   "note": "One of the first personal computers in a plastic case, ready to use out of the box. Jobs insisted on a beige case like a kitchen appliance: no metal box, no fan."
+  },
+  "walkman": {
+   "note": "Recording was dropped and lightweight headphones added, so music could go with you for the first time. It had two headphone jacks and a \"hotline\" talk button."
+  },
+  "famicom": {
+   "note": "Red and white, with two controllers docked in slots on the sides. It brought video games into Japanese living rooms and revived the American games industry after its crash.",
+   "maker": "Nintendo"
+  },
+  "mac128k": {
+   "note": "An all-in-one, upright case whose front reads like a face. The signatures of the whole Mac team are moulded inside the case."
+  },
+  "discman": {
+   "note": "About the size of four stacked CD cases, far smaller and much cheaper than the home CD players of the day. The portable CD starts here."
+  },
+  "gameboy": {
+   "note": "Gunpei Yokoi's \"lateral thinking with withered technology\": a monochrome screen, low power and thirty hours on four AA batteries. Over a hundred million sold.",
+   "maker": "Nintendo"
+  },
+  "playstation": {
+   "note": "A pale-grey body with a round disc lid. The ○ × △ □ symbols on the controller are Goto's too, and thirty years later they are still there."
+  },
+  "thinkpad701c": {
+   "note": "The \"butterfly\" keyboard splits in two to fit the small body when closed, and slides apart into a full-size keyboard when opened. Sapper's black box with a red dot has barely changed in thirty years.",
+   "maker": "IBM"
+  },
+  "palmpilot": {
+   "note": "Hawkins carried a wooden model in his shirt pocket and pretended to use it for months to get the size right. Graffiti handwriting made handheld computers truly usable for the first time.",
+   "maker": "Palm"
+  },
+  "imac-g3": {
+   "note": "A translucent Bondi Blue shell with a handle on top made a computer feel like a household object for the first time. It pulled Apple back from the brink of bankruptcy."
+  },
+  "ipod": {
+   "note": "\"1,000 songs in your pocket.\" A mechanical scroll wheel and white earbuds, and white became Apple's colour."
+  },
+  "imac-g4": {
+   "note": "A domed base and a stainless-steel arm let one finger push the screen to any angle, as if it were floating. Jobs said it was inspired by a sunflower in the garden."
+  },
+  "iphone": {
+   "note": "The keyboard is gone; the whole glass face is the interface. It redefined every phone that came after it."
+  },
+  "op1": {
+   "note": "A portable synthesiser the size of an aluminium plate. Four coloured knobs match four colours of parameters on screen: half toy, half instrument.",
+   "maker": "Teenage Engineering"
+  },
+  "nest": {
+   "note": "The dullest box on the wall became a turning stainless-steel ring. It learns the household's routine and sets the temperature by itself.",
+   "maker": "Nest"
+  },
+  "applewatch": {
+   "note": "A rounded-rectangle case, a turning Digital Crown and bands that swap with one press. It turned the watch into a screen on the wrist; ten years on it is the best-selling watch in the world."
+  },
+  "airpods": {
+   "note": "No cable, and they connect as soon as you open the lid. Mocked as electric toothbrush heads at launch, within a few years they were the best-selling headphones in the world."
+  },
+  "modelt": {
+   "note": "The first car born for the assembly line. Fifteen million were built in nineteen years as the price fell from $850 to $260. The design had one aim: cheap, tough and fixable by anyone.",
+   "maker": "Ford"
+  },
+  "beetle": {
+   "note": "An air-cooled rear engine and a rounded body; for sixty-five years only the details changed. 21 million were sold, more than any single car design.",
+   "maker": "Volkswagen"
+  },
+  "vespa": {
+   "note": "Barred from building aircraft after the war, Piaggio built this scooter. The steel body encloses the engine so no oil reaches your trousers, and Italy took to the streets on it.",
+   "maker": "Piaggio"
+  },
+  "ds": {
+   "note": "Twelve thousand orders on the first day of the Paris Motor Show. Hydropneumatic suspension let the body float over the road, and the tapering tail still looked like the future twenty years later. Roland Barthes said it seemed to have fallen from the sky.",
+   "maker": "Citroën"
+  },
+  "fiat500": {
+   "note": "Under three metres long, with an air-cooled twin and a canvas roof, yet it carried a family of four. Post-war Italy learned to drive in it, and the new 500 of fifty years later still looks the same.",
+   "maker": "Fiat"
+  },
+  "mini": {
+   "note": "Transverse engine, front-wheel drive and wheels pushed to the corners leave 80% of the length for people. The layout became the standard for almost every small car.",
+   "maker": "BMC"
+  },
+  "etype": {
+   "note": "An overnight sensation at the Geneva Motor Show. The long bonnet was shaped by aerodynamics; top speed 240 km/h at half the price of a Ferrari. Enzo Ferrari called it \"the most beautiful car ever made\".",
+   "maker": "Jaguar"
+  },
+  "p911": {
+   "note": "An air-cooled flat-six in the tail and a fastback roofline drawn in one stroke. Sixty years and eight generations, with lights and silhouette barely changed: the longest-running shape in car history.",
+   "maker": "Porsche"
+  },
+  "shinkansen": {
+   "note": "Opened nine days before the Tokyo Olympics at 210 km/h, the world's first high-speed railway. The round nose looks like an aircraft, or a bullet, hence the name \"bullet train\".",
+   "maker": "Japanese National Railways"
+  },
+  "concorde": {
+   "note": "Twice the speed of sound, London to New York in three and a half hours. The delta wing and the nose that droops for take-off and landing make it look airborne even on the ground. Since it retired in 2003, airliners have not gone supersonic again.",
+   "maker": "Aérospatiale / BAC"
+  },
+  "countach": {
+   "note": "A wedge body, scissor doors and a windscreen that almost lies flat. It defined what \"supercar\" would look like for half a century and hung on countless teenagers' bedroom walls.",
+   "maker": "Lamborghini"
+  },
+  "roadster": {
+   "note": "Built on a modified Lotus Elise chassis, with a pack of more than six thousand laptop cells and a 390 km range. It proved an electric car could be a sports car people wanted, not a compromise."
+  },
+  "falcon9": {
+   "note": "In December 2015 a first stage came back and landed upright after launch. Until then every rocket had been thrown away. Reuse cut launch costs to a fraction and changed the arithmetic of spaceflight."
+  },
+  "model3": {
+   "note": "No instrument cluster, no extra buttons; one landscape screen is the whole interface. The first electric car to sell in the millions, it made minimalist interiors the industry's new direction."
+  },
+  "cybertruck": {
+   "note": "Stainless-steel panels cannot be stamped into curves, so the whole truck is straight lines and folds, like folded paper. Fans call it the boldest production vehicle in a century; critics say it should never be on the road."
+  },
+  "cybercab": {
+   "note": "Two seats, butterfly doors, no steering wheel and no pedals. Designed from the start without a driver, its cabin is a small lounge and its body a rounded-off Cybertruck."
+  }
+ },
+ "people": {
+  "paxton": {
+   "from": "UK",
+   "role": "Gardener, architect",
+   "bio": "Trained as a gardener, he built giant glasshouses for a duke's estate and took structural ideas from the veins of a water-lily leaf. The Crystal Palace turned him from gardener into a Victorian architectural hero."
+  },
+  "eiffel": {
+   "from": "France",
+   "role": "Structural engineer",
+   "bio": "Famous for iron bridges, he also designed the internal iron frame of the Statue of Liberty. The tower was first proposed by engineers in his firm; he bought the patent and saw it built."
+  },
+  "rietveld": {
+   "from": "Netherlands",
+   "role": "Furniture designer, architect",
+   "bio": "A cabinetmaker by training and a core member of De Stijl. He turned Mondrian's flat compositions into three-dimensional things you could sit on and live in."
+  },
+  "gropius": {
+   "from": "Germany → USA",
+   "role": "Architect, educator",
+   "bio": "Founded the Bauhaus in 1919 to unite art, craft and industry. He later taught at Harvard and brought modernism to America."
+  },
+  "mies": {
+   "from": "Germany → USA",
+   "role": "Architect",
+   "bio": "The last director of the Bauhaus, he moved to Chicago before the war. Steel, glass and exact proportion were his whole vocabulary.",
+   "quote": "Less is more."
+  },
+  "corbusier": {
+   "from": "Switzerland → France",
+   "role": "Architect, urban planner",
+   "bio": "The most influential figure in modern architecture, author of the Five Points and the Modulor proportion system. From the white box of the Villa Savoye to the sculptural Ronchamp chapel, almost every phase of his work rewrote architecture.",
+   "quote": "A house is a machine for living in."
+  },
+  "wright": {
+   "from": "USA",
+   "role": "Architect",
+   "bio": "Champion of \"organic architecture\", buildings at one with their site and nature. His career spanned seventy years and more than a thousand designs."
+  },
+  "aalto": {
+   "from": "Finland",
+   "role": "Architect, designer",
+   "bio": "He joined modernist rigour with Nordic timber and daylight, a \"humane modernism\". With his wife Aino he founded the furniture company Artek."
+  },
+  "pjohnson": {
+   "from": "USA",
+   "role": "Architect, curator",
+   "bio": "His 1932 \"International Style\" show at MoMA introduced European modernism to America. He won the first Pritzker Prize in 1979 and later turned to postmodernism."
+  },
+  "kahn": {
+   "from": "USA",
+   "role": "Architect",
+   "bio": "A late bloomer whose major works came in his fifties. He asked \"what does a brick want to be?\" and made almost sacred spaces from concrete, brick and light."
+  },
+  "utzon": {
+   "from": "Denmark",
+   "role": "Architect",
+   "bio": "At 38 he won the Sydney Opera House competition with a set of sketches, then left mid-way over budgets and politics. Pritzker Prize 2003."
+  },
+  "piano": {
+   "from": "Italy",
+   "role": "Architect",
+   "bio": "He was in his thirties when he designed the Pompidou with Rogers, and has since been known for light, precise construction. Pritzker Prize 1998."
+  },
+  "rogers": {
+   "from": "UK",
+   "role": "Architect",
+   "bio": "A leading figure of High-Tech, also known for the Lloyd's building and the Millennium Dome in London. Pritzker Prize 2007."
+  },
+  "ando": {
+   "from": "Japan",
+   "role": "Architect",
+   "bio": "A former professional boxer with no formal architectural training, he taught himself by reading and travelling. Fair-faced concrete and light are his signature. Pritzker Prize 1995."
+  },
+  "pei": {
+   "from": "China → USA",
+   "role": "Architect",
+   "bio": "Born in Guangzhou, he studied under Gropius at Harvard. His works include the Louvre Pyramid, the Bank of China Tower in Hong Kong and the Suzhou Museum. Pritzker Prize 1983."
+  },
+  "gehry": {
+   "from": "Canada → USA",
+   "role": "Architect",
+   "bio": "Starting with his own house, he challenged architecture's rules with chain-link and corrugated metal, and was among the first to design complex curved buildings with aerospace software. Pritzker Prize 1989; he died at home in Los Angeles in 2025."
+  },
+  "foster": {
+   "from": "UK",
+   "role": "Architect",
+   "bio": "The other great name of High-Tech: HSBC's Hong Kong headquarters, Beijing Capital Airport T3 and London's \"Gherkin\". Pritzker Prize 1999."
+  },
+  "thonet": {
+   "from": "Germany → Austria",
+   "role": "Furniture maker",
+   "bio": "He invented large-scale steam bending and founded Gebrüder Thonet in Vienna, a pioneer of industrially mass-produced furniture."
+  },
+  "breuer": {
+   "from": "Hungary → USA",
+   "role": "Furniture designer, architect",
+   "bio": "A Bauhaus student who went on to run its furniture workshop. In America he turned to architecture and designed the original Whitney Museum in New York."
+  },
+  "perriand": {
+   "from": "France",
+   "role": "Furniture designer, architect",
+   "bio": "She joined Le Corbusier's studio at 24 and led its tubular-steel furniture. Working in Japan in the 1940s, she brought Eastern craft into modern design."
+  },
+  "carwardine": {
+   "from": "UK",
+   "role": "Automotive engineer",
+   "bio": "A specialist in vehicle suspension springs, he used the same principle to make a lamp that holds any position, and licensed it to Herbert Terry & Sons."
+  },
+  "henningsen": {
+   "from": "Denmark",
+   "role": "Designer, writer",
+   "bio": "He spent his life working out how to take the glare out of electric light. His collaboration with Louis Poulsen, begun in the 1920s, continues today."
+  },
+  "wegner": {
+   "from": "Denmark",
+   "role": "Furniture designer",
+   "bio": "A cabinetmaker who designed more than five hundred chairs, \"the master of the chair\". Kennedy and Nixon sat in his The Chair for their 1960 TV debate."
+  },
+  "noguchi": {
+   "from": "USA / Japan",
+   "role": "Sculptor, designer",
+   "bio": "A Japanese-American sculptor whose work spanned sculpture, gardens, stage sets and furniture. He kept developing Akari for over thirty years."
+  },
+  "yanagi": {
+   "from": "Japan",
+   "role": "Industrial designer",
+   "bio": "Son of Soetsu Yanagi, founder of the mingei folk-craft movement, he assisted Perriand in Japan. His stainless kitchenware and cutlery are still everyday items in Japanese homes."
+  },
+  "eames": {
+   "from": "USA",
+   "role": "Designer couple",
+   "bio": "From plywood splints and fibreglass chairs to the film Powers of Ten, Charles and Ray Eames all but redefined the post-war American home.",
+   "quote": "The details are not the details. They make the design."
+  },
+  "saarinen": {
+   "from": "Finland → USA",
+   "role": "Architect, designer",
+   "bio": "Son of the Finnish architect Eliel Saarinen. His buildings include the Gateway Arch in St. Louis and the TWA Flight Center at JFK. He died at 51."
+  },
+  "jacobsen": {
+   "from": "Denmark",
+   "role": "Architect, designer",
+   "bio": "A believer in total design, he designed everything from buildings to lamps, cutlery and door handles. The Ant, Series 7, Egg and Swan chairs are all his."
+  },
+  "ekuan": {
+   "from": "Japan",
+   "role": "Industrial designer",
+   "bio": "Founder of GK Design Group, whose work ranges from soy-sauce bottles to motorcycles and Shinkansen trains. His thinking was deeply shaped by Buddhism."
+  },
+  "castiglioni": {
+   "from": "Italy",
+   "role": "Designer",
+   "bio": "With his brother Pier Giacomo he designed many lamps and pieces of furniture, often by repurposing ready-made objects, such as a stool made from a tractor seat."
+  },
+  "panton": {
+   "from": "Denmark",
+   "role": "Designer",
+   "bio": "He worked for Arne Jacobsen, then challenged Scandinavian restraint with plastics, strong colour and whole-room installations."
+  },
+  "sapper": {
+   "from": "Germany → Italy",
+   "role": "Industrial designer",
+   "bio": "He spent most of his life working in Milan and was IBM's chief design consultant for many years, shaping the look of the ThinkPad."
+  },
+  "starck": {
+   "from": "France",
+   "role": "Designer",
+   "bio": "He has designed everything from toothbrushes and chairs to hotels and yachts, the best-known \"star designer\" of the 1990s."
+  },
+  "arens": {
+   "from": "USA",
+   "role": "Industrial designer",
+   "bio": "A designer of America's streamline era and an early student of consumer psychology, who coined the term \"consumer engineering\"."
+  },
+  "nizzoli": {
+   "from": "Italy",
+   "role": "Industrial designer",
+   "bio": "He moved from poster design to industrial design and long designed Olivetti's typewriters and calculators, setting the elegant tone of Italian industrial design."
+  },
+  "rams": {
+   "from": "Germany",
+   "role": "Industrial designer",
+   "bio": "He joined Braun in 1955 and was head of design from 1961 to 1995. His \"ten principles of good design\" influenced generations of designers, Apple's included.",
+   "quote": "Weniger, aber besser. (Less, but better.)"
+  },
+  "gugelot": {
+   "from": "Netherlands → Germany",
+   "role": "Industrial designer",
+   "bio": "A core teacher at the Ulm School of Design, who with his students built a systematic, modular design method for Braun."
+  },
+  "zanuso": {
+   "from": "Italy",
+   "role": "Architect, designer",
+   "bio": "One of the founders of post-war Italian design. He created a series of Brionvega products with Sapper and was among the first to make furniture from foam rubber and other new materials."
+  },
+  "sottsass": {
+   "from": "Italy",
+   "role": "Designer, architect",
+   "bio": "He designed Olivetti typewriters and computers for years, then in 1981 founded the Memphis Group, whose bright colours and anti-functionalist forms shook the design world."
+  },
+  "jjensen": {
+   "from": "Denmark",
+   "role": "Industrial designer",
+   "bio": "Chief designer for Bang & Olufsen for nearly thirty years from 1964, he set B&O's thin, precise aluminium-panel style."
+  },
+  "lubs": {
+   "from": "Germany",
+   "role": "Industrial designer",
+   "bio": "Rams's long-time partner at Braun, who led its calculators and clocks."
+  },
+  "dyson": {
+   "from": "UK",
+   "role": "Inventor, entrepreneur",
+   "bio": "Fed up with vacuum bags that lost suction as they filled, he spent five years making a bagless cyclonic cleaner, then grew his company into a technology firm spanning motors, hair dryers and batteries."
+  },
+  "fukasawa": {
+   "from": "Japan",
+   "role": "Industrial designer",
+   "bio": "Known for \"without thought\" design, finding answers in people's unconscious gestures. A long-time designer for MUJI and founder of the ±0 brand."
+  },
+  "land": {
+   "from": "USA",
+   "role": "Inventor, entrepreneur",
+   "bio": "Founder of Polaroid and inventor of polarising film and instant photography. Steve Jobs idolised him and called him \"a national treasure\"."
+  },
+  "dreyfuss": {
+   "from": "USA",
+   "role": "Industrial designer",
+   "bio": "A founder of American industrial design, renowned for his human-factors research. Bell telephones, John Deere tractors and Polaroid cameras all came from his office."
+  },
+  "manock": {
+   "from": "USA",
+   "role": "Industrial designer",
+   "bio": "Apple's early industrial designer, who designed the Apple II and Apple III cases and, with Terry Oyama, the first Macintosh."
+  },
+  "yokoi": {
+   "from": "Japan",
+   "role": "Game hardware designer",
+   "bio": "Nintendo's legendary engineer, inventor of Game & Watch, the D-pad and the Game Boy. His \"lateral thinking with withered technology\" meant new kinds of play from mature, cheap technology."
+  },
+  "ive": {
+   "from": "UK",
+   "role": "Industrial designer",
+   "bio": "He joined Apple in 1992 and led the design of everything from the iMac to the iPhone, Apple Watch and Apple Park. He left in 2019 and founded LoveFrom."
+  },
+  "fadell": {
+   "from": "USA",
+   "role": "Engineer, entrepreneur",
+   "bio": "He led the team that built the iPod, earning the title \"father of the iPod\". After Apple he founded Nest, sold to Google in 2014 for $3.2 billion."
+  },
+  "jobs": {
+   "from": "USA",
+   "role": "Co-founder of Apple",
+   "bio": "He never drew a design, yet signed off every product down to the details. He brought the design thinking of Braun, Sony and the Bauhaus into personal computing."
+  },
+  "morita": {
+   "from": "Japan",
+   "role": "Co-founder of Sony",
+   "bio": "Co-founded Sony with Masaru Ibuka and personally pushed the pocket radio and the Walkman into being, turning \"Made in Japan\" from a byword for cheap into a mark of quality."
+  },
+  "hford": {
+   "from": "USA",
+   "role": "Industrialist, engineer",
+   "bio": "He launched the Model T in 1908 and the moving assembly line in 1913, cutting assembly time from twelve hours to about ninety minutes and turning the car from a luxury into something ordinary people could afford.",
+   "quote": "Any customer can have a car painted any colour that he wants so long as it is black."
+  },
+  "fporsche": {
+   "from": "Austria → Germany",
+   "role": "Automotive engineer",
+   "bio": "He founded his own design office in 1931 and was commissioned to design a \"people's car\" for Germany, the future Beetle. His son Ferry founded the Porsche brand; his grandson designed the 911."
+  },
+  "dascanio": {
+   "from": "Italy",
+   "role": "Aeronautical engineer",
+   "bio": "A helicopter pioneer who reportedly disliked motorcycles. He designed the Vespa like an aircraft: a single-sided arm for easy wheel changes, and a steel body and floorboard so you could ride it in a skirt."
+  },
+  "bertoni": {
+   "from": "Italy → France",
+   "role": "Sculptor, car designer",
+   "bio": "He joined Citroën as a sculptor and shaped the Traction Avant, 2CV and DS. The DS body was modelled by hand in clay, not drawn."
+  },
+  "giacosa": {
+   "from": "Italy",
+   "role": "Automotive engineer",
+   "bio": "Head of Fiat design for almost forty years: the Topolino, 500, 600 and 128 are all his. He believed a small car starts with space and cost, and only then shape."
+  },
+  "issigonis": {
+   "from": "Greece → UK",
+   "role": "Automotive engineer",
+   "bio": "Asked to design a frugal small car during the fuel shortage after the Suez Crisis, he turned the engine sideways, put the gearbox in the sump and pushed the wheels to the corners, fitting four adults into a three-metre car.",
+   "quote": "A camel is a horse designed by committee."
+  },
+  "sayer": {
+   "from": "UK",
+   "role": "Aerodynamicist",
+   "bio": "He built aircraft at Bristol during the war, then joined Jaguar and drew bodies with mathematics and wind tunnels rather than sketches. The D-Type, E-Type and XJ13 are curves he calculated."
+  },
+  "fabporsche": {
+   "from": "Germany",
+   "role": "Industrial designer",
+   "bio": "Ferdinand Porsche's grandson, known as Butzi. He designed the 911's body in 1963, then left in 1972 to found Porsche Design, making watches, glasses and pipes."
+  },
+  "miki": {
+   "from": "Japan",
+   "role": "Aeronautical engineer",
+   "bio": "He designed bombers for the navy in the war, then moved to the Railway Technical Research Institute. He brought aircraft streamlining and lightness to trains; the round nose of the 0 Series Shinkansen is his."
+  },
+  "gandini": {
+   "from": "Italy",
+   "role": "Car designer",
+   "bio": "In fourteen years at Bertone he designed the Miura, Countach and Stratos, and invented the Countach's scissor doors. With him the wedge became the standard language of the supercar."
+  },
+  "musk": {
+   "from": "South Africa → USA",
+   "role": "Entrepreneur",
+   "bio": "He founded SpaceX in 2002 and invested in Tesla in 2004, becoming its chairman. Both companies set out to do what others thought impossible: make electric cars more desirable than petrol ones, and make rockets reusable like aircraft."
+  },
+  "holzhausen": {
+   "from": "USA",
+   "role": "Car designer",
+   "bio": "After working on VW's New Beetle and Mazda concept cars, he joined Tesla as chief designer in 2008. The Model S, 3, X, Y and Cybertruck all came from his team."
+  }
+ },
+ "makers": {
+  "braun": {
+   "from": "Germany · 1921",
+   "bio": "In the 1950s, under the brothers Erwin and Artur Braun, the company worked with the Ulm School of Design; over Dieter Rams's three decades as head of design, Braun became a byword for rational design."
+  },
+  "sony": {
+   "from": "Japan · 1946",
+   "bio": "Founded by Masaru Ibuka and Akio Morita in a Tokyo department store after the war. From transistor radios and Trinitron TVs to the Walkman, Sony defined \"portable\" and \"miniature\"."
+  },
+  "apple": {
+   "from": "USA · 1976",
+   "bio": "Jobs said Apple stood at the intersection of technology and the liberal arts. From the Macintosh to the iPhone, design there matters as much as engineering."
+  },
+  "olivetti": {
+   "from": "Italy · 1908",
+   "bio": "Under Adriano Olivetti it treated design, architecture and corporate culture as one, hiring designers such as Nizzoli and Sottsass, one of the most design-minded companies of the 20th century."
+  },
+  "bo": {
+   "from": "Denmark · 1925",
+   "bio": "Known for aluminium, minimal panels and unusual engineering, with long collaborations with designers such as Jacob Jensen and David Lewis."
+  },
+  "tesla": {
+   "from": "USA · 2003",
+   "bio": "It started with a sports car to prove electric could beat petrol, then made it affordable with the Model 3. Its interiors, over-the-air updates and direct sales have been copied across the industry."
+  },
+  "spacex": {
+   "from": "USA · 2002",
+   "bio": "Its goal is cheaper access to space. The Falcon 9 first stage lands and flies again, some boosters more than twenty times, cutting the cost per kilogram to orbit to a fraction of what it was."
+  }
+ },
+ "by": {
+  "史蒂夫·沃兹尼亚克": "Steve Wozniak",
+  "大曾根幸三": "Kozo Ohsone",
+  "Sony 设计中心": "Sony Design Center",
+  "后藤祯祐": "Teiyu Goto",
+  "上村雅之": "Masayuki Uemura",
+  "杰夫·霍金斯": "Jeff Hawkins",
+  "Leitz 工程团队": "Leitz engineering team",
+  "英法联合设计团队": "Anglo-French design team",
+  "Lotus 团队": "Lotus team",
+  "SpaceX 团队": "SpaceX team"
+ }
+};
+
+const IMG = {"crystal-palace": {"src": "img/crystal-palace.b6f695b5.webp", "s": "img/s/crystal-palace.c9cc4271.webp", "w": 928, "cut": false, "artist": "Philip Henry Delamotte (1821–1889)", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Crystal_Palace_General_view_from_Water_Temple.jpg"}, "eiffel-tower": {"src": "img/eiffel-tower.90af22bb.webp", "s": "img/s/eiffel-tower.a1374dae.webp", "w": 841, "cut": false, "artist": "Benh LIEU SONG", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Tour_Eiffel_Wikimedia_Commons_(cropped).jpg"}, "schroder-house": {"src": "img/schroder-house.04941813.webp", "s": "img/s/schroder-house.6e54ef78.webp", "w": 1280, "cut": false, "artist": "User:Husky", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Rietveld_Schr%C3%B6derhuis_HayKranen-20.JPG"}, "bauhaus-dessau": {"src": "img/bauhaus-dessau.0bd94a25.webp", "s": "img/s/bauhaus-dessau.72f1b241.webp", "w": 1280, "cut": false, "artist": "A.Savin", "license": "FAL", "page": "https://commons.wikimedia.org/wiki/File:Dessau_Bauhaus-Geb%C3%A4ude_asv2024-06_img1.jpg"}, "barcelona-pavilion": {"src": "img/barcelona-pavilion.00fa7dc1.webp", "s": "img/s/barcelona-pavilion.918c3fc9.webp", "w": 1280, "cut": false, "artist": "Ashley Pomeroy at English Wikipedia", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:The_Barcelona_Pavilion,_Barcelona,_2010.jpg"}, "weissenhof": {"src": "img/weissenhof.568b0244.webp", "s": "img/s/weissenhof.b4cd9392.webp", "w": 1280, "cut": false, "artist": "Photo: Andreas Praefcke", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Weissenhof_Corbusier_03.jpg"}, "fallingwater": {"src": "img/fallingwater.b7a080ff.webp", "s": "img/s/fallingwater.2ca9f85d.webp", "w": 1280, "cut": false, "artist": "lachrimae72", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Fallingwater3.jpg"}, "villa-mairea": {"src": "img/villa-mairea.b42e20b9.webp", "s": "img/s/villa-mairea.04bf7f3e.webp", "w": 1280, "cut": false, "artist": "Ninara from Helsinki, Finland", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:4Y1A7841_Alvar_Aalto,_Finland_(26710745140).jpg"}, "glass-house": {"src": "img/glass-house.274eec61.webp", "s": "img/s/glass-house.28dc1634.webp", "w": 1280, "cut": false, "artist": "Carol M. Highsmith", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Glass_House_2006.jpg"}, "farnsworth": {"src": "img/farnsworth.29b5cc30.webp", "s": "img/s/farnsworth.5609ff3d.webp", "w": 1280, "cut": false, "artist": "Victor Grigas", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Farnsworth_House_by_Mies_Van_Der_Rohe_-_exterior-8.jpg"}, "unite": {"src": "img/unite.f960a19a.webp", "s": "img/s/unite.5ce5c055.webp", "w": 1280, "cut": false, "artist": "A.Savin", "license": "FAL", "page": "https://commons.wikimedia.org/wiki/File:Corbusierhaus_B-Westend_06-2017.jpg"}, "chandigarh": {"src": "img/chandigarh.4d479670.webp", "s": "img/s/chandigarh.c796e164.webp", "w": 1280, "cut": false, "artist": "UnpetitproleX", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Palace_of_Assembly_Chandigarh.jpg"}, "seagram": {"src": "img/seagram.b4de0fe4.webp", "s": "img/s/seagram.fae47b1a.webp", "w": 1280, "cut": false, "artist": "Ken OHYAMA from FUNABASHI, Japan", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Seagram_Building_(35098307116).jpg"}, "guggenheim-ny": {"src": "img/guggenheim-ny.5922cb1c.webp", "s": "img/s/guggenheim-ny.3583a2cb.webp", "w": 1280, "cut": false, "artist": "Ajay Suresh from New York, NY, USA", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Solomon_R._Guggenheim_Museum_(48059131351).jpg"}, "salk": {"src": "img/salk.e00eda52.webp", "s": "img/s/salk.cb600875.webp", "w": 1280, "cut": false, "artist": "Codera23", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Salk_Institute_2.jpg"}, "sydney-opera": {"src": "img/sydney-opera.da6e4c30.webp", "s": "img/s/sydney-opera.d742365c.webp", "w": 1280, "cut": false, "artist": "BAVhah", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Sydney_Opera_House_2026.jpg"}, "pompidou": {"src": "img/pompidou.aa14a264.webp", "s": "img/s/pompidou.352f1418.webp", "w": 1280, "cut": false, "artist": "JeremyJeanguenin", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Le_Centre_Georges-Pompidou_en_travaux_(2026).jpg"}, "church-light": {"src": "img/church-light.e44cf2fa.webp", "s": "img/s/church-light.0d6f9cb8.webp", "w": 1070, "cut": false, "artist": "taken by Bergmann", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Ibaraki_Kasugaoka_Church_light_cross.jpg"}, "louvre-pyramid": {"src": "img/louvre-pyramid.d41b1c71.webp", "s": "img/s/louvre-pyramid.37078743.webp", "w": 1280, "cut": false, "artist": "Benh LIEU SONG (Flickr)", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Louvre_Museum_Wikimedia_Commons.jpg"}, "bilbao": {"src": "img/bilbao.27112693.webp", "s": "img/s/bilbao.fe950244.webp", "w": 1280, "cut": false, "artist": "Naotake Murayama", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Museo_Guggenheim,_Bilbao_(31273245344).jpg"}, "apple-park": {"src": "img/apple-park.2d708bb5.webp", "s": "img/s/apple-park.33e5097a.webp", "w": 1280, "cut": false, "artist": "Daniel L. Lu (user:dllu)", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Aerial_view_of_Apple_Park_dllu.jpg"}, "thonet-14": {"src": "img/thonet-14.9ee2d106.webp", "s": "img/s/thonet-14.24d5895a.webp", "w": 575, "cut": true, "bg": "#e6dbd3", "bgd": "#332a24", "artist": "Henry Townsend", "license": "FAL", "page": "https://commons.wikimedia.org/wiki/File:Thonet_Chair_No._14.JPG"}, "red-blue": {"src": "img/red-blue.cc71f5fa.webp", "s": "img/s/red-blue.71eefe18.webp", "w": 925, "cut": true, "bg": "#ebcfce", "bgd": "#372120", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Gerrit_thomas_rietveld,_red-blue_chair,_1946-56_ca.jpg"}, "wassily": {"src": "img/wassily.c9512f59.webp", "s": "img/s/wassily.8a1b072b.webp", "w": 819, "cut": true, "bg": "#ebdace", "bgd": "#362a21", "artist": "Tim Evanson from Cleveland Heights, Ohio, USA", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:B3_chair_-_Marcel_Breuer_(27986822589).jpg"}, "lc4": {"src": "img/lc4.fbd1ab5b.webp", "s": "img/s/lc4.b88f737d.webp", "w": 1168, "cut": true, "bg": "#eae0cf", "bgd": "#362e21", "artist": "Tim Evanson from Cleveland Heights, Ohio, USA", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:LC4_lounge_-_Le_Corbusier_Charlotte_Perriand_(27986818339).jpg"}, "barcelona-chair": {"src": "img/barcelona-chair.9937f927.webp", "s": "img/s/barcelona-chair.2486b262.webp", "w": 1110, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "sailko", "license": "CC BY 2.5", "page": "https://commons.wikimedia.org/wiki/File:Ngv_design,_ludwig_mies_van_der_rohe_%26_co,_barcelona_chair.JPG"}, "anglepoise": {"src": "img/anglepoise.34006c6b.webp", "s": "img/s/anglepoise.707dbb0e.webp", "w": 606, "cut": true, "bg": "#e3dcd6", "bgd": "#302b26", "artist": "Upphovsperson okänd", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Anglepoise_lamp,_model_1208.jpg"}, "stool-60": {"src": "img/stool-60.6fdf4802.webp", "s": "img/s/stool-60.84a197fa.webp", "w": 915, "cut": true, "bg": "#e6ddd3", "bgd": "#322c24", "artist": "Gershowitz", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Aalto_Model_60.png"}, "ph5": {"src": "img/ph5.bd1bed6f.webp", "s": "img/s/ph5.dcb800f5.webp", "w": 1076, "cut": true, "bg": "#e7dbd2", "bgd": "#332a24", "artist": "Holger Ellgaard", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:PH-Lampan_1.jpg"}, "wishbone": {"src": "img/wishbone.f7c3d368.webp", "s": "img/s/wishbone.b04f933f.webp", "w": 659, "cut": true, "bg": "#e9dcd0", "bgd": "#352b22", "artist": "Ew3234", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Leather_Wishbone_Chair.jpg"}, "akari": {"src": "img/akari.0a0ac254.webp", "s": "img/s/akari.9dbc4563.webp", "w": 1003, "cut": true, "bg": "#e6ded3", "bgd": "#332d24", "artist": "Jean-Pierre Dalbéra", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Akari_light_sculpture_model_10A_by_Isamu_Noguchi.jpg"}, "butterfly-stool": {"src": "img/butterfly-stool.8cb31faf.webp", "s": "img/s/butterfly-stool.938d2fb1.webp", "w": 882, "cut": true, "bg": "#ebdbce", "bgd": "#362a21", "artist": "tomislav medak", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Tabouret_Butterfly_(4958243953).jpg"}, "eames-lounge": {"src": "img/eames-lounge.93b49f1b.webp", "s": "img/s/eames-lounge.9549e02a.webp", "w": 1200, "cut": true, "bg": "#e4dfd6", "bgd": "#312d26", "artist": "sailko", "license": "CC BY 2.5", "page": "https://commons.wikimedia.org/wiki/File:Ngv_design,_charles_eames_and_herman_miller,_lounge_chair_670,_1956.JPG"}, "tulip": {"src": "img/tulip.4d2fb9a1.webp", "s": "img/s/tulip.11007045.webp", "w": 818, "cut": true, "bg": "#e4d9d5", "bgd": "#312925", "artist": "Eero Saarinen", "license": "No restrictions", "page": "https://commons.wikimedia.org/wiki/File:Eero_Saarinen,_%22Pedestal%22_Armchair_and_Seat_Cushion,_Designed_1956.jpg"}, "egg": {"src": "img/egg.c510d662.webp", "s": "img/s/egg.3f5d51c1.webp", "w": 861, "cut": true, "bg": "#e2ded7", "bgd": "#302d27", "artist": "Nasjonalmuseet", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Egg_chair_-_Arne_Jacobsen_(1958)_2.jpg"}, "kikkoman": {"src": "img/kikkoman.c28f025e.webp", "s": "img/s/kikkoman.e2afe003.webp", "w": 327, "cut": true, "bg": "#e4dad5", "bgd": "#312a25", "artist": "Creative Tools", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Kikkoman_soysauce.jpg"}, "arco": {"src": "img/arco.e8aa769f.webp", "s": "img/s/arco.de1d9e54.webp", "w": 1050, "cut": false, "artist": "Noahhoward", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Arco_lamp.jpg"}, "panton": {"src": "img/panton.bbb9a1ff.webp", "s": "img/s/panton.6a383509.webp", "w": 817, "cut": true, "bg": "#eccfcd", "bgd": "#372120", "artist": "sailko", "license": "CC BY 2.5", "page": "https://commons.wikimedia.org/wiki/File:Ngv_design,_verner_panton,_panton_chair,_1960_02.JPG"}, "tizio": {"src": "img/tizio.973c6f3b.webp", "s": "img/s/tizio.5005a1b0.webp", "w": 1169, "cut": true, "bg": "#e3dbd6", "bgd": "#302a26", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Richard_sapper_per_artemide_spa.,_lampada_da_tavolo_tizio,_1971-72.jpg"}, "juicy-salif": {"src": "img/juicy-salif.661d8fee.webp", "s": "img/s/juicy-salif.3cebcb6a.webp", "w": 507, "cut": true, "bg": "#e4ddd5", "bgd": "#312c26", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Philippe_starck_per_alessi_spa.,_spremiagrumi_juicy_salif,_1990.jpg"}, "kitchenaid": {"src": "img/kitchenaid.05a238b8.webp", "s": "img/s/kitchenaid.c0016443.webp", "w": 819, "cut": true, "bg": "#e3dcd6", "bgd": "#302b26", "artist": "Your Best Digs", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:White_KitchenAid_mixer_(KSM150PSWH).jpg"}, "lettera22": {"src": "img/lettera22.a81c54f8.webp", "s": "img/s/lettera22.c0187233.webp", "w": 1168, "cut": true, "bg": "#e5d7d5", "bgd": "#312725", "artist": "", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Olivetti_Lettera_22_by_LjL.jpeg"}, "sk4": {"src": "img/sk4.19b83d7c.webp", "s": "img/s/sk4.4f12c8a8.webp", "w": 1073, "cut": true, "bg": "#e4e1d5", "bgd": "#312f25", "artist": "Hilarmont", "license": "CC BY-SA 3.0 de", "page": "https://commons.wikimedia.org/wiki/File:Braun_Radio_mit_Plattenspieler_Pinakothek_der_Moderne_(Foto_Hilarmont).jpg"}, "t4": {"src": "img/t4.b5720714.webp", "s": "img/s/t4.39c57f35.webp", "w": 764, "cut": true, "bg": "#e4e0d5", "bgd": "#312e26", "artist": "Filip Triner", "license": "CC BY 4.0", "page": "https://commons.wikimedia.org/wiki/File:Braun-t4-transistor-radio-design-dieter-rams-only-once-shop-4.jpg"}, "ts502": {"src": "img/ts502.a4289a2b.webp", "s": "img/s/ts502.452f0da6.webp", "w": 962, "cut": true, "bg": "#e7d7d3", "bgd": "#332724", "artist": "Brionvega S.a.S. (costruttore/ produttore), Sapper Richard (designer), Zanuso Marco (designer)", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Radioricevitore_a_transistor,_portatile_-_Museo_scienza_tecnologia_Milano_10074.jpg"}, "valentine": {"src": "img/valentine.b22d42b3.webp", "s": "img/s/valentine.4584bc47.webp", "w": 1163, "cut": true, "bg": "#ebd2ce", "bgd": "#372320", "artist": "Folletto at Italian Wikipedia", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Olivetti-Valentine.jpg"}, "beogram4000": {"src": "img/beogram4000.52b2994f.webp", "s": "img/s/beogram4000.37409b37.webp", "w": 888, "cut": true, "bg": "#e3e1d6", "bgd": "#302e26", "artist": "Heidi De Vries from Berkeley, CA", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Perfect_record_player_(6495511939).jpg"}, "et66": {"src": "img/et66.00caaa3d.webp", "s": "img/s/et66.dcd1ca9c.webp", "w": 902, "cut": true, "bg": "#d6dce3", "bgd": "#262b31", "artist": "Kippelboy", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Dieter_Rams_i_Dieter_Lubs-_Calculator_Braun_ET66-1987.dhub.jpg"}, "dc01": {"src": "img/dc01.0e272b6d.webp", "s": "img/s/dc01.74bb91b6.webp", "w": 370, "cut": true, "bg": "#e5dfd4", "bgd": "#322d25", "artist": "Lankyrider", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Dyson_DC01._01.jpg"}, "muji-cd": {"src": "img/muji-cd.2689494d.webp", "s": "img/s/muji-cd.37f2b06b.webp", "w": 1200, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "V&A", "license": "© Victoria and Albert Museum, London", "page": "https://collections.vam.ac.uk/item/O1227135/cd-player-fukasawa-naoto/"}, "leica-m3": {"src": "img/leica-m3.5b37e2f6.webp", "s": "img/s/leica-m3.a44818be.webp", "w": 1132, "cut": true, "bg": "#e3dfd7", "bgd": "#302d27", "artist": "CharlieTPhotographic", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Leica_M3_20090309.jpg"}, "tr610": {"src": "img/tr610.acaec62e.webp", "s": "img/s/tr610.99881c36.webp", "w": 559, "cut": true, "bg": "#e8d8d1", "bgd": "#342823", "artist": "Sony DL Corporation (costruttore/ produttore/ progettista/ designer)", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Radioricevitore_a_transistor,_tascabile_-_Museo_scienza_tecnologia_Milano_09751_04.jpg"}, "sx70": {"src": "img/sx70.14a152d7.webp", "s": "img/s/sx70.80b86d77.webp", "w": 882, "cut": true, "bg": "#e4d7d5", "bgd": "#312725", "artist": "Thomas Backa from Turku, Finland", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Polaroid_SX-70_(4462345243).jpg"}, "apple2": {"src": "img/apple2.3d6b4df4.webp", "s": "img/s/apple2.700e7bf8.webp", "w": 869, "cut": true, "bg": "#e5ded4", "bgd": "#322d25", "artist": "Rama &amp; Musée Bolo", "license": "CC BY-SA 2.0 fr", "page": "https://commons.wikimedia.org/wiki/File:Apple_II_at_Mus%C3%A9e_Bolo.jpg"}, "walkman": {"src": "img/walkman.9e998506.webp", "s": "img/s/walkman.e27baf1a.webp", "w": 769, "cut": true, "bg": "#d5dbe5", "bgd": "#252a31", "artist": "Anna Gerdén", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Walkman_TPS-L2.jpg"}, "famicom": {"src": "img/famicom.64d064c9.webp", "s": "img/s/famicom.6d9ff6c9.webp", "w": 1200, "cut": true, "bg": "#e4dad5", "bgd": "#312a25", "artist": "Evan-Amos", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Nintendo-Famicom-Console-FL.jpg"}, "mac128k": {"src": "img/mac128k.e970e8fe.webp", "s": "img/s/mac128k.5e8603ce.webp", "w": 1200, "cut": true, "bg": "#e4d9d5", "bgd": "#312926", "artist": "Sailko", "license": "CC BY 3.0", "page": "https://commons.wikimedia.org/wiki/File:Computer_macintosh_128k,_1984_(all_about_Apple_onlus).jpg"}, "discman": {"src": "img/discman.878bdeb7.webp", "s": "img/s/discman.9dd8b500.webp", "w": 1120, "cut": true, "bg": "#dfe3d6", "bgd": "#2d3026", "artist": "Binarysequence", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Sony_D50_Discman_Front.JPG"}, "gameboy": {"src": "img/gameboy.c7c635c5.webp", "s": "img/s/gameboy.748ce7ac.webp", "w": 987, "cut": true, "bg": "#e4e2d6", "bgd": "#312f26", "artist": "Transfrom JPEG version and remove white background. Original by Evan-Amos.", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Game-Boy-FL.png"}, "playstation": {"src": "img/playstation.fa2a9a25.webp", "s": "img/s/playstation.94d6239f.webp", "w": 1200, "cut": true, "bg": "#e2ded7", "bgd": "#302d27", "artist": "Evan-Amos", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:PlayStation-SCPH-1000-with-Controller.jpg"}, "thinkpad701c": {"src": "img/thinkpad701c.39c65246.webp", "s": "img/s/thinkpad701c.ce97e78f.webp", "w": 893, "cut": true, "bg": "#e3dbd6", "bgd": "#312a26", "artist": "nakashi", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Thinkpad_701.jpg"}, "palmpilot": {"src": "img/palmpilot.3072eeab.webp", "s": "img/s/palmpilot.870eb5c7.webp", "w": 781, "cut": true, "bg": "#d6e3e2", "bgd": "#263030", "artist": "Rama & Musée Bolo", "license": "CC BY-SA 2.0 fr", "page": "https://commons.wikimedia.org/wiki/File:Palm-IMG_7025.jpg"}, "imac-g3": {"src": "img/imac-g3.ce45d953.webp", "s": "img/s/imac-g3.dc33d053.webp", "w": 1200, "cut": true, "bg": "#d5dce4", "bgd": "#262b31", "artist": "Alterations by David Fuchs; original by Rama, licensed CC-by-SA", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:IMac_G3_Bondi_Blue,_three-quarters_view.png"}, "ipod": {"src": "img/ipod.a673ff5d.webp", "s": "img/s/ipod.eab538f6.webp", "w": 556, "cut": true, "bg": "#dce4d6", "bgd": "#2b3126", "artist": "Steve Hodgson from Edinburgh, Scotland", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:IPod_(54750592069).jpg"}, "imac-g4": {"src": "img/imac-g4.486aa30b.webp", "s": "img/s/imac-g4.22498430.webp", "w": 1200, "cut": true, "bg": "#d4dee5", "bgd": "#252c32", "artist": "Felix Winkelnkemper", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Apple_iMac_4G_(33937792088).jpg"}, "iphone": {"src": "img/iphone.852d2a29.webp", "s": "img/s/iphone.125c7300.webp", "w": 536, "cut": true, "bg": "#d7d6e3", "bgd": "#272630", "artist": "Carl Berkeley from Riverside California", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:IPhone_First_Generation_8GB_(3680455198).jpg"}, "op1": {"src": "img/op1.46424b74.webp", "s": "img/s/op1.91652126.webp", "w": 1148, "cut": true, "bg": "#e3dfd6", "bgd": "#302d27", "artist": "Isaac Henry", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:OP-1_Sequencer_Concept.png"}, "nest": {"src": "img/nest.e3f7ac9a.webp", "s": "img/s/nest.f79f495f.webp", "w": 1118, "cut": true, "bg": "#d5e0e4", "bgd": "#262e31", "artist": "Raysonho @ Open Grid Scheduler / Grid Engine", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Nest_Learning_Thermostat_(cropped).JPG"}, "applewatch": {"src": "img/applewatch.99704b42.webp", "s": "img/s/applewatch.b531ad55.webp", "w": 796, "cut": true, "bg": "#d6dfe3", "bgd": "#262d30", "artist": "Gregory Varnum", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Apple_Watch_Sport_-_38mm_Space_Gray_(3773).jpg"}, "airpods": {"src": "img/airpods.7f8ab07e.webp", "s": "img/s/airpods.69f967b3.webp", "w": 977, "cut": true, "bg": "#dde3d6", "bgd": "#2c3026", "artist": "Yovt", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:AirPods_3.jpg"}, "modelt": {"src": "img/modelt.c5c65a6e.webp", "s": "img/s/modelt.6bfdf732.webp", "w": 779, "cut": true, "bg": "#e6ded4", "bgd": "#322c25", "artist": "Mark Harkin", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Model_T_Ford_(8424090806).jpg"}, "beetle": {"src": "img/beetle.37159dd6.webp", "s": "img/s/beetle.c2609c68.webp", "w": 1073, "cut": true, "bg": "#d3e6e6", "bgd": "#243332", "artist": "Theresia Freistetter", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Volkswagen1960.jpg"}, "vespa": {"src": "img/vespa.1d8670b2.webp", "s": "img/s/vespa.47c3dde2.webp", "w": 1128, "cut": true, "bg": "#dce3d6", "bgd": "#2b3126", "artist": "Daderot", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Vespa_125_Scooter,_1948_-_Science_Museum,_London_-_DSC05675.jpg"}, "ds": {"src": "img/ds.00b89904.webp", "s": "img/s/ds.25e7ed9c.webp", "w": 1113, "cut": true, "bg": "#d5dde4", "bgd": "#262c31", "artist": "Slaunger", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Citro%C3%ABn_DS_21_27_Quai_Anatole_France_license_plate_blanked_2012-06-02_cropped.jpg"}, "fiat500": {"src": "img/fiat500.8cba86dc.webp", "s": "img/s/fiat500.a83ed621.webp", "w": 935, "cut": true, "bg": "#ece2cd", "bgd": "#372f1f", "artist": "DILIN", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Fiat_500_yellow.jpg"}, "mini": {"src": "img/mini.17e0a4ab.webp", "s": "img/s/mini.60329e5e.webp", "w": 1188, "cut": true, "bg": "#e4ded5", "bgd": "#312c25", "artist": "Calreyn88", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:1959_Morris_Mini_Minor.jpg"}, "etype": {"src": "img/etype.ce1cbacd.webp", "s": "img/s/etype.d6340770.webp", "w": 1112, "cut": true, "bg": "#d6e3e1", "bgd": "#27302f", "artist": "DeFacto", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Jaguar_E-Type_Series_1_3.8_Litre_1961.jpg"}, "p911": {"src": "img/p911.c8a7f24d.webp", "s": "img/s/p911.6496a072.webp", "w": 1200, "cut": true, "bg": "#e3dad6", "bgd": "#312a26", "artist": "AlfvanBeem", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Porsche_911_dutch_licence_registration_27-99-AX.jpg"}, "shinkansen": {"src": "img/shinkansen.96b369d2.webp", "s": "img/s/shinkansen.f6cd0ea1.webp", "w": 637, "cut": true, "bg": "#d5dbe4", "bgd": "#262a31", "artist": "FairlieGood", "license": "CC BY 4.0", "page": "https://commons.wikimedia.org/wiki/File:0_Series_Shinkansen_NRM.jpg"}, "concorde": {"src": "img/concorde.cc24a4a0.webp", "s": "img/s/concorde.3632b923.webp", "w": 1188, "cut": true, "bg": "#e3dad6", "bgd": "#302926", "artist": "Ken Fielding", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:G-BOAC_2_BAC-SNIAS_Concorde_102_British_Airways_MAN_22MAY04_(11432526884).jpg"}, "countach": {"src": "img/countach.049fabae.webp", "s": "img/s/countach.ebcec8ce.webp", "w": 1123, "cut": true, "bg": "#e9e6d0", "bgd": "#353222", "artist": "Calreyn88", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:1975_Lamborghini_Countach_LP400_Periscopo.jpg"}, "roadster": {"src": "img/roadster.933072f7.webp", "s": "img/s/roadster.2482f5d8.webp", "w": 1200, "cut": true, "bg": "#e6d3d3", "bgd": "#332424", "artist": "TaurusEmerald", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:2008_Tesla_Roadster_Petersen_Automotive_Museum.jpg"}, "falcon9": {"src": "img/falcon9.fc929da7.webp", "s": "img/s/falcon9.14633832.webp", "w": 1280, "cut": false, "artist": "SpaceX", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:SES-10_Mission_-_Falcon_9_First_Stage_Landing_(32996435084).jpg"}, "model3": {"src": "img/model3.273d007e.webp", "s": "img/s/model3.5cee1787.webp", "w": 1019, "cut": true, "bg": "#e6d3d5", "bgd": "#332426", "artist": "Matti Blume", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Tesla,_Paris_Motor_Show_2018,_Paris_(1Y7A1919).jpg"}, "cybertruck": {"src": "img/cybertruck.30fdcbb2.webp", "s": "img/s/cybertruck.3ce0de91.webp", "w": 1193, "cut": true, "bg": "#e3e2d6", "bgd": "#303026", "artist": "Alexander-93", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:2024_Tesla_Cybertruck_Foundation_Series_IMG_0634_(cropped).jpg"}, "cybercab": {"src": "img/cybercab.7d5e083b.webp", "s": "img/s/cybercab.3be78b02.webp", "w": 1000, "cut": true, "bg": "#e7ded2", "bgd": "#332d23", "artist": "Ulkl", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:CybercabSTHLM2402.jpg"}};
 const PIMG = {"paxton": {"src": "img/p/paxton.dc5729c9.webp", "s": "img/p/s/paxton.af44cb76.webp", "artist": "Maull &amp; Co., London", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Joseph_Paxton_by_Maull_%26_Co,_c1860s.jpg"}, "eiffel": {"src": "img/p/eiffel.82dd2f02.webp", "s": "img/p/s/eiffel.2585f410.webp", "artist": "Nadar", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Gustave_Eiffel_1888_Nadar2.jpg"}, "rietveld": {"src": "img/p/rietveld.1f0d77ef.webp", "s": "img/p/s/rietveld.2ee7e516.webp", "artist": "Oscar at Dutch Wikipedia", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Gerrit_Thomas_Rietveld.jpg"}, "gropius": {"src": "img/p/gropius.cb2fd66a.webp", "s": "img/p/s/gropius.ce8a06e0.webp", "artist": "", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:WalterGropius-1919.jpg"}, "mies": {"src": "img/p/mies.30405ac2.webp", "s": "img/p/s/mies.60bdb8b3.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Ludwig_Mies_van_der_Rohe_in_Arts_%26_Architecture,_June_1960_issue.jpg"}, "corbusier": {"src": "img/p/corbusier.8ae17663.webp", "s": "img/p/s/corbusier.7057f734.webp", "artist": "Joop van Bilsen for Anefo", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Le_Corbusier_(1964).jpg"}, "wright": {"src": "img/p/wright.b2e53668.webp", "s": "img/p/s/wright.4e8e5bb4.webp", "artist": "New York World-Telegram and the Sun staff photographer: Al Ravenna", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Frank_Lloyd_Wright_portrait.jpg"}, "aalto": {"src": "img/p/aalto.71a9fa7d.webp", "s": "img/p/s/aalto.2db072ae.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Alvar_Aalto1.jpg"}, "pjohnson": {"src": "img/p/pjohnson.36fbc2d8.webp", "s": "img/p/s/pjohnson.20c9c8cb.webp", "artist": "B. Pietro Filardo,", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Philip_Johnson.2002.FILARDO.jpg"}, "kahn": {"src": "img/p/kahn.be2b2892.webp", "s": "img/p/s/kahn.887b83d8.webp", "artist": "Francalb89", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:LouisKahn.jpg"}, "piano": {"src": "img/p/piano.108f822e.webp", "s": "img/p/s/piano.04cf3c7e.webp", "artist": "Cirone-Musi (Festival della Scienza, Genova)Color and edits by the uploader.", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Renzo_Piano,_portrait.jpg"}, "rogers": {"src": "img/p/rogers.faba8ec1.webp", "s": "img/p/s/rogers.c52209a3.webp", "artist": "Andrew Zuckerman", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Richard_Rogers_-_Portrait_2008_(3x4_cropped).jpg"}, "ando": {"src": "img/p/ando.3248dec7.webp", "s": "img/p/s/ando.c7b77103.webp", "artist": "Christopher Schriner from Köln, Deutschland", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Tadao_Ando_2004_(4x5_cropped).jpg"}, "pei": {"src": "img/p/pei.1d028719.webp", "s": "img/p/s/pei.6fc1ee1b.webp", "artist": "Bernard Gotfryd", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Itzhak_Perlman_with_I.M._Pei,_architect,_looking_at_model_of_NYC_Convention_Center_(03124v)_(cropped).jpg"}, "gehry": {"src": "img/p/gehry.8d3cfa74.webp", "s": "img/p/s/gehry.cab54e33.webp", "artist": "City of Toronto / Jose San Juan", "license": "Attribution", "page": "https://commons.wikimedia.org/wiki/File:Frank_Gehry,_Viljo_Revell_Centenary_reception,_2010_(S2311_fl2969_it0089)_(cropped).jpg"}, "foster": {"src": "img/p/foster.b4bebcef.webp", "s": "img/p/s/foster.56e4dcca.webp", "artist": "bigbug21", "license": "CC BY-SA 2.5", "page": "https://commons.wikimedia.org/wiki/File:Norman_Foster_dresden_061110.jpg"}, "thonet": {"src": "img/p/thonet.65132b67.webp", "s": "img/p/s/thonet.06e3a2f9.webp", "artist": "unbekannt, okänt, unknown", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Michael_Thonet.jpg"}, "breuer": {"src": "img/p/breuer.71749e8a.webp", "s": "img/p/s/breuer.71c7ec95.webp", "artist": "Arz", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Marcel_Breuer_sitting_in_a_Wassily_chair.jpg"}, "perriand": {"src": "img/p/perriand.2f3410f6.webp", "s": "img/p/s/perriand.f94bf529.webp", "artist": "Robert Doisneau", "license": "CC0", "page": "https://commons.wikimedia.org/wiki/File:Charlotte_Perriand_Janvier_1991.jpg"}, "henningsen": {"src": "img/p/henningsen.ac84c202.webp", "s": "img/p/s/henningsen.87eca520.webp", "artist": "A.E. Andersen", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Poul_Henningsen_1950-tal.jpg"}, "noguchi": {"src": "img/p/noguchi.2cc71fb0.webp", "s": "img/p/s/noguchi.bd2e5614.webp", "artist": "Los Angeles Times", "license": "CC BY 4.0", "page": "https://commons.wikimedia.org/wiki/File:Isamu_Noguchi,_1983_(cropped).jpg"}, "yanagi": {"src": "img/p/yanagi.d6f544d7.webp", "s": "img/p/s/yanagi.257227ed.webp", "artist": "朝日新聞社", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Yanagi_Sori.jpg"}, "eames": {"src": "img/p/eames.02c1f747.webp", "s": "img/p/s/eames.0583c842.webp", "artist": "\"Charles &amp; Ray Eames. The Power of Design\" by HeinzDS is licensed under CC BY-SA 2.0.", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Charles_%26_Ray_Eames._The_Power_of_Design.jpg"}, "saarinen": {"src": "img/p/saarinen.fcd26acc.webp", "s": "img/p/s/saarinen.deed1c6b.webp", "artist": "Balthazar Korab", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Eero-Saarinen_(cropped).jpg"}, "jacobsen": {"src": "img/p/jacobsen.da217e57.webp", "s": "img/p/s/jacobsen.83e5a20f.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Arne_Jacobsen_photo.jpg"}, "castiglioni": {"src": "img/p/castiglioni.365c503c.webp", "s": "img/p/s/castiglioni.4dace86c.webp", "artist": "Flos", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Achille_Castiglioni.jpg"}, "panton": {"src": "img/p/panton.92fc26ef.webp", "s": "img/p/s/panton.85e24d75.webp", "artist": "Erling Mandelmann", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Verner_Panton_(1996)_by_Erling_Mandelmann.jpg"}, "starck": {"src": "img/p/starck.78c35517.webp", "s": "img/p/s/starck.ff470c74.webp", "artist": "jikatu", "license": "CC BY-SA 2.0", "page": "https://commons.wikimedia.org/wiki/File:Phillippe_Starck_2011_(3x4_cropped).jpg"}, "rams": {"src": "img/p/rams.8f193bfb.webp", "s": "img/p/s/rams.4e2de495.webp", "artist": "Vitsœ at English Wikipedia", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Designer-Dieter_Rams.jpg"}, "sottsass": {"src": "img/p/sottsass.fdaf78e4.webp", "s": "img/p/s/sottsass.eb49598f.webp", "artist": "Giuseppe Pino (Mondadori Publishers)", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Ettore_Sottsass_1969.jpg"}, "jjensen": {"src": "img/p/jjensen.1cd07310.webp", "s": "img/p/s/jjensen.9a0b4c2b.webp", "artist": "http://jacobjensendesign.com/", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Jacob_Jensen_(artist).tif"}, "dyson": {"src": "img/p/dyson.34918467.webp", "s": "img/p/s/dyson.5afa366d.webp", "artist": "Royal Society uploader", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Sir_James_Dyson_CBE_FREng_FRS.jpg"}, "fukasawa": {"src": "img/p/fukasawa.650b47a9.webp", "s": "img/p/s/fukasawa.956fdd75.webp", "artist": "WJournalist", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Naoto_Fukasawa.jpg"}, "land": {"src": "img/p/land.f26884b2.webp", "s": "img/p/s/land.b0ba4707.webp", "artist": "Gotfryd, Bernard, photographer", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Edwin_H._Land,_founder,_Polaroid_(cropped).jpg"}, "dreyfuss": {"src": "img/p/dreyfuss.607c2ca6.webp", "s": "img/p/s/dreyfuss.4ec6f687.webp", "artist": "Internet Archive Book Images", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Henry_Dreyfuss.jpg"}, "ive": {"src": "img/p/ive.71eb0d7e.webp", "s": "img/p/s/ive.ff63128e.webp", "artist": "Marcus Dawes https://www.marcusdawes.com marcus@marcusdawes.com", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Jonathan_Ive_(OTRS).jpg"}, "fadell": {"src": "img/p/fadell.b0b42516.webp", "s": "img/p/s/fadell.d7fe2ac2.webp", "artist": "Web Summit", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Tony_Fadell_at_Web_Summit_2022_(cropped).jpg"}, "jobs": {"src": "img/p/jobs.e25b828b.webp", "s": "img/p/s/jobs.e3447f87.webp", "artist": "Matthew Yohe", "license": "CC BY-SA 3.0", "page": "https://commons.wikimedia.org/wiki/File:Steve_Jobs_Headshot_2010_(cropped_4).jpg"}, "morita": {"src": "img/p/morita.02054afd.webp", "s": "img/p/s/morita.b1e7617a.webp", "artist": "プレジデント社 撮影者不明", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Morita_Akio.jpg"}, "hford": {"src": "img/p/hford.314f37d8.webp", "s": "img/p/s/hford.7bc843be.webp", "artist": "Ford Motor Company. Photographic Department", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Henry_Ford_portrait_1915_original_(3x4_cropped).png"}, "fporsche": {"src": "img/p/fporsche.a8155167.webp", "s": "img/p/s/fporsche.839e76fa.webp", "artist": "Unknown authorUnknown author", "license": "CC BY-SA 3.0 de", "page": "https://commons.wikimedia.org/wiki/File:Bundesarchiv_Bild_183-2005-1017-525,_Dr._Ferdinand_Porsche.jpg"}, "dascanio": {"src": "img/p/dascanio.47ff2fcd.webp", "s": "img/p/s/dascanio.92cbc1b0.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Corradino_D%27Ascanio.jpg"}, "bertoni": {"src": "img/p/bertoni.5823cd65.webp", "s": "img/p/s/bertoni.17e51bc4.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Flaminio_Bertoni_(cropped).jpg"}, "giacosa": {"src": "img/p/giacosa.74bfdf18.webp", "s": "img/p/s/giacosa.ae04211f.webp", "artist": "Unknown authorUnknown author", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Dante_Giacosa_-_1966.jpg"}, "issigonis": {"src": "img/p/issigonis.b76e1fce.webp", "s": "img/p/s/issigonis.e3e84bac.webp", "artist": "Birmingham Museums Trust", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Thinktank_Birmingham_-_Issigonis_A.jpg"}, "sayer": {"src": "img/p/sayer.5a883cff.webp", "s": "img/p/s/sayer.3542c037.webp", "artist": "Pat Sayer (deceased), wife of Malcolm Sayer.", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Portrait_of_Malcolm_Sayer.jpg"}, "gandini": {"src": "img/p/gandini.79ae7b3f.webp", "s": "img/p/s/gandini.977a2992.webp", "artist": "Unknown photographer", "license": "Public domain", "page": "https://commons.wikimedia.org/wiki/File:Marcello_Gandini_in_1976.jpg"}, "musk": {"src": "img/p/musk.61d1e433.webp", "s": "img/p/s/musk.7c80eed8.webp", "artist": "Gage Skidmore", "license": "CC BY-SA 4.0", "page": "https://commons.wikimedia.org/wiki/File:Elon_Musk_-_54820081119_(3x4_cropped,_Rule_of_thirds).jpg"}, "holzhausen": {"src": "img/p/holzhausen.2db4e9b1.webp", "s": "img/p/s/holzhausen.937b4e4d.webp", "artist": "Steve Jurvetson / Steve Jurvetson", "license": "CC BY 2.0", "page": "https://commons.wikimedia.org/wiki/File:Franz_von_Holzhausen_(cropped).jpg"}};
-const BUILD = '619fe885';
+const BUILD = '9be430f3';
 const CATS = [
   { k: 'arch', zh: '建筑', en: 'Architecture' }, { k: 'home', zh: '家具家居', en: 'Furniture & Home' },
   { k: 'appliance', zh: '家电', en: 'Appliances' }, { k: 'tech', zh: '消费电子', en: 'Electronics' },
@@ -565,6 +1269,29 @@ mq.addEventListener?.('change', paintMode);
 new MutationObserver(paintMode).observe(root, { attributes: true, attributeFilter: ['data-theme'] });
 paintMode();
 
+// ---------- 语言 ----------
+const UI = {
+  zh: { title: '好设计两百年', h1: '好设计<br>两百年<small>Good Design, 1851–2026</small>',
+    intro: '从 1851 年伦敦的水晶宫到 2024 年的无人出租车，<b>86 件</b>建筑、家具、家电、消费电子和交通工具，以及背后的 <b>60 多位设计师</b>和几家把设计当作信仰的公司。点任意作品看大图，点设计师的名字看他的故事。',
+    all: '全部', byCat: '按类别', byYear: '按年代', c19: '19 世纪', pieces: n => `${n} 件`, ppl: '背后的人', pcount: n => `${n} 位设计师 · 按第一件收录作品的年份排列`,
+    fnote: '作品与人物资料据公开资料整理。图片除注明外均来自维基共享资源（Wikimedia Commons）的自由许可或公有领域图片，按许可要求署名如下。',
+    anon: '佚名', img: '图片', photo: '照片', year: '年份', design: '设计', owner: '业主', maker: '出品', founded: '创立', life: '生卒', from: '国籍', role: '身份', works: '收录作品',
+    view: '查看', prev: '上一件', next: '下一件', close: '关闭', lb: '作品详情', pc: '设计师介绍', theme: '切换深色/浅色', group: '显示设置', sep: '、', colon: '：', comma: '，',
+    langBtn: '<b>中</b><span>/ EN</span>', langLabel: 'Switch to English' },
+  en: { title: 'Good Design, 1851–2026', h1: 'Two Centuries<br>of Good Design<small>好设计两百年 · 1851–2026</small>',
+    intro: 'From the Crystal Palace in London in 1851 to the driverless taxi of 2024: <b>86 pieces</b> of architecture, furniture, appliances, electronics and mobility, the <b>60-plus designers</b> behind them, and a few companies that treated design as a creed. Tap any piece for the full image, and any designer\u2019s name for their story.',
+    all: 'All', byCat: 'By category', byYear: 'By decade', c19: '1800s', pieces: n => `${n} ${n === 1 ? 'piece' : 'pieces'}`, ppl: 'The People', pcount: n => `${n} designers · ordered by the year of their first piece here`,
+    fnote: 'Notes on the works and people are compiled from public sources. Unless noted otherwise, images are freely licensed or public-domain files from Wikimedia Commons, credited below as their licences require.',
+    anon: 'Unknown', img: 'Image', photo: 'Photo', year: 'Year', design: 'Design', owner: 'Client', maker: 'Maker', founded: 'Founded', life: 'Life', from: 'From', role: 'Role', works: 'Works here',
+    view: 'View', prev: 'Previous', next: 'Next', close: 'Close', lb: 'Piece details', pc: 'Designer profile', theme: 'Toggle dark/light mode', group: 'Display settings', sep: ', ', colon: ': ', comma: ', ',
+    langBtn: '<span>中 /</span><b>EN</b>', langLabel: '切换到中文' },
+};
+let lang = (() => { try { const l = localStorage.getItem('gd-lang'); if (l === 'zh' || l === 'en') return l; } catch {} return /^zh/i.test(navigator.language || '') ? 'zh' : 'en'; })();
+const L = () => UI[lang], isEn = () => lang === 'en';
+const nm = it => isEn() ? it.en : it.zh;                                  // 作品/人物/制造商的主名
+const tx = (o, k, kind, id) => (isEn() && EN[kind][id]?.[k] !== undefined) ? EN[kind][id][k] : o[k];   // 英文文案，缺失时退回中文
+const catName = c => isEn() ? c.en : c.zh;
+
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const byId = Object.fromEntries(ITEMS.map(i => [i.id, i]));
 const ini = en => en.replace(/&/g, ' ').split(/\s+/).filter(w => /^[A-Z]/.test(w)).map(w => w[0]).slice(0, 2).join('');
@@ -573,19 +1300,19 @@ const worksOf = pid => ITEMS.filter(i => i.by.includes(pid)).sort((a, b) => a.y 
 
 function byLine(it, plainCls = 'plain') {
   return it.by.map(b => typeof b === 'string' && PEOPLE[b]
-    ? `<button class="who" data-person="${b}">${esc(PEOPLE[b].zh)}</button>`
-    : `<span class="${plainCls}">${esc(typeof b === 'string' ? b : b.n)}</span>`).join('<span class="plain">、</span>');
+    ? `<button class="who" data-person="${b}">${esc(nm(PEOPLE[b]))}</button>`
+    : `<span class="${plainCls}">${esc((n => isEn() ? EN.by[n] || n : n)(typeof b === 'string' ? b : b.n))}</span>`).join(`<span class="plain">${L().sep}</span>`);
 }
 function makerLine(it) {
   const m = MAKERS[it.maker];
-  return m ? `<button class="who" data-maker="${it.maker}">${esc(m.en)}</button>` : `<span class="plain">${esc(it.maker)}</span>`;
+  return m ? `<button class="who" data-maker="${it.maker}">${esc(m.en)}</button>` : `<span class="plain">${esc(tx(it, 'maker', 'items', it.id))}</span>`;
 }
 // 网格用 720px 的小图，浏览器按卡片实际宽度在小图/大图里选；大图只在灯箱里用
 function sizesFor(span) { return `(max-width: 720px) ${span >= 6 ? '100vw' : '50vw'}, min(${Math.round(span / 12 * 1440)}px, ${Math.round(span / 12 * 100)}vw)`; }
 function photo(it, extra = '', span = 3) {
   const im = IMG[it.id]; const fit = (it.cat === 'arch' || it.fit === 'cover') ? 'cover' : im && im.cut ? 'contain cut' : 'contain';
   const tint = im && im.bg ? ` style="--bg:${im.bg};--bgd:${im.bgd}"` : '';
-  const img = im ? `<img src="${im.s}" srcset="${im.s} 720w, ${im.src} ${im.w}w" sizes="${sizesFor(span)}" alt="${esc(it.zh)}" loading="lazy" decoding="async">` : '';
+  const img = im ? `<img src="${im.s}" srcset="${im.s} 720w, ${im.src} ${im.w}w" sizes="${sizesFor(span)}" alt="${esc(nm(it))}" loading="lazy" decoding="async">` : '';
   return `<div class="ph ${fit}${extra}"${tint}>${img}<span class="yr">${it.y}</span></div>`;
 }
 // 每组按 12 栏装行：重点作品占 6 栏、其余 3 栏，最后一行不满时把末尾几件拉宽补齐
@@ -611,17 +1338,17 @@ function spans(list) {
 function cards(list) { const s = spans(list); return list.map((it, i) => card(it, s[i])).join(''); }
 function card(it, span = 3) {
   return `<article class="card" data-span="${span}" style="--span:${span}" data-id="${it.id}">
-    <button class="open" data-open="${it.id}" aria-label="查看 ${esc(it.zh)}">${photo(it, '', span)}</button>
-    <div class="cap"><h3><i class="dot ${it.cat}"></i>${esc(it.zh)}</h3><div class="en">${esc(it.en)}</div><div class="by">${byLine(it)}</div></div></article>`;
+    <button class="open" data-open="${it.id}" aria-label="${L().view} ${esc(nm(it))}">${photo(it, '', span)}</button>
+    <div class="cap"><h3><i class="dot ${it.cat}"></i>${esc(nm(it))}</h3>${isEn() ? '' : `<div class="en">${esc(it.en)}</div>`}<div class="by">${byLine(it)}</div></div></article>`;
 }
 
 function renderCounts() {
-  document.getElementById('counts').innerHTML = CATS.map(c => `<span><i class="dot ${c.k}"></i>${c.zh}<b>${ITEMS.filter(i => i.cat === c.k).length}</b></span>`).join('');
+  document.getElementById('counts').innerHTML = CATS.map(c => `<span><i class="dot ${c.k}"></i>${catName(c)}<b>${ITEMS.filter(i => i.cat === c.k).length}</b></span>`).join('');
 }
 function renderTabs() {
   const box = document.getElementById('tabs');
-  box.innerHTML = `<button class="tab" data-v="" aria-pressed="true">全部<sup>${ITEMS.length}</sup></button>` +
-    CATS.map(c => `<button class="tab" data-v="${c.k}" aria-pressed="false"><i class="dot ${c.k}"></i>${c.zh}<sup>${ITEMS.filter(i => i.cat === c.k).length}</sup></button>`).join('');
+  box.innerHTML = `<button class="tab" data-v="" aria-pressed="true">${L().all}<sup>${ITEMS.length}</sup></button>` +
+    CATS.map(c => `<button class="tab" data-v="${c.k}" aria-pressed="false"><i class="dot ${c.k}"></i>${catName(c)}<sup>${ITEMS.filter(i => i.cat === c.k).length}</sup></button>`).join('');
   box.onclick = e => { const b = e.target.closest('.tab'); if (!b) return; state.cat = b.dataset.v || null; render(); };
   document.getElementById('sort').onclick = e => { const b = e.target.closest('button'); if (!b) return; state.sort = b.dataset.v; render(); };
 }
@@ -634,13 +1361,13 @@ function renderRuler() {
   [...ITEMS].sort((a, b) => a.y - b.y).forEach(it => {
     const slot = Math.round(it.y / 3); lanes[slot] = (lanes[slot] || 0) + 1;
     const top = 80 - (lanes[slot] - 1) * 15;
-    h += `<button class="pt" data-open="${it.id}" data-cat="${it.cat}" style="left:${pct(it.y)};top:${top}px;background:var(--c-${it.cat})" aria-label="${it.y} ${esc(it.zh)}"></button>`;
+    h += `<button class="pt" data-open="${it.id}" data-cat="${it.cat}" style="left:${pct(it.y)};top:${top}px;background:var(--c-${it.cat})" aria-label="${it.y} ${esc(nm(it))}"></button>`;
   });
   tr.innerHTML = h + '<span class="tip" id="tip" hidden></span>';
   const tip = document.getElementById('tip');
-  tr.addEventListener('pointerover', e => { const p = e.target.closest('.pt'); if (!p) return; const it = byId[p.dataset.open];
-    tip.textContent = `${it.y} · ${it.zh}`; tip.style.left = p.style.left; tip.style.top = (parseFloat(p.style.top) - 34) + 'px'; tip.hidden = false; });
-  tr.addEventListener('pointerout', () => tip.hidden = true);
+  tr.onpointerover = e => { const p = e.target.closest('.pt'); if (!p) return; const it = byId[p.dataset.open];
+    tip.textContent = `${it.y} · ${nm(it)}`; tip.style.left = p.style.left; tip.style.top = (parseFloat(p.style.top) - 34) + 'px'; tip.hidden = false; };
+  tr.onpointerout = () => tip.hidden = true;
 }
 function render() {
   document.querySelectorAll('.tab').forEach(b => b.setAttribute('aria-pressed', String((b.dataset.v || null) === state.cat)));
@@ -651,30 +1378,30 @@ function render() {
   if (state.sort === 'cat') {
     for (const c of CATS) {
       const g = list.filter(i => i.cat === c.k).sort((a, b) => a.y - b.y); if (!g.length) continue;
-      h += `<div class="group-head"><h2>${c.zh}</h2><span class="mono">${c.en} · ${g[0].y}–${g.at(-1).y} · ${g.length}</span></div><div class="grid">${cards(g)}</div>`;
+      h += `<div class="group-head"><h2>${catName(c)}</h2><span class="mono">${isEn() ? '' : c.en + ' · '}${g[0].y}–${g.at(-1).y} · ${g.length}</span></div><div class="grid">${cards(g)}</div>`;
     }
   } else {
     const decades = {};
-    [...list].sort((a, b) => a.y - b.y).forEach(i => { const d = i.y < 1900 ? '19 世纪' : `${Math.floor(i.y / 10) * 10}s`; (decades[d] ||= []).push(i); });
-    for (const [d, g] of Object.entries(decades)) h += `<div class="group-head"><h2>${d}</h2><span class="mono">${g.length} 件</span></div><div class="grid">${cards(g)}</div>`;
+    [...list].sort((a, b) => a.y - b.y).forEach(i => { const d = i.y < 1900 ? L().c19 : `${Math.floor(i.y / 10) * 10}s`; (decades[d] ||= []).push(i); });
+    for (const [d, g] of Object.entries(decades)) h += `<div class="group-head"><h2>${d}</h2><span class="mono">${L().pieces(g.length)}</span></div><div class="grid">${cards(g)}</div>`;
   }
   document.getElementById('main').innerHTML = h;
 }
 function renderPeople() {
   const ids = Object.keys(PEOPLE).filter(id => worksOf(id).length).sort((a, b) => worksOf(a)[0].y - worksOf(b)[0].y);
-  document.getElementById('pcount').textContent = `${ids.length} 位设计师 · 按第一件收录作品的年份排列`;
+  document.getElementById('pcount').textContent = L().pcount(ids.length);
   document.getElementById('ppl').innerHTML = ids.map(id => { const p = PEOPLE[id], pi = PIMG[id];
-    return `<button class="pp" data-person="${id}"><div class="pic">${pi ? `<img src="${pi.s}" alt="" loading="lazy">` : `<span class="ini">${ini(p.en)}</span>`}</div><b>${esc(p.zh)}</b><span>${esc(p.life)}</span></button>`; }).join('');
+    return `<button class="pp" data-person="${id}"><div class="pic">${pi ? `<img src="${pi.s}" alt="" loading="lazy">` : `<span class="ini">${ini(p.en)}</span>`}</div><b>${esc(nm(p))}</b><span>${esc(p.life)}</span></button>`; }).join('');
 }
 function renderCredits() {
   const rows = [];
-  ITEMS.forEach(it => { const c = IMG[it.id]; if (c) rows.push([it.zh, c]); });
-  Object.entries(PEOPLE).forEach(([id, p]) => { const c = PIMG[id]; if (c) rows.push([p.zh, c]); });
-  document.getElementById('credits').innerHTML = rows.map(([n, c]) => `<div>${esc(n)}：${esc(c.artist || '佚名')}，<a href="${esc(c.page)}" target="_blank" rel="noopener">${esc(c.license)}</a></div>`).join('');
+  ITEMS.forEach(it => { const c = IMG[it.id]; if (c) rows.push([nm(it), c]); });
+  Object.entries(PEOPLE).forEach(([id, p]) => { const c = PIMG[id]; if (c) rows.push([nm(p), c]); });
+  document.getElementById('credits').innerHTML = rows.map(([n, c]) => `<div>${esc(n)}${L().colon}${esc(c.artist || L().anon)}${L().comma}<a href="${esc(c.page)}" target="_blank" rel="noopener">${esc(c.license)}</a></div>`).join('');
 }
 
 // ---------- 作品大图 ----------
-let cur = null;
+let cur = null, curP = null;
 const warmed = new Set();
 function warm(id) { const im = IMG[id]; if (!im || warmed.has(id)) return; warmed.add(id); const i = new Image(); i.src = im.src; }
 document.addEventListener('pointerover', e => { const b = e.target.closest('[data-open]'); if (b) warm(b.dataset.open); });
@@ -683,16 +1410,16 @@ function openItem(id) {
   const it = byId[id]; if (!it) return; cur = id; { const l = [...document.querySelectorAll('#main .card')].map(c => c.dataset.id), k = l.indexOf(id); if (k >= 0) { warm(l[(k + 1) % l.length]); warm(l[(k - 1 + l.length) % l.length]); } } const im = IMG[id], c = CATS.find(c => c.k === it.cat);
   const people = it.by.filter(b => typeof b === 'string' && PEOPLE[b]);
   document.getElementById('lbBody').innerHTML = `
-    <div class="big ${(it.cat === 'arch' || it.fit === 'cover') ? 'cover' : im && im.cut ? 'contain cut' : 'contain'}"${im && im.bg ? ` style="--bg:${im.bg};--bgd:${im.bgd}"` : ''}>${im ? `<img src="${im.src}" alt="${esc(it.zh)}">` : ''}
-      <div class="lbnav"><button data-step="-1" aria-label="上一件">←</button><button data-step="1" aria-label="下一件">→</button></div></div>
-    <div class="info"><button class="x" data-close aria-label="关闭">×</button>
-      <div class="label"><i class="dot ${it.cat}"></i> ${c.zh} · ${c.en}</div>
-      <div><h2>${esc(it.zh)}</h2><div class="en">${esc(it.en)}</div></div>
-      <dl class="meta"><dt class="label">年份</dt><dd class="mono">${it.y}</dd><dt class="label">设计</dt><dd>${byLine(it)}</dd><dt class="label">${it.cat === 'arch' ? '业主' : '出品'}</dt><dd>${makerLine(it)}</dd></dl>
-      <p class="note">${esc(it.note)}</p>
+    <div class="big ${(it.cat === 'arch' || it.fit === 'cover') ? 'cover' : im && im.cut ? 'contain cut' : 'contain'}"${im && im.bg ? ` style="--bg:${im.bg};--bgd:${im.bgd}"` : ''}>${im ? `<img src="${im.src}" alt="${esc(nm(it))}">` : ''}
+      <div class="lbnav"><button data-step="-1" aria-label="${L().prev}">←</button><button data-step="1" aria-label="${L().next}">→</button></div></div>
+    <div class="info"><button class="x" data-close aria-label="${L().close}">×</button>
+      <div class="label"><i class="dot ${it.cat}"></i> ${isEn() ? c.en : `${c.zh} · ${c.en}`}</div>
+      <div><h2>${esc(nm(it))}</h2>${isEn() ? '' : `<div class="en">${esc(it.en)}</div>`}</div>
+      <dl class="meta"><dt class="label">${L().year}</dt><dd class="mono">${it.y}</dd><dt class="label">${L().design}</dt><dd>${byLine(it)}</dd><dt class="label">${it.cat === 'arch' ? L().owner : L().maker}</dt><dd>${makerLine(it)}</dd></dl>
+      <p class="note">${esc(tx(it, 'note', 'items', it.id))}</p>
       ${people.length ? `<div class="chips">${people.map(pid => { const p = PEOPLE[pid], pi = PIMG[pid];
-        return `<button class="pchip" data-person="${pid}">${pi ? `<img src="${pi.s}" alt="">` : `<span class="ini">${ini(p.en)}</span>`}<span>${esc(p.zh)}<small>${esc(p.life)}</small></span></button>`; }).join('')}</div>` : ''}
-      ${im ? `<div class="credit">图片：${esc(im.artist || '佚名')}，<a href="${esc(im.page)}" target="_blank" rel="noopener">${esc(im.license)}</a></div>` : ''}
+        return `<button class="pchip" data-person="${pid}">${pi ? `<img src="${pi.s}" alt="">` : `<span class="ini">${ini(p.en)}</span>`}<span>${esc(nm(p))}<small>${esc(p.life)}</small></span></button>`; }).join('')}</div>` : ''}
+      ${im ? `<div class="credit">${L().img}${L().colon}${esc(im.artist || L().anon)}${L().comma}<a href="${esc(im.page)}" target="_blank" rel="noopener">${esc(im.license)}</a></div>` : ''}
     </div>`;
   const d = document.getElementById('lb'); if (!d.open) d.showModal();
 }
@@ -703,20 +1430,21 @@ function step(n) {
 
 // ---------- 人物卡 ----------
 function openPerson(pid, isMaker) {
-  const p = isMaker ? MAKERS[pid] : PEOPLE[pid]; if (!p) return;
+  const p = isMaker ? MAKERS[pid] : PEOPLE[pid]; if (!p) return; curP = [pid, isMaker];
+  const kind = isMaker ? 'makers' : 'people', f = k => esc(tx(p, k, kind, pid));
   const pi = isMaker ? null : PIMG[pid];
   const works = isMaker ? ITEMS.filter(i => i.maker === pid).sort((a, b) => a.y - b.y) : worksOf(pid);
-  document.getElementById('pcBody').innerHTML = `<button class="x" data-close aria-label="关闭">×</button>
-    <div class="portrait">${pi ? `<img src="${pi.src}" alt="${esc(p.zh)}">` : `<span class="ini">${ini(p.en)}</span>`}</div>
+  document.getElementById('pcBody').innerHTML = `<button class="x" data-close aria-label="${L().close}">×</button>
+    <div class="portrait">${pi ? `<img src="${pi.src}" alt="${esc(nm(p))}">` : `<span class="ini">${ini(p.en)}</span>`}</div>
     <div class="body">
-      <div><h2>${esc(p.zh)}</h2><div class="en">${esc(p.en)}</div></div>
-      <div class="facts">${isMaker ? `<span><span class="label">创立</span>${esc(p.from)}</span>` :
-        `<span><span class="label">生卒</span><span class="mono">${esc(p.life)}</span></span><span><span class="label">国籍</span>${esc(p.from)}</span><span><span class="label">身份</span>${esc(p.role)}</span>`}</div>
-      <p>${esc(p.bio)}</p>
-      ${p.quote ? `<blockquote>${esc(p.quote)}</blockquote>` : ''}
-      <div class="label">收录作品 · ${works.length}</div>
-      <div class="works">${works.map(w => `<button data-open="${w.id}">${photo(w)}<b>${esc(w.zh)}</b><span>${w.y}</span></button>`).join('')}</div>
-      ${pi ? `<div class="credit">照片：${esc(pi.artist || '佚名')}，<a href="${esc(pi.page)}" target="_blank" rel="noopener">${esc(pi.license)}</a></div>` : ''}
+      <div><h2>${esc(nm(p))}</h2>${isEn() && p.en !== p.zh ? `<div class="en">${esc(p.zh)}</div>` : isEn() ? '' : `<div class="en">${esc(p.en)}</div>`}</div>
+      <div class="facts">${isMaker ? `<span><span class="label">${L().founded}</span>${f('from')}</span>` :
+        `<span><span class="label">${L().life}</span><span class="mono">${esc(p.life)}</span></span><span><span class="label">${L().from}</span>${f('from')}</span><span><span class="label">${L().role}</span>${f('role')}</span>`}</div>
+      <p>${f('bio')}</p>
+      ${p.quote ? `<blockquote>${f('quote')}</blockquote>` : ''}
+      <div class="label">${L().works} · ${works.length}</div>
+      <div class="works">${works.map(w => `<button data-open="${w.id}">${photo(w)}<b>${esc(nm(w))}</b><span>${w.y}</span></button>`).join('')}</div>
+      ${pi ? `<div class="credit">${L().photo}${L().colon}${esc(pi.artist || L().anon)}${L().comma}<a href="${esc(pi.page)}" target="_blank" rel="noopener">${esc(pi.license)}</a></div>` : ''}
     </div>`;
   const d = document.getElementById('pc'); if (!d.open) d.showModal(); d.scrollTop = 0;
 }
@@ -734,7 +1462,21 @@ document.addEventListener('click', e => {
 });
 document.getElementById('lb').addEventListener('keydown', e => { if (e.key === 'ArrowRight') step(1); if (e.key === 'ArrowLeft') step(-1); });
 
-renderCounts(); renderTabs(); renderRuler(); render(); renderPeople(); renderCredits();
+function applyLang() {
+  const u = L(); root.lang = isEn() ? 'en' : 'zh-CN'; document.title = u.title;
+  document.getElementById('h1').innerHTML = u.h1; document.getElementById('intro').innerHTML = u.intro;
+  document.getElementById('pplh').textContent = u.ppl; document.getElementById('fnote').textContent = u.fnote;
+  const s = document.querySelectorAll('#sort button'); s[0].textContent = u.byCat; s[1].textContent = u.byYear;
+  const lb = document.getElementById('lang'); lb.innerHTML = u.langBtn; lb.setAttribute('aria-label', u.langLabel); lb.title = u.langLabel;
+  document.getElementById('theme').setAttribute('aria-label', u.theme); document.getElementById('theme').title = u.theme;
+  document.querySelector('.corner').setAttribute('aria-label', u.group);
+  document.getElementById('lb').setAttribute('aria-label', u.lb); document.getElementById('pc').setAttribute('aria-label', u.pc);
+  renderCounts(); renderTabs(); renderRuler(); render(); renderPeople(); renderCredits();
+  if (document.getElementById('lb').open && cur) openItem(cur);
+  if (document.getElementById('pc').open && curP) openPerson(...curP);
+}
+document.getElementById('lang').onclick = () => { lang = isEn() ? 'zh' : 'en'; try { localStorage.setItem('gd-lang', lang); } catch {} applyLang(); };
+applyLang();
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body></html>
