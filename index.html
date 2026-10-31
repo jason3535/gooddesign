@@ -127,6 +127,17 @@ main { padding-block: 30px 40px }
 .pp b { font-size: 14px; font-weight: 600; line-height: 1.3 }
 .pp span { font: 11.5px var(--mono); color: var(--muted) }
 
+.more-btn { display: none }
+@media (max-width: 720px) {
+  .ppl { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px 12px }
+  .pp b { font-size: 13px }
+  .pp span { font-size: 10.5px }
+  .ppl:not(.open) .pp:nth-child(n+13) { display: none }
+  footer .credits:not(.open) { display: none }
+  .more-btn { display: block; width: 100%; min-height: 46px; margin-top: 20px; padding: 10px 14px; border: 1px solid var(--rule); color: var(--ink); font-size: 14px; font-weight: 600; text-align: center }
+  footer .more-btn { margin-top: 12px; color: var(--muted); font-weight: 500 }
+}
+
 /* ---------- 作品大图 ---------- */
 dialog { border: 0; padding: 0; color: var(--ink); background: var(--card) }
 dialog::backdrop { background: rgba(10, 10, 10, .72) }
@@ -232,10 +243,12 @@ footer a { color: var(--muted) }
 <section class="wrap people-sec" id="people">
   <div class="group-head"><h2 id="pplh">背后的人</h2><span class="mono" id="pcount"></span></div>
   <div class="ppl" id="ppl"></div>
+  <button class="more-btn" id="pplMore" type="button" aria-controls="ppl"></button>
 </section>
 
 <footer class="wrap">
   <div id="fnote">作品与人物资料据公开资料整理。图片除注明外均来自维基共享资源（Wikimedia Commons）的自由许可或公有领域图片，按许可要求署名如下。</div>
+  <button class="more-btn" id="creditsMore" type="button" aria-controls="credits"></button>
   <div class="credits" id="credits"></div>
 </footer>
 
@@ -1377,14 +1390,14 @@ paintMode();
 const UI = {
   zh: { title: '好设计两百年', h1: '好设计<br>两百年<small>Good Design, 1851–2026</small>',
     intro: '从 1851 年伦敦的水晶宫到 2024 年的无人出租车，<b>93 件</b>建筑、家具、家电、消费电子和交通工具，以及背后的 <b>60 多位设计师</b>和几家把设计当作信仰的公司。点任意作品看大图，点设计师的名字看他的故事。',
-    all: '全部', byCat: '按类别', byYear: '按年代', c19: '19 世纪', pieces: n => `${n} 件`, ppl: '背后的人', pcount: n => `${n} 位设计师 · 按第一件收录作品的年份排列`,
+    all: '全部', byCat: '按类别', byYear: '按年代', c19: '19 世纪', pieces: n => `${n} 件`, ppl: '背后的人', pplMore: n => `展开全部 ${n} 位`, less: '收起', creditsMore: '查看图片署名', pcount: n => `${n} 位设计师 · 按第一件收录作品的年份排列`,
     fnote: '作品与人物资料据公开资料整理。图片除注明外均来自维基共享资源（Wikimedia Commons）的自由许可或公有领域图片，按许可要求署名如下。',
     anon: '佚名', img: '图片', photo: '照片', year: '年份', design: '设计', owner: '业主', maker: '出品', founded: '创立', life: '生卒', from: '国籍', role: '身份', works: '收录作品',
     view: '查看', back: '← 返回作品', backP: '← 返回', prev: '上一件', next: '下一件', close: '关闭', lb: '作品详情', pc: '设计师介绍', theme: '切换深色/浅色', group: '显示设置', sep: '、', colon: '：', comma: '，',
     langBtn: '<b>中</b><span>/ EN</span>', langLabel: 'Switch to English' },
   en: { title: 'Good Design, 1851–2026', h1: 'Two Centuries<br>of Good Design<small>好设计两百年 · 1851–2026</small>',
     intro: 'From the Crystal Palace in London in 1851 to the driverless taxi of 2024: <b>93 pieces</b> of architecture, furniture, appliances, electronics and mobility, the <b>60-plus designers</b> behind them, and a few companies that treated design as a creed. Tap any piece for the full image, and any designer\u2019s name for their story.',
-    all: 'All', byCat: 'By category', byYear: 'By decade', c19: '1800s', pieces: n => `${n} ${n === 1 ? 'piece' : 'pieces'}`, ppl: 'The People', pcount: n => `${n} designers · ordered by the year of their first piece here`,
+    all: 'All', byCat: 'By category', byYear: 'By decade', c19: '1800s', pieces: n => `${n} ${n === 1 ? 'piece' : 'pieces'}`, ppl: 'The People', pplMore: n => `Show all ${n}`, less: 'Show less', creditsMore: 'View image credits', pcount: n => `${n} designers · ordered by the year of their first piece here`,
     fnote: 'Notes on the works and people are compiled from public sources. Unless noted otherwise, images are freely licensed or public-domain files from Wikimedia Commons, credited below as their licences require.',
     anon: 'Unknown', img: 'Image', photo: 'Photo', year: 'Year', design: 'Design', owner: 'Client', maker: 'Maker', founded: 'Founded', life: 'Life', from: 'From', role: 'Role', works: 'Works here',
     view: 'View', back: '← Back', backP: '← Back', prev: 'Previous', next: 'Next', close: 'Close', lb: 'Piece details', pc: 'Designer profile', theme: 'Toggle dark/light mode', group: 'Display settings', sep: ', ', colon: ': ', comma: ', ',
@@ -1502,7 +1515,24 @@ function renderPeople() {
   document.getElementById('pcount').textContent = L().pcount(ids.length);
   document.getElementById('ppl').innerHTML = ids.map(id => { const p = PEOPLE[id], pi = PIMG[id];
     return `<button class="pp" data-person="${id}"><div class="pic">${pi ? `<img src="${pi.s}" alt="" loading="lazy">` : `<span class="ini">${ini(p.en)}</span>`}</div><b>${esc(nm(p))}</b><span>${esc(p.life)}</span></button>`; }).join('');
+  paintMore();
 }
+// 手机上折叠人物和署名；展开状态在切换语言后保留，桌面端按钮隐藏
+function paintMore() {
+  const ppl = document.getElementById('ppl'), cr = document.getElementById('credits');
+  const pb = document.getElementById('pplMore'), cb = document.getElementById('creditsMore');
+  const po = ppl.classList.contains('open'), co = cr.classList.contains('open');
+  pb.textContent = po ? L().less : L().pplMore(ppl.children.length); pb.setAttribute('aria-expanded', po);
+  cb.textContent = co ? L().less : L().creditsMore; cb.setAttribute('aria-expanded', co);
+}
+document.getElementById('pplMore').addEventListener('click', () => {
+  const open = document.getElementById('ppl').classList.toggle('open'); paintMore();
+  if (!open) document.getElementById('people').scrollIntoView();
+  track('people_more', { to: open ? 'open' : 'close' });
+});
+document.getElementById('creditsMore').addEventListener('click', () => {
+  document.getElementById('credits').classList.toggle('open'); paintMore();
+});
 function renderCredits() {
   const rows = [];
   ITEMS.forEach(it => { const c = IMG[it.id]; if (c) rows.push([nm(it), c]); });
